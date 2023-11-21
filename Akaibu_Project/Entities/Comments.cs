@@ -5,6 +5,7 @@ namespace Akaibu_Project.Entions
 {
     public class Comments
     {
+        //[Required]
         [Key] public int ID_COMMENT { get; set; }
         public int ID_ANIME { get; set; }
         public int ID_USER { get; set; }

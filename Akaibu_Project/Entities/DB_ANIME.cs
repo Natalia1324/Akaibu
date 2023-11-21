@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Akaibu_Project.Entions
 {
     public class DB_ANIME
     {
-        public int ID_ANIME { get; set; }
+        [Key] public int ID_ANIME { get; set; }
         public string Title { get; set; }
         public int Number_of_episodes { get; set; }
         public string Author { get; set; }

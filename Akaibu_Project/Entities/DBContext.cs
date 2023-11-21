@@ -1,6 +1,7 @@
 ﻿using Akaibu_Project.Entions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
 namespace Akaibu_Project.Entities
 {
     public class DBAkaibu : DbContext
@@ -25,9 +26,13 @@ namespace Akaibu_Project.Entities
                 eb.Property(login => login.Login).IsRequired();
                 eb.Property(nick => nick.Nick).IsRequired();
                 eb.Property(passwd => passwd.Password).IsRequired();
+
+                eb.Property(ranks => ranks.Ranks).HasDefaultValue(0);
             });
-                
-           
+
+            modelBuilder.Entity<Comments>(eb => {
+                eb.Property(x => x.Date_The_comment_was_added).HasDefaultValueSql("getutcdate");
+            });
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

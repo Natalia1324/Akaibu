@@ -47,13 +47,14 @@ namespace Akaibu_Project.Entities
             });
         }
     }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Akaibu_Project;Trusted_Connection=True;MultipleActiveResultSets=true");
-            }
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Akaibu_Project;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
     }
+
+    
 }

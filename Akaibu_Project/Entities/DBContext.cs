@@ -33,7 +33,20 @@ namespace Akaibu_Project.Entities
             modelBuilder.Entity<Comments>(eb => {
                 eb.Property(x => x.Date_The_comment_was_added).HasDefaultValueSql("getutcdate");
             });
+
+            // Referencje
+            modelBuilder.Entity<Users>(eb => {
+                // Comments
+                
+            });
+            modelBuilder.Entity<DB_ANIME>(eb => {
+                // Comments
+                eb.HasMany(w => w.Comments)
+                .WithOne(c => c.DB_ANIME)
+                .HasForeignKey(w => w.DB_ANIMEId);
+            });
         }
+    }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

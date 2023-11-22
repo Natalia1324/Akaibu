@@ -6,8 +6,8 @@ namespace Akaibu_Project.Entions
     public class Status
     {
 
-        [Key] public int ID_USER { get; set; }
-        [Key] public int ID_ANIME { get; set; }
+        public int ID_USER { get; set; }
+        public int ID_ANIME { get; set; }
 
         [ForeignKey("ID_USER")]
         public Users User { get; set; }

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Akaibu_Project.Entions
 {
     public class DB_ANIME
     {
-        [Key] public int ID_ANIME { get; set; }
+        public int Id{ get; set; }
         public string Title { get; set; }
         public int Number_of_episodes { get; set; }
         public string Author { get; set; }
@@ -14,5 +15,7 @@ namespace Akaibu_Project.Entions
         public DateTime Date_of_productionStart { get; set; }
         public DateTime? Date_of_productionFinish { get; set; }
         public string Status { get; set; }
+
+        public List<Comments> Comments { get; set; } = new List<Comments>();
     }
 }

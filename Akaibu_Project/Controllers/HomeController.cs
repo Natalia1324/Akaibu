@@ -33,5 +33,14 @@ namespace Akaibu_Project.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Search(string query, string tag)
+        {
+            // Tutaj dodaj logikę wyszukiwania w oparciu o parametry 'query' i 'tag'
+            // ...
+
+            // Przekieruj do widoku z wynikami wyszukiwania
+            return View("SearchResults");
+        }
     }
 }

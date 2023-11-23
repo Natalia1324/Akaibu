@@ -47,7 +47,7 @@ namespace Akaibu_Project.Entities
             });
         }
     }
-    
+   /* 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -55,6 +55,6 @@ namespace Akaibu_Project.Entities
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Akaibu_Project;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
     }
-
+   */
     
 }

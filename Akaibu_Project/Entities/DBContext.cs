@@ -51,7 +51,7 @@ namespace Akaibu_Project.Entities
                 .HasForeignKey(w => w.DBAnimeId);
             });
 
-            // Referencje for Comments
+            // Referencje for Reports
             modelBuilder.Entity<Users>(eb => {
                 eb.HasMany(w => w.Reports)
                .WithOne(c => c.Users)

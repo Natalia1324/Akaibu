@@ -10,11 +10,11 @@ namespace Akaibu_Project.Entities
         public DBAkaibu(DbContextOptions<DBAkaibu> options):base (options) {
         
         }
-        public DbSet<Comments> comments { get; set; }
-        public DbSet<DBAnime> anime{ get; set; }
-        public DbSet<Reports> reports { get; set; }
-        public DbSet<Status> status { get; set; }
-        public DbSet<Users> users { get; set; }
+        public DbSet<Comments> Comments { get; set; }
+        public DbSet<DBAnime> DBAnime { get; set; }
+        public DbSet<Reports> Reports { get; set; }
+        public DbSet<Status> Status { get; set; }
+        public DbSet<Users> Users { get; set; }
 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder){
@@ -74,22 +74,8 @@ namespace Akaibu_Project.Entities
                 eb.HasOne(x => x.DBAnime)
                     .WithMany(a => a.Status)
                     .HasForeignKey(x => x.DBAnimeId);
+
             });
-
-
         }
-    }
-
-
-
-    /*
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Akaibu_Project;Trusted_Connection=True;MultipleActiveResultSets=true");
-        }
-    }
-    */
-    
+    }   
 }

@@ -14,7 +14,7 @@ namespace Akaibu_Project.Entions
 
         // Referensts
         public ICollection<Comments> Commensts { get; set; }
-        public List<Reports> Reports { get; set; }
+        public List<Reports> Reports { get; set; } = new List<Reports>();
 
         public ICollection<Status> Status { get; set; }
         // Properties

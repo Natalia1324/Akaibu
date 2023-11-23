@@ -4,18 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Akaibu_Project.Entions
 {
     public class Status
-    {
+    {   
+        public Users Users { get; set; }
+        public int UsersId { get; set; }
 
-        public int ID_USER { get; set; }
-        public int ID_ANIME { get; set; }
+        public DBAnime DBAnime { get; set; }
+        public int DBAnimeId { get; set; }
 
-        [ForeignKey("ID_USER")]
-        public Users User { get; set; }
-
-        [ForeignKey("ID_ANIME")]
-        public DB_ANIME Anime { get; set; }
-
-        public int Last_Epizod { get; set; }
-        public string status {  get; set; }
+        public int LastEpizod { get; set; }
+        public string StatusValue {  get; set; }
     }
 }

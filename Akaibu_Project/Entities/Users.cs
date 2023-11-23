@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Akaibu_Project.Entions
@@ -12,8 +13,10 @@ namespace Akaibu_Project.Entions
         public int Ranks { get; set; }
 
         // Referensts
-        public Comments Commensts { get; set; }
-        public int CommenstsId { get; set; }
+        public ICollection<Comments> Commensts { get; set; }
+        public List<Reports> Reports { get; set; } = new List<Reports>();
+
+        public ICollection<Status> Status { get; set; }
         // Properties
     }
 }

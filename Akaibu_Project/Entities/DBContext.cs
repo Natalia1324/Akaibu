@@ -18,9 +18,6 @@ namespace Akaibu_Project.Entities
 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder){
-            modelBuilder.Entity<Status>()
-                .HasKey(x => new { x.ID_USER, x.ID_ANIME });
-            //base.OnModelCreating(modelBuilder);
 
             // Konfiguruje encję Users w modelu danych
             modelBuilder.Entity<Users>(eb=>{
@@ -63,8 +60,28 @@ namespace Akaibu_Project.Entities
                 .HasForeignKey(w => w.DBAnimeId);
             });
 
+            // Referencje for Status
+            modelBuilder.Entity<Status>(eb => {
+                // Definicja klucza głównego składającego się z AnimeId i UsersId
+                eb.HasKey(x => new { x.DBAnimeId, x.UsersId });
+
+                // Konfiguracja relacji wiele do jeden z tabelą Users
+                eb.HasOne(x => x.Users)
+                    .WithMany(u => u.Status)
+                    .HasForeignKey(x => x.UsersId);
+
+                // Konfiguracja relacji wiele do jeden z tabelą DBAnime
+                eb.HasOne(x => x.DBAnime)
+                    .WithMany(a => a.Status)
+                    .HasForeignKey(x => x.DBAnimeId);
+            });
+
+
         }
     }
+
+
+
     /*
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

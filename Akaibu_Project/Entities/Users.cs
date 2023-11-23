@@ -13,8 +13,10 @@ namespace Akaibu_Project.Entions
         public int Ranks { get; set; }
 
         // Referensts
-        public List<Comments> Commensts { get; set; }
+        public ICollection<Comments> Commensts { get; set; }
         public List<Reports> Reports { get; set; }
+
+        public ICollection<Status> Status { get; set; }
         // Properties
     }
 }

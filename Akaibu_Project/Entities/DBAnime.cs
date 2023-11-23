@@ -14,9 +14,10 @@ namespace Akaibu_Project.Entions
         public string TAG { get; set; }
         public DateTime DateOfProductionStart { get; set; }
         public DateTime? DateOfProductionFinish { get; set; }
-        public string Status { get; set; }
+        public string StatusAnime { get; set; }
 
         public List<Comments> Comments { get; set; } = new List<Comments>();
-        public List<Reports> Reports { get; set;}
+        public ICollection<Reports> Reports { get; set;}
+        public ICollection<Status> Status { get; set; }
     }
 }

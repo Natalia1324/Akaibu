@@ -7,9 +7,6 @@ namespace Akaibu_Project.Entities
 {
     public class DBAkaibu : DbContext
     {
-        public DBAkaibu(DbContextOptions<DBAkaibu> options):base (options) {
-        
-        }
         public DbSet<Comments> Comments { get; set; }
         public DbSet<DBAnime> DBAnime { get; set; }
         public DbSet<Reports> Reports { get; set; }

@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security.Cryptography;
 namespace Akaibu_Project.Entities
 {
     public class DBAkaibu : DbContext
@@ -10,7 +11,7 @@ namespace Akaibu_Project.Entities
         
         }
         public DbSet<Comments> comments { get; set; }
-        public DbSet<DB_ANIME> anime{ get; set; }
+        public DbSet<DBAnime> anime{ get; set; }
         public DbSet<Reports> reports { get; set; }
         public DbSet<Status> status { get; set; }
         public DbSet<Users> users { get; set; }
@@ -20,34 +21,51 @@ namespace Akaibu_Project.Entities
             modelBuilder.Entity<Status>()
                 .HasKey(x => new { x.ID_USER, x.ID_ANIME });
             //base.OnModelCreating(modelBuilder);
-            
+
+            // Konfiguruje encję Users w modelu danych
             modelBuilder.Entity<Users>(eb=>{
+               
+                // Ustawia wymaganie, żeby pola w encji Users było niepuste (nie mogą być null)
                 eb.Property(nick => nick.Nick).IsRequired();
                 eb.Property(login => login.Login).IsRequired();
                 eb.Property(nick => nick.Nick).IsRequired();
                 eb.Property(passwd => passwd.Password).IsRequired();
 
+                // Ustawia domyślną wartość 0 dla pola Ranks w encji Users
                 eb.Property(ranks => ranks.Ranks).HasDefaultValue(0);
             });
 
             modelBuilder.Entity<Comments>(eb => {
-                eb.Property(x => x.Date_The_comment_was_added).HasDefaultValueSql("getutcdate");
+                eb.Property(x => x.DateTheCommentWasAdded).HasDefaultValueSql("getutcdate");
             });
 
-            // Referencje
+            // Referencje for Comments 
             modelBuilder.Entity<Users>(eb => {
-                // Comments
-                
+                 eb.HasMany(w => w.Commensts)
+                .WithOne(c => c.Users)
+                .HasForeignKey(w => w.UsersId);
             });
-            modelBuilder.Entity<DB_ANIME>(eb => {
-                // Comments
+            modelBuilder.Entity<DBAnime>(eb => {
                 eb.HasMany(w => w.Comments)
-                .WithOne(c => c.DB_ANIME)
-                .HasForeignKey(w => w.DB_ANIMEId);
+                .WithOne(c => c.DBAnime)
+                .HasForeignKey(w => w.DBAnimeId);
             });
+
+            // Referencje for Comments
+            modelBuilder.Entity<Users>(eb => {
+                eb.HasMany(w => w.Reports)
+               .WithOne(c => c.Users)
+               .HasForeignKey(w => w.UsersId);
+            });
+            modelBuilder.Entity<DBAnime>(eb => {
+                eb.HasMany(w => w.Reports)
+                .WithOne(c => c.DBAnime)
+                .HasForeignKey(w => w.DBAnimeId);
+            });
+
         }
     }
-    
+    /*
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -55,6 +73,6 @@ namespace Akaibu_Project.Entities
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Akaibu_Project;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
     }
-
+    */
     
 }

@@ -13,7 +13,7 @@ namespace Akaibu_Project.Entions
         public Users User { get; set; }
 
         [ForeignKey("ID_ANIME")]
-        public DB_ANIME Anime { get; set; }
+        public DBAnime Anime { get; set; }
 
         public int Last_Epizod { get; set; }
         public string status {  get; set; }

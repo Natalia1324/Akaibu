@@ -28,10 +28,7 @@ namespace Akaibu_Project.Entities
                 // Ustawia domyślną wartość 0 dla pola Ranks w encji Users
                 eb.Property(ranks => ranks.Ranks).HasDefaultValue(0);
             });
-
-            modelBuilder.Entity<Comments>(eb => {
-                eb.Property(x => x.DateTheCommentWasAdded).HasDefaultValueSql("getutcdate");
-            });
+            
 
             // Referencje for Comments 
             modelBuilder.Entity<Users>(eb => {
@@ -74,5 +71,14 @@ namespace Akaibu_Project.Entities
 
             });
         }
-    }   
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DBAkaibu;Trusted_Connection=True;MultipleActiveResultSets=true");
+            }
+        }
+
+    }
+
 }

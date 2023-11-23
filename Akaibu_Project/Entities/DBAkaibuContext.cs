@@ -5,7 +5,7 @@ using System;
 using System.Security.Cryptography;
 namespace Akaibu_Project.Entities
 {
-    public class DBAkaibu : DbContext
+    public class DBAkaibuContext : DbContext
     {
         public DbSet<Comments> Comments { get; set; }
         public DbSet<DBAnime> DBAnime { get; set; }

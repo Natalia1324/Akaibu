@@ -42,5 +42,10 @@ namespace Akaibu_Project.Controllers
             // Przekieruj do widoku z wynikami wyszukiwania
             return View("SearchResults");
         }
+
+        public IActionResult Lists()
+        {
+            return View("Lists");
+        }
     }
 }

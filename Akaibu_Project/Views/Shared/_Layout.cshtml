@@ -28,6 +28,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" id="searchButton">Search</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" id="listsButton">Lists</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -52,6 +55,13 @@
         $(document).ready(function () {
             $("#searchButton").click(function () {
                 window.location.href = "/Home/Search";
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#listsButton").click(function () {
+                window.location.href = "/Home/Lists";
             });
         });
     </script>

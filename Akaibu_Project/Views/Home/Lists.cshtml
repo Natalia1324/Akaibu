@@ -1,0 +1,136 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Lists";
+}
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<head>
+ 
+  <title>Choose a List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .left-side {
+      flex: 1;
+    }
+
+    .left-side h1 {
+      margin: 0;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .button {
+      width: 200px;
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+    #output {
+            position: fixed;
+            top: 180px;
+            left: 57%;
+            transform: translateX(-50%);
+            text-align: center;
+            padding: 20px;
+  
+            font-size: 24px;
+    
+        }
+
+    .button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+
+<body>
+    <div class="left-side">
+      <h1>Wybierz listę</h1>
+    </div>
+    <div class="buttons">
+      <button class="button" onclick="Obejrzane()">Obejrzane</button>
+      <button class="button" onclick="Ogladane()">Oglądane</button>
+      <button class="button" onclick="Planowane()">Planowane</button>
+    </div>
+  </div>
+  <div id="output"></div>
+
+    <script>
+        function Obejrzane() {
+        @if (1>1)    // DODAĆ SPRAWDZENIE CZY LISTA UŻYTKOWNIKA NIE JEST PUSTA
+        {
+          
+           // WYPISANIE LISTY
+
+        }
+        else
+        {
+            <text>
+                var outputDiv = document.getElementById("output");
+                outputDiv.innerHTML = 'Na razie nie dodałeś niczego do listy obejrzanych. Możesz to zrobić <a href="/Home/Search">tutaj</a>';
+                </text>
+        }
+    
+        }
+
+        function Ogladane() {
+        @if (1 > 1)    // DODAĆ SPRAWDZENIE CZY LISTA UŻYTKOWNIKA NIE JEST PUSTA
+        {
+
+            // WYPISANIE LISTY
+
+        }
+        else
+        {
+            <text>
+                    var outputDiv = document.getElementById("output");
+                    outputDiv.innerHTML = 'Na razie nie dodałeś niczego do listy oglądanych. Możesz to zrobić <a href="/Home/Search">tutaj</a>';
+            </text>
+        }
+
+        }
+
+        function Planowane() {
+        @if (1 > 1)    // DODAĆ SPRAWDZENIE CZY LISTA UŻYTKOWNIKA NIE JEST PUSTA
+        {
+
+            // WYPISANIE LISTY
+
+        }
+        else
+        {
+            <text>
+                    var outputDiv = document.getElementById("output");
+                    outputDiv.innerHTML = 'Na razie nie dodałeś niczego do listy planowanych. Możesz to zrobić <a href="/Home/Search">tutaj</a>';
+            </text>
+        }
+
+        }
+        
+    </script>
+   
+</body>
+
+
+

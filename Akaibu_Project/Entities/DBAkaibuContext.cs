@@ -22,13 +22,38 @@ namespace Akaibu_Project.Entities
                 // Ustawia wymaganie, żeby pola w encji Users było niepuste (nie mogą być null)
                 eb.Property(nick => nick.Nick).IsRequired();
                 eb.Property(login => login.Login).IsRequired();
-                eb.Property(nick => nick.Nick).IsRequired();
+                eb.Property(nick => nick.Ranks).IsRequired();
                 eb.Property(passwd => passwd.Password).IsRequired();
 
                 // Ustawia domyślną wartość 0 dla pola Ranks w encji Users
                 eb.Property(ranks => ranks.Ranks).HasDefaultValue(0);
             });
-            
+
+            modelBuilder.Entity<Comments>(eb => {
+                eb.Property(c => c.CommentText).IsRequired();
+                eb.Property(m => m.MyRating).IsRequired();
+                eb.Property(D => D.DateTheCommentWasAdded).IsRequired(); 
+            });
+
+            modelBuilder.Entity<DBAnime>(eb => {
+                eb.Property(t => t.Title).IsRequired();
+                eb.Property(n => n.NumberOfEpisodes).IsRequired();
+                eb.Property(a => a.Author).IsRequired();
+                eb.Property(s => s.ShortStory).IsRequired();
+                eb.Property(st => st.StatusAnime).IsRequired();
+            });
+
+            modelBuilder.Entity<Reports>(eb => {
+                eb.Property(t => t.ReportText).IsRequired();
+                eb.Property(d => d.DateTheReportWasAdded).IsRequired();
+            });
+
+            modelBuilder.Entity<Status>(eb => {
+                eb.Property(le => le.LastEpizod).IsRequired();
+                eb.Property(sv => sv.StatusValue).IsRequired();
+            });
+
+
 
             // Referencje for Comments 
             modelBuilder.Entity<Users>(eb => {

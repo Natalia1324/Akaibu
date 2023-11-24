@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    [Migration("20231123194412_YourNewMigrationName")]
-    partial class YourNewMigrationName
+    [Migration("20231124112010_DBAkaibu")]
+    partial class DBAkaibu
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,7 +27,8 @@ namespace Akaibu_Project.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Comment_Text")
+                    b.Property<string>("CommentText")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DBAnimeId")
@@ -37,6 +38,7 @@ namespace Akaibu_Project.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MyRating")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsersId")
@@ -59,6 +61,7 @@ namespace Akaibu_Project.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DateOfProductionFinish")
@@ -71,15 +74,18 @@ namespace Akaibu_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShortStory")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusAnime")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TAG")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -96,10 +102,11 @@ namespace Akaibu_Project.Migrations
                     b.Property<int>("DBAnimeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date_The_Report_was_added")
+                    b.Property<DateTime>("DateTheReportWasAdded")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Report_Text")
+                    b.Property<string>("ReportText")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsersId")
@@ -126,6 +133,7 @@ namespace Akaibu_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("StatusValue")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DBAnimeId", "UsersId");

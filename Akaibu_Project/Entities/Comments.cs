@@ -8,7 +8,7 @@ namespace Akaibu_Project.Entions
         //[Required]
         public Guid Id { get; set; }
         public DateTime DateTheCommentWasAdded { get; set; }
-        public string Comment_Text { get; set; }
+        public string CommentText { get; set; }
         public string MyRating { get; set; }
 
         public DBAnime DBAnime { get; set; }

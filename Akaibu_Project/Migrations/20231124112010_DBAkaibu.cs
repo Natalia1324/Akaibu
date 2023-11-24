@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Akaibu_Project.Migrations
 {
-    public partial class YourNewMigrationName : Migration
+    public partial class DBAkaibu : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,14 +13,14 @@ namespace Akaibu_Project.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
                     NumberOfEpisodes = table.Column<int>(nullable: false),
-                    Author = table.Column<string>(nullable: true),
-                    ShortStory = table.Column<string>(nullable: true),
+                    Author = table.Column<string>(nullable: false),
+                    ShortStory = table.Column<string>(nullable: false),
                     TAG = table.Column<string>(nullable: true),
                     DateOfProductionStart = table.Column<DateTime>(nullable: false),
                     DateOfProductionFinish = table.Column<DateTime>(nullable: true),
-                    StatusAnime = table.Column<string>(nullable: true)
+                    StatusAnime = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,8 +49,8 @@ namespace Akaibu_Project.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     DateTheCommentWasAdded = table.Column<DateTime>(nullable: false),
-                    Comment_Text = table.Column<string>(nullable: true),
-                    MyRating = table.Column<string>(nullable: true),
+                    CommentText = table.Column<string>(nullable: false),
+                    MyRating = table.Column<string>(nullable: false),
                     DBAnimeId = table.Column<int>(nullable: false),
                     UsersId = table.Column<int>(nullable: false)
                 },
@@ -76,8 +76,8 @@ namespace Akaibu_Project.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Report_Text = table.Column<string>(nullable: true),
-                    Date_The_Report_was_added = table.Column<DateTime>(nullable: false),
+                    ReportText = table.Column<string>(nullable: false),
+                    DateTheReportWasAdded = table.Column<DateTime>(nullable: false),
                     DBAnimeId = table.Column<int>(nullable: false),
                     UsersId = table.Column<int>(nullable: false)
                 },
@@ -105,7 +105,7 @@ namespace Akaibu_Project.Migrations
                     UsersId = table.Column<int>(nullable: false),
                     DBAnimeId = table.Column<int>(nullable: false),
                     LastEpizod = table.Column<int>(nullable: false),
-                    StatusValue = table.Column<string>(nullable: true)
+                    StatusValue = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

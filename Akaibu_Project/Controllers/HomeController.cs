@@ -1,5 +1,8 @@
-﻿using Akaibu_Project.Models;
+﻿using Akaibu_Project.Data;
+using Akaibu_Project.Entities;
+using Akaibu_Project.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,10 +15,11 @@ namespace Akaibu_Project.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DBAkaibuContext _context;
+        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -36,16 +40,41 @@ namespace Akaibu_Project.Controllers
 
         public IActionResult Search(string query, string tag)
         {
-            // Tutaj dodaj logikę wyszukiwania w oparciu o parametry 'query' i 'tag'
-            // ...
+            var tagList = tag?.Split(',').Select(t => t.Trim()).ToList();
+
+            var results = _context.DBAnime
+                .Where(a => string.IsNullOrEmpty(query) || a.Title.Contains(query) || a.ShortStory.Contains(query))
+                .ToList()
+                .Where(a => tagList == null || tagList.All(t => a.Tag.Contains(t)))
+                .ToList();
+
+            // Utwórz model wyników wyszukiwania
+            var model = new SearchResults
+            {
+                YourSearchResultsList = results
+            };
 
             // Przekieruj do widoku z wynikami wyszukiwania
-            return View("SearchResults");
+            return View("SearchResults", model);
+        }
+
+        public IActionResult AnimeDetails(int id)
+        {
+            var anime = _context.DBAnime.Find(id);
+
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            return View(anime);
         }
 
         public IActionResult Lists()
         {
             return View("Lists");
         }
+
+
     }
 }

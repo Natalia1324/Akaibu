@@ -7,6 +7,9 @@ namespace Akaibu_Project.Entities
 {
     public class DBAkaibuContext : DbContext
     {
+        public DBAkaibuContext(DbContextOptions<DBAkaibuContext> options) : base(options)
+        {
+        }
         public DbSet<Comments> Comments { get; set; }
         public DbSet<DBAnime> DBAnime { get; set; }
         public DbSet<Reports> Reports { get; set; }
@@ -15,6 +18,8 @@ namespace Akaibu_Project.Entities
 
         
         protected override void OnModelCreating(ModelBuilder modelBuilder){
+
+
 
             // Konfiguruje encję Users w modelu danych
             modelBuilder.Entity<Users>(eb=>{

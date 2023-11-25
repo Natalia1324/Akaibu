@@ -1,0 +1,62 @@
+﻿@model Akaibu_Project.Entions.DBAnime
+
+@{
+    ViewData["Title"] = "Anime Details";
+}
+
+<h2>Anime Details</h2>
+
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Author
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+
+        <dt class="col-sm-2">
+            Number of Episodes
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfEpisodes)
+        </dd>
+
+        <dt class="col-sm-2">
+            Short Story
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShortStory)
+        </dd>
+
+        <dt class="col-sm-2">
+            Tag
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tag)
+        </dd>
+
+        <dt class="col-sm-2">
+            Date of Production Start
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfProductionStart)
+        </dd>
+
+        <dt class="col-sm-2">
+            Date of Production Finish
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfProductionFinish)
+        </dd>
+
+        <dt class="col-sm-2">
+            Status Anime
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StatusAnime)
+        </dd>
+    </dl>
+</div>

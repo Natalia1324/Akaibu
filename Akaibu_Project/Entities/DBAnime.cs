@@ -11,7 +11,7 @@ namespace Akaibu_Project.Entions
         public int NumberOfEpisodes { get; set; }
         public string Author { get; set; }
         public string ShortStory { get; set; }
-        public string TAG { get; set; }
+        public string Tag { get; set; }
         public DateTime DateOfProductionStart { get; set; }
         public DateTime? DateOfProductionFinish { get; set; }
         public string StatusAnime { get; set; }

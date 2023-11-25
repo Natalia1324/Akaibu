@@ -17,7 +17,7 @@ namespace Akaibu_Project.Migrations
                     NumberOfEpisodes = table.Column<int>(nullable: false),
                     Author = table.Column<string>(nullable: false),
                     ShortStory = table.Column<string>(nullable: false),
-                    TAG = table.Column<string>(nullable: true),
+                    Tag = table.Column<string>(nullable: true),
                     DateOfProductionStart = table.Column<DateTime>(nullable: false),
                     DateOfProductionFinish = table.Column<DateTime>(nullable: true),
                     StatusAnime = table.Column<string>(nullable: false)

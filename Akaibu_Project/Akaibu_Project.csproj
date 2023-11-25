@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.cs" />
+    <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs" />
     <Compile Remove="Migrations\20231123193213_Init.cs" />
     <Compile Remove="Migrations\20231123193213_Init.Designer.cs" />
     <Compile Remove="Migrations\20231124112010_DBAkaibu.cs" />
@@ -14,6 +16,12 @@
     <Compile Remove="Migrations\20231124154535_DBAkaibu.Designer.cs" />
     <Compile Remove="Migrations\20231124154908_DBAkaibu.cs" />
     <Compile Remove="Migrations\20231124154908_DBAkaibu.Designer.cs" />
+    <Compile Remove="Migrations\20231125190445_InitialCreate.cs" />
+    <Compile Remove="Migrations\20231125190445_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20231125194614_project.cs" />
+    <Compile Remove="Migrations\20231125194614_project.Designer.cs" />
+    <Compile Remove="Migrations\20231125194934_Add.cs" />
+    <Compile Remove="Migrations\20231125194934_Add.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +35,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>

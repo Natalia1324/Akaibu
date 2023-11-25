@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Akaibu_Project.Migrations
 {
-    public partial class DBAkaibu : Migration
+    public partial class project : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

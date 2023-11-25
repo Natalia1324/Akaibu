@@ -2,7 +2,7 @@
 
 namespace Akaibu_Project.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class project1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

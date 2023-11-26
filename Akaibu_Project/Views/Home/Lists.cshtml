@@ -1,128 +1,215 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+
 @{
+    @model Akaibu_Project.Models.ListsModel
     ViewData["Title"] = "Lists";
+
+
 }
 
+@using Akaibu_Project.Entions;
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+
+
 <head>
- 
-  <title>Choose a List</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
 
-    .left-side {
-      flex: 1;
-    }
-
-    .left-side h1 {
-      margin: 0;
-    }
-
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .button {
-      width: 200px;
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-    }
-    #output {
-            position: fixed;
-            top: 180px;
-            left: 57%;
-            transform: translateX(-50%);
-            text-align: center;
-            padding: 20px;
-  
-            font-size: 24px;
-    
+    <title>Choose a List</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
         }
 
-    .button:hover {
-      background-color: #2980b9;
-    }
-  </style>
+        .left-side {
+        flex: 1;
+        }
+
+        .left-side h1 {
+        margin: 0;
+        }
+
+        .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        justify-content: center;
+        padding: 20px;
+        }
+
+        .button {
+        width: 200px;
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        }
+        #output {
+        position: fixed;
+        top: 180px;
+        left: 57%;
+        transform: translateX(-50%);
+        text-align: center;
+        padding: 20px;
+
+        font-size: 24px;
+
+        }
+
+        .button:hover {
+        background-color: #2980b9;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="left-side">
-      <h1>Wybierz listę</h1>
-    </div>
-    <div class="buttons">
-      <button class="button" onclick="Obejrzane()">Obejrzane</button>
-      <button class="button" onclick="Ogladane()">Oglądane</button>
-      <button class="button" onclick="Planowane()">Planowane</button>
-    </div>
-  </div>
-  <div id="output"></div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="left-side">
+            <h1>Choose a list:</h1>
+        </div>
+        <div class="buttons">
+            <button class="button" onclick="Obejrzane()">Finished</button>
+            <button class="button" onclick="Ogladane()">Currently Watched</button>
+            <button class="button" onclick="Planowane()">Planned</button>
+        </div>
+    }
+    else
+    {
+     
+                <p>This functionality is available only for registered users.<br><a href="/Identity/Account/Register">Create account</a>
+                <br><a href="/Identity/Account/Login">Login</a></p>
+           
+        
+    }
+    <div id="output"></div>
 
     <script>
         function Obejrzane() {
-        @if (1>1)    // DODAĆ SPRAWDZENIE CZY LISTA UŻYTKOWNIKA NIE JEST PUSTA
-        {
+        
           
-           // WYPISANIE LISTY
+            @if (Model.Finished.Any())
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Nr of Episodes</th>
+                            <th>Release date</th>
 
-        }
-        else
-        {
-            <text>
-                var outputDiv = document.getElementById("output");
-                outputDiv.innerHTML = 'Na razie nie dodałeś niczego do listy obejrzanych. Możesz to zrobić <a href="/Home/Search">tutaj</a>';
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var status in Model.Finished)
+                        {
+                            
+                                <tr>
+                                    <td>@status.DBAnime.Title</td>
+                                    <td>@status.DBAnime.Author</td>
+                                    <td>@status.DBAnime.NumberOfEpisodes</td>
+                                    <td>@status.DBAnime.DateOfProductionFinish</td>
+
+                                </tr>
+                            
+                        }
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <text>
+                        <p>You haven't added anything to the list yet. You can do it in the Search tab.</p>;
                 </text>
+            }
         }
-    
-        }
+        
+        
 
         function Ogladane() {
-        @if (1 > 1)    // DODAĆ SPRAWDZENIE CZY LISTA UŻYTKOWNIKA NIE JEST PUSTA
+        @if (Model.Watched.Any())
         {
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Nr of Episodes</th>
+                                <th>Release date</th>
+                                <th>Current Episode</th>
 
-            // WYPISANIE LISTY
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                    @foreach (var status in Model.Watched)
+                    {
+
+                                        <tr>
+                                            <td>@status.DBAnime.Title</td>
+                                            <td>@status.DBAnime.Author</td>
+                                            <td>@status.DBAnime.NumberOfEpisodes</td>
+                                            <td>@status.DBAnime.DateOfProductionFinish</td>
+                                            <td>@status.LastEpizod</td>
+
+                                        </tr>
+
+                    }
+                        </tbody>
+                    </table>
 
         }
         else
         {
-            <text>
-                    var outputDiv = document.getElementById("output");
-                    outputDiv.innerHTML = 'Na razie nie dodałeś niczego do listy oglądanych. Możesz to zrobić <a href="/Home/Search">tutaj</a>';
+            <text>                    
+                    <p>You haven't added anything to the list yet. You can do it in the Search tab.</p>;
             </text>
         }
 
         }
 
         function Planowane() {
-        @if (1 > 1)    // DODAĆ SPRAWDZENIE CZY LISTA UŻYTKOWNIKA NIE JEST PUSTA
+        @if (Model.Planned.Any())
         {
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Nr of Episodes</th>
+                                <th>Release date</th>
 
-            // WYPISANIE LISTY
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                    @foreach (var status in Model.Planned)
+                    {
+
+                                        <tr>
+                                            <td>@status.DBAnime.Title</td>
+                                            <td>@status.DBAnime.Author</td>
+                                            <td>@status.DBAnime.NumberOfEpisodes</td>
+                                            <td>@status.DBAnime.DateOfProductionFinish</td>
+
+                                        </tr>
+
+                    }
+                        </tbody>
+                    </table>
 
         }
         else
         {
             <text>
-                    var outputDiv = document.getElementById("output");
-                    outputDiv.innerHTML = 'Na razie nie dodałeś niczego do listy planowanych. Możesz to zrobić <a href="/Home/Search">tutaj</a>';
+                      <p>You haven't added anything to the list yet. You can do it in the Search tab.</p>;
             </text>
         }
 

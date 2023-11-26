@@ -1,6 +1,8 @@
 ﻿//using Akaibu_Project.Data;
+using Akaibu_Project.Entions;
 using Akaibu_Project.Entities;
 using Akaibu_Project.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -72,7 +74,39 @@ namespace Akaibu_Project.Controllers
 
         public IActionResult Lists()
         {
-            return View("Lists");
+            List<Status> FinishedEmpty = new();
+            List<Status> WatchedEmpty = new();
+            List<Status> PlannedEmpty = new();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userEmail = User.Identity.Name;
+
+
+                var user = _context.Users
+                .Include(u => u.Status)
+                .FirstOrDefault(u => u.Login == userEmail);
+                
+                    var viewModel = new ListsModel
+                    {
+                        Finished = user.Status.Where(s => s.StatusValue == "Finished").ToList(),
+                        Watched = user.Status.Where(s => s.StatusValue == "Watched").ToList(),
+                        Planned = user.Status.Where(s => s.StatusValue == "Planned").ToList()
+                    };
+                    return View("Lists", viewModel);
+               
+            }
+            else
+            {
+                var emptyModel = new ListsModel
+                {
+                    Finished = FinishedEmpty,
+                    Watched = WatchedEmpty,
+                    Planned = PlannedEmpty
+                };
+                return View("Lists", emptyModel);
+            }
+
+           
         }
 
 

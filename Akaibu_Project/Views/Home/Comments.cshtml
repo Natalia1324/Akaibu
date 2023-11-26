@@ -1,0 +1,18 @@
+﻿@model Akaibu_Project.Entions.DBAnime
+@{
+    ViewData["Title"] = "Comments";
+}
+
+
+<h2>Anime @Model.Title comments section</h2>
+
+<div>
+    <ul style="list-style: none;">
+        @foreach (var comment in Model.Comments)
+        {
+            <li>@comment.Users.Nick @comment.DateTheCommentWasAdded.ToString("dd MMMM yyyy HH:mm")</li>
+            <li>Rating @comment.MyRating</li>
+            <li>@comment.CommentText</li>
+        }
+    </ul>
+</div>

@@ -72,6 +72,16 @@ namespace Akaibu_Project.Controllers
             return View(anime);
         }
 
+        public IActionResult Comments(int id)
+        {
+            var anime = _context.DBAnime.Find(id);
+            if(anime == null)
+            {
+                return NotFound();
+            }
+            return View("Comments", anime);
+        }
+
         public IActionResult Lists()
         {
             List<Status> FinishedEmpty = new();

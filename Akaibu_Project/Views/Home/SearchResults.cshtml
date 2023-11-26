@@ -74,6 +74,8 @@
                     <!-- Dodaj więcej pól, które chcesz wyświetlić -->
                     <!-- Dodaj link do strony z detalami anime -->
                     <a asp-controller="Home" asp-action="AnimeDetails" asp-route-id="@result.Id">Details</a>
+                    <!-- Link do strony z komentarzami anime -->
+                    <a asp-controller="Home" asp-action="Comments" asp-route-id="@result.Id">Comments</a>
                 </li>
             }
         </ul>

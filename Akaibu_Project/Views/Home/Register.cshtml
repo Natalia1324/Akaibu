@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+@model Akaibu_Project.Entions.Users
+
+<form asp-controller="Home" asp-action="Register" method="post">
+    <div>
+        <label asp-for="Nick">Nickname:</label>
+        <input asp-for="Nick" />
+    </div>
+    <div>
+        <label asp-for="Login">Email:</label>
+        <input asp-for="Login" />
+    </div>
+    <div>
+        <label asp-for="Password">Password:</label>
+        <input asp-for="Password" type="password" />
+    </div>
+    <div>
+        <button type="submit">Register</button>
+    </div>
+</form>

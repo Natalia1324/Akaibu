@@ -4,38 +4,7 @@
 @{
     ViewData["Title"] = "Search Results";
 }
-@*
-<h2>Search Results</h2>
 
-
-<form asp-controller="Home" asp-action="Search" method="get">
-    <div class="form-group">
-    <label for="query">Search by Name:</label>
-    <input type="text" name="query" id="query" />
-    </div>
-
-    <div class="form-group">
-    <label for="tag">Search by Tag:</label>
-    <input type="text" name="tag" id="tag" />
-    </div>
-
-    <div class="form-group">
-    <button type="submit">Search</button>
-    </div>
-</form>
-
-@if (Model != null && Model.YourSearchResultsList != null && Model.YourSearchResultsList.Any())
-{
-    <h3>Search Results:</h3>
-    <ul>
-        @foreach (var result in Model.YourSearchResultsList)
-        {
-            <li>@result.PropertyName</li>
-            
-        }
-    </ul>
-}
-*@
 
 @model SearchResults
 

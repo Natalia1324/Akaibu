@@ -29,6 +29,22 @@ namespace Akaibu_Project.Controllers
             return View();
         }
 
+        public IActionResult Account()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+
+
+            }
+            else
+            {
+
+
+            }
+
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -100,7 +100,10 @@ namespace Akaibu_Project.Entities
                     .HasForeignKey(x => x.DBAnimeId);
 
             });
+
+
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

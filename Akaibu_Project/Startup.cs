@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 
 namespace Akaibu_Project
 {
@@ -29,6 +31,14 @@ namespace Akaibu_Project
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Sesja
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost"; // Adres serwera Redis
+                options.InstanceName = "SampleInstance"; // Nazwa instancji
+            });
+
+
             services.AddDbContext<DBAkaibuContext>(options =>
                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DBAkaibu;Trusted_Connection=True;MultipleActiveResultSets=true"));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

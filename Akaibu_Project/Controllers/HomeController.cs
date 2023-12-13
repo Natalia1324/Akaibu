@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Akaibu_Project.Controllers
 {
@@ -18,14 +19,37 @@ namespace Akaibu_Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly DBAkaibuContext _context;
-        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context)
+
+        //Sesja
+        private readonly IDistributedCache _cache;
+
+        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context, IDistributedCache cache)
         {
             _logger = logger;
             _context = context;
+
+            //Sesja
+            _cache = cache;
         }
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Account()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+
+
+            }
+            else
+            {
+
+
+            }
+
             return View();
         }
 

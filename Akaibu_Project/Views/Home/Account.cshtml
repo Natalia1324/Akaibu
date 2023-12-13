@@ -1,0 +1,31 @@
+﻿@model AccountModel
+@{
+    ViewData["Title"] = "Account";
+}
+
+<div class="text-center">
+    <h1 class="display-4">This is your account.</h1>
+    <p>Here you can browse your data.</p>
+
+    @if (Model != null)
+    {
+        @foreach (var obj in Model.users)
+        {
+            <b>Account Id:@obj.Id </b>
+            <b>Account Nick:@obj.Nick </b>
+            <b>Account Login:@obj.Login </b>
+            <b>Account Password:@obj.Password </b>
+            <b>Account Ranks:@obj.Ranks </b>
+        }
+    } else
+    {
+        <p> <b>Account Id:      </b> 0     </p>
+        <p> <b>Account Nick:    </b> user0 </p>
+        <p> <b>Account Login:   </b> null  </p>
+        <p> <b>Account Password:</b> nulll </p>
+        <p> <b>Account Rank:    </b> Guest </p>
+    }
+
+
+   
+</div>

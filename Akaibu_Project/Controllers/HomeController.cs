@@ -69,14 +69,24 @@ namespace Akaibu_Project.Controllers
             
                 if (ModelState.IsValid)
                 {
-                    // Sprawdź, czy anime o podanym tytule już istnieje
-                    if (_context.DBAnime.Any(a => a.Title == model.Title))
-                    {
-                        ModelState.AddModelError("Title", "Anime with this title already exists.");
-                        return View(model);
-                    }
+                // Sprawdź, czy anime o podanym tytule już istnieje
+                var existingAnime = _context.DBAnime.FirstOrDefault(a => a.Title == model.Title);
 
-                    // Dodaj anime do bazy danych
+                if (existingAnime != null)
+                {
+                    // Jeśli istnieje rekord o tej samej nazwie, zaktualizuj go
+                    existingAnime.NumberOfEpisodes = model.NumberOfEpisodes;
+                    existingAnime.Author = model.Author;
+                    existingAnime.ShortStory = model.ShortStory;
+                    existingAnime.Tag = model.Tag;
+                    existingAnime.DateOfProductionStart = model.DateOfProductionStart;
+                    existingAnime.DateOfProductionFinish = model.DateOfProductionFinish;
+                    existingAnime.StatusAnime = model.StatusAnime;
+
+                    _context.Update(existingAnime);
+                }
+                else
+                {
                     var anime = new DBAnime
                     {
                         Title = model.Title,
@@ -88,8 +98,10 @@ namespace Akaibu_Project.Controllers
                         DateOfProductionFinish = model.DateOfProductionFinish,
                         StatusAnime = model.StatusAnime
                     };
-
                     _context.DBAnime.Add(anime);
+                }
+                 // Dodaj anime do bazy danych
+
                     _context.SaveChanges();
 
                     return RedirectToAction("Index"); // Przekieruj gdziekolwiek po pomyślnym dodaniu

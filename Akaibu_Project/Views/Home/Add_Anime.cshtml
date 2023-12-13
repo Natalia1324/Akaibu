@@ -1,0 +1,81 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Add Anime";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Form</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>Anime Information Form</h2>
+    <form action="/Home/Add_Anime" method="post" onsubmit="setSubmitButtonClicked()">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+
+        <label for="numberOfEpisodes">Number of Episodes:</label>
+        <input type="number" id="numberOfEpisodes" name="numberOfEpisodes" required>
+        <br>
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+        <br>
+
+        <label for="shortStory">Short Story:</label>
+        <textarea id="shortStory" name="shortStory" required></textarea>
+        <br>
+
+        <label for="tag">Tag:</label>
+        <input type="text" id="tag" name="tag" required>
+        <br>
+
+        <label for="dateOfProductionStart">Date of Production Start:</label>
+        <input type="date" id="dateOfProductionStart" name="dateOfProductionStart" required>
+        <br>
+
+        <label for="dateOfProductionFinish">Date of Production Finish:</label>
+        <input type="date" id="dateOfProductionFinish" name="dateOfProductionFinish">
+        <br>
+
+        <label for="statusAnime">Status Anime:</label>
+        <input type="text" id="statusAnime" name="statusAnime" required>
+        <br>
+
+        <input type="hidden" name="submitButtonClicked" value="false">
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+            const requiredFields = ['title', 'numberOfEpisodes', 'author', 'shortStory', 'tag', 'dateOfProductionStart', 'statusAnime'];
+
+            for (const field of requiredFields) {
+                const inputField = document.getElementById(field);
+                if (!inputField.value.trim()) {
+                    event.preventDefault(); // Prevent form submission
+                    const errorMessage = document.createElement('p');
+                    errorMessage.className = 'error';
+                    errorMessage.textContent = `The ${field} field is required.`;
+                    inputField.insertAdjacentElement('afterend', errorMessage);
+                }
+            }
+        });
+
+        function setSubmitButtonClicked() {
+            document.getElementById("submitButtonClicked").value = "true";
+        }
+    </script>
+</body>
+</html>

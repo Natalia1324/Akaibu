@@ -58,6 +58,48 @@ namespace Akaibu_Project.Controllers
             return View();
         }
 
+        public IActionResult Add_Anime()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Add_Anime(DBAnime model, bool submitButtonClicked)
+        {
+            
+                if (ModelState.IsValid)
+                {
+                    // Sprawdź, czy anime o podanym tytule już istnieje
+                    if (_context.DBAnime.Any(a => a.Title == model.Title))
+                    {
+                        ModelState.AddModelError("Title", "Anime with this title already exists.");
+                        return View(model);
+                    }
+
+                    // Dodaj anime do bazy danych
+                    var anime = new DBAnime
+                    {
+                        Title = model.Title,
+                        NumberOfEpisodes = model.NumberOfEpisodes,
+                        Author = model.Author,
+                        ShortStory = model.ShortStory,
+                        Tag = model.Tag,
+                        DateOfProductionStart = model.DateOfProductionStart,
+                        DateOfProductionFinish = model.DateOfProductionFinish,
+                        StatusAnime = model.StatusAnime
+                    };
+
+                    _context.DBAnime.Add(anime);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("Index"); // Przekieruj gdziekolwiek po pomyślnym dodaniu
+                }
+            
+            return View(model);
+            
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

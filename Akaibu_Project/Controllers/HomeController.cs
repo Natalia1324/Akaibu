@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Akaibu_Project.Controllers
 {
@@ -18,10 +19,17 @@ namespace Akaibu_Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly DBAkaibuContext _context;
-        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context)
+
+        //Sesja
+        private readonly IDistributedCache _cache;
+
+        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context, IDistributedCache cache)
         {
             _logger = logger;
             _context = context;
+
+            //Sesja
+            _cache = cache;
         }
 
         public IActionResult Index()
@@ -29,10 +37,80 @@ namespace Akaibu_Project.Controllers
             return View();
         }
 
+        public IActionResult Account()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+
+
+            }
+            else
+            {
+
+
+            }
+
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
         }
+
+        public IActionResult Add_Anime()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Add_Anime(DBAnime model, bool submitButtonClicked)
+        {
+            
+                if (ModelState.IsValid)
+                {
+                // Sprawdź, czy anime o podanym tytule już istnieje
+                var existingAnime = _context.DBAnime.FirstOrDefault(a => a.Title == model.Title);
+
+                if (existingAnime != null)
+                {
+                    // Jeśli istnieje rekord o tej samej nazwie, zaktualizuj go
+                    existingAnime.NumberOfEpisodes = model.NumberOfEpisodes;
+                    existingAnime.Author = model.Author;
+                    existingAnime.ShortStory = model.ShortStory;
+                    existingAnime.Tag = model.Tag;
+                    existingAnime.DateOfProductionStart = model.DateOfProductionStart;
+                    existingAnime.DateOfProductionFinish = model.DateOfProductionFinish;
+                    existingAnime.StatusAnime = model.StatusAnime;
+
+                    _context.Update(existingAnime);
+                }
+                else
+                {
+                    var anime = new DBAnime
+                    {
+                        Title = model.Title,
+                        NumberOfEpisodes = model.NumberOfEpisodes,
+                        Author = model.Author,
+                        ShortStory = model.ShortStory,
+                        Tag = model.Tag,
+                        DateOfProductionStart = model.DateOfProductionStart,
+                        DateOfProductionFinish = model.DateOfProductionFinish,
+                        StatusAnime = model.StatusAnime
+                    };
+                    _context.DBAnime.Add(anime);
+                }
+                 // Dodaj anime do bazy danych
+
+                    _context.SaveChanges();
+
+                    return RedirectToAction("Index"); // Przekieruj gdziekolwiek po pomyślnym dodaniu
+                }
+            
+            return View(model);
+            
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -70,6 +148,16 @@ namespace Akaibu_Project.Controllers
             }
 
             return View(anime);
+        }
+
+        public IActionResult Comments(int id)
+        {
+            var anime = _context.DBAnime.Find(id);
+            if(anime == null)
+            {
+                return NotFound();
+            }
+            return View("Comments", anime);
         }
 
         public IActionResult Lists()

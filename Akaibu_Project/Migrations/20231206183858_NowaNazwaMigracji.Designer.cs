@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    [Migration("20231125200448_AddData")]
-    partial class AddData
+    [Migration("20231206183858_NowaNazwaMigracji")]
+    partial class NowaNazwaMigracji
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

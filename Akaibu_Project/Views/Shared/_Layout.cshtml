@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model Akaibu_Project.Entions.Users
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,6 +33,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" id="listsButton">Lists</a>
                         </li>
+                       
                     </ul>
                 </div>
             </div>
@@ -65,6 +68,22 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $("#registerButton").click(function () {
+                window.location.href = "/Home/Register";
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#loginButton").click(function () {
+                window.location.href = "/Home/Login";
+            });
+        });
+    </script>
+    
+
 
     @RenderSection("Scripts", required: false)
 </body>

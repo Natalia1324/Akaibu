@@ -22,6 +22,8 @@
     <Compile Remove="Migrations\20231125194614_project.Designer.cs" />
     <Compile Remove="Migrations\20231125194934_Add.cs" />
     <Compile Remove="Migrations\20231125194934_Add.Designer.cs" />
+    <Compile Remove="Migrations\20231125200448_AddData.cs" />
+    <Compile Remove="Migrations\20231125200448_AddData.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +36,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
   </ItemGroup>
 
   <ItemGroup>

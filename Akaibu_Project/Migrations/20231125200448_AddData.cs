@@ -2,7 +2,7 @@
 
 namespace Akaibu_Project.Migrations
 {
-    public partial class NowaNazwaMigracji : Migration
+    public partial class AddData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

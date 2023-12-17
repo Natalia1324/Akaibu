@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Akaibu_Project.Migrations
 {
-    public partial class project : Migration
+    public partial class NowaBazaDanych : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -122,6 +122,26 @@ namespace Akaibu_Project.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "DBAnime",
+                columns: new[] { "Id", "Author", "DateOfProductionFinish", "DateOfProductionStart", "NumberOfEpisodes", "ShortStory", "StatusAnime", "Tag", "Title" },
+                values: new object[,]
+                {
+                    { 5, "Madhouse", new DateTime(2007, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 37, "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...", "Finished", "Akcja, Tajemnica, Kryminalne", "Death Note" },
+                    { 6, "A.C.G.T.", null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 25, "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...", "Ongoing", "Akcja, Przygodowe, Fantasy", "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su" },
+                    { 7, "Author1", null, new DateTime(2023, 12, 17, 12, 3, 8, 840, DateTimeKind.Local).AddTicks(1626), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
+                    { 8, "Author2", null, new DateTime(2023, 12, 17, 12, 3, 8, 842, DateTimeKind.Local).AddTicks(6187), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Login", "Nick", "Password", "Ranks" },
+                values: new object[,]
+                {
+                    { 8, "user1@example.com", "User1", "hashed_password1", 1 },
+                    { 9, "user2@example.com", "User2", "hashed_password2", 2 }
                 });
 
             migrationBuilder.CreateIndex(

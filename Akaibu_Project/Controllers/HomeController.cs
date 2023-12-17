@@ -247,8 +247,6 @@ namespace Akaibu_Project.Controllers
         {
             var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
 
-
-
             if (anime == null)
             {
                 return NotFound();

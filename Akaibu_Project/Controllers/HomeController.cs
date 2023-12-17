@@ -64,6 +64,9 @@ namespace Akaibu_Project.Controllers
             {
                 newUser.isLogged = true;
                 var loggedUser = newUser;
+                loggedUser.Id = u.Id;
+                loggedUser.Login = u.Login;
+                loggedUser.Ranks = u.Ranks;
                 HttpContext.Session.SetObject("LoggedUser", loggedUser);
                 return View("Index", loggedUser);
 

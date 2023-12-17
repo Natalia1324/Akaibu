@@ -27,25 +27,30 @@ namespace Akaibu_Project.Controllers
         //Sesja
         //private readonly IDistributedCache _cache;
 
-        private Users _loggeduser;
+   
 
         public HomeController(ILogger<HomeController> logger, DBAkaibuContext context)
         {
             _logger = logger;
             _context = context;
 
-            _loggeduser = new Users();
+            
+        }
+
+        private Users getLoggedUser()
+        {
+            return HttpContext.Session.GetObject<Users>("LoggedUser");
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(getLoggedUser());
         }
 
         public IActionResult Login()
         {
 
-            return View(_loggeduser);
+            return View();
 
         }
 
@@ -58,16 +63,16 @@ namespace Akaibu_Project.Controllers
             if (u != null)
             {
                 newUser.isLogged = true;
-                _loggeduser = newUser;
-                HttpContext.Session.SetObject("LoggedUser", _loggeduser);
-                return View("Index", _loggeduser);
+                var loggedUser = newUser;
+                HttpContext.Session.SetObject("LoggedUser", loggedUser);
+                return View("Index", loggedUser);
 
             }
             else
             {
 
 
-                return View("Index", _loggeduser);
+                return View("Index", getLoggedUser());
             }
         }
 
@@ -81,7 +86,7 @@ namespace Akaibu_Project.Controllers
 
         public IActionResult Register()
         {
-            return View(_loggeduser);
+            return View(getLoggedUser());
         }
 
         [HttpPost]
@@ -94,8 +99,7 @@ namespace Akaibu_Project.Controllers
             if (u != null)
             {
 
-
-                return View("Index", _loggeduser);
+                return View("Index", getLoggedUser());
 
             }
             else
@@ -105,9 +109,9 @@ namespace Akaibu_Project.Controllers
                 _context.Users.Add(newUser);
                 _context.SaveChanges();
                 newUser.isLogged = true;
-                _loggeduser = newUser;
-                HttpContext.Session.SetObject("LoggedUser", _loggeduser);
-                return View("Index", _loggeduser);
+                var loggedUser = newUser;
+                HttpContext.Session.SetObject("LoggedUser", loggedUser);
+                return View("Index", loggedUser);
             }
 
 
@@ -115,24 +119,33 @@ namespace Akaibu_Project.Controllers
         
         public IActionResult Account()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-   
 
+
+            var loggedUser = getLoggedUser();
+
+            if (loggedUser == null)
+            {
+                return View("Login");
+            }
+
+            if (loggedUser.isLogged)
+            {
+
+                return View(loggedUser);
             }
             else
             {
 
-
+                return View("Login");
             }
 
-            return View();
+           
         }
         
 
         public IActionResult Privacy()
         {
-            return View();
+            return View(getLoggedUser());
         }
 
         public IActionResult Add_Anime()
@@ -230,6 +243,8 @@ namespace Akaibu_Project.Controllers
         public IActionResult Comments(int id)
         {
             var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
+
+
 
             if (anime == null)
             {

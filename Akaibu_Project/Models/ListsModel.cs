@@ -5,8 +5,8 @@ namespace Akaibu_Project.Models
 {
     public class ListsModel
     {
-        public List<Status> Finished { get; set; }
-        public List<Status> Watched { get; set; }
-        public List<Status> Planned { get; set; }
+        public ICollection<StatusModel> Finished { get; set; }
+        public ICollection<StatusModel> Watched { get; set; }
+        public ICollection<StatusModel> Planned { get; set; }
     }
 }

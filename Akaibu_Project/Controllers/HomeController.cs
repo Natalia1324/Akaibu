@@ -293,6 +293,13 @@ namespace Akaibu_Project.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult AddToDatabase(DBAnime anime)
+        {
+            _context.DBAnime.Add(anime);
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Lists()
         {
             var loggedUser = getLoggedUser();
@@ -313,17 +320,42 @@ namespace Akaibu_Project.Controllers
                 Finished = _context.Users
                 .Where(u => u.Nick == loggedUser.Nick && u.Status.Any(s => s.StatusValue == "Finished"))
                 .SelectMany(u => u.Status.Where(s => s.StatusValue == "Finished"))
-                .ToList(),
+                .Select(s => new StatusModel
+                {
+                    LastEpizod = s.LastEpizod,
+                   StatusValue = s.StatusValue,
+                    AnimeAuthor = s.DBAnime != null ? s.DBAnime.Author : "N/A",
+                  AnimeTitle = s.DBAnime != null ? s.DBAnime.Title : "N/A"
+                })
+        .ToList(),
                 Watched = _context.Users
                 .Where(u => u.Nick == loggedUser.Nick && u.Status.Any(s => s.StatusValue == "Watched"))
-                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Watched"))
-                .ToList(),
+                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Finished"))
+                .Select(s => new StatusModel
+                {
+                    LastEpizod = s.LastEpizod,
+                    StatusValue = s.StatusValue,
+                    AnimeAuthor = s.DBAnime != null ? s.DBAnime.Author : "N/A",
+                    AnimeTitle = s.DBAnime != null ? s.DBAnime.Title : "N/A"
+                })
+        .ToList(),
                 Planned = _context.Users
                 .Where(u => u.Nick == loggedUser.Nick && u.Status.Any(s => s.StatusValue == "Planned"))
-                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Planned"))
-                .ToList()
+                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Finished"))
+                .Select(s => new StatusModel
+                {
+                    LastEpizod = s.LastEpizod,
+                    StatusValue = s.StatusValue,
+                    AnimeAuthor = s.DBAnime != null ? s.DBAnime.Author : "N/A",
+                    AnimeTitle = s.DBAnime != null ? s.DBAnime.Title : "N/A"
+                })
+        .ToList()
             };
-                return View("Lists", model);
+            
+
+            loggedUser.lists = model;
+            
+                return View("Lists", loggedUser);
 
            
           

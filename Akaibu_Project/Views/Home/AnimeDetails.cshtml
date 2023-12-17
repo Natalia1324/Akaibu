@@ -59,4 +59,17 @@
             @Html.DisplayFor(model => model.StatusAnime)
         </dd>
     </dl>
+
+     <form method="post" action="@Url.Action("AddToDatabase", "Anime")">
+        @Html.HiddenFor(model => model.Title)
+        @Html.HiddenFor(model => model.Author)
+        @Html.HiddenFor(model => model.NumberOfEpisodes)
+        @Html.HiddenFor(model => model.ShortStory)
+        @Html.HiddenFor(model => model.Tag)
+        @Html.HiddenFor(model => model.DateOfProductionStart)
+        @Html.HiddenFor(model => model.DateOfProductionFinish)
+        @Html.HiddenFor(model => model.StatusAnime)
+
+        <button type="submit" class="btn btn-primary">Add to Database</button>
+    </form>
 </div>

@@ -1,16 +1,16 @@
 ﻿
 
 @{
-    @model Akaibu_Project.Models.ListsModel
+    
     ViewData["Title"] = "Lists";
 
 
 }
 
-@using Akaibu_Project.Entions;
-@using Microsoft.AspNetCore.Identity
+@model Akaibu_Project.Models.ListsModel
 
-
+<!DOCTYPE html>
+<html>
 <head>
 
     <title>Choose a List</title>
@@ -68,8 +68,7 @@
 </head>
 
 <body>
-    @if (User.Identity.IsAuthenticated)
-    {
+   
         <div class="left-side">
             <h1>Choose a list:</h1>
         </div>
@@ -78,15 +77,8 @@
             <button class="button" onclick="Ogladane()">Currently Watched</button>
             <button class="button" onclick="Planowane()">Planned</button>
         </div>
-    }
-    else
-    {
-     
-                <p>This functionality is available only for registered users.<br><a href="/Identity/Account/Register">Create account</a>
-                <br><a href="/Identity/Account/Login">Login</a></p>
-           
-        
-    }
+   
+  
     <div id="output"></div>
 
     <script>
@@ -218,6 +210,7 @@
     </script>
    
 </body>
+</html>
 
 
 

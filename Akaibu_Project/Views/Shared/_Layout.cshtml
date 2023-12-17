@@ -1,4 +1,5 @@
-﻿@model Akaibu_Project.Entions.Users
+﻿@using Akaibu_Project.Entions
+@model Users
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,9 +30,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" id="searchButton">Search</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" id="listsButton">Lists</a>
-                        </li>
+                        @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="listsButton">Lists</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Add_Anime">Add Anime</a>
                         </li>

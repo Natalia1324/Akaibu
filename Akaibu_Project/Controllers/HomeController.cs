@@ -180,6 +180,9 @@ namespace Akaibu_Project.Controllers
             {
                 newUser.isLogged = true;
                 var loggedUser = newUser;
+                loggedUser.Id = u.Id;
+                loggedUser.Login = u.Login;
+                loggedUser.Ranks = u.Ranks;
                 HttpContext.Session.SetObject("LoggedUser", loggedUser);
                 return View("Index", loggedUser);
 
@@ -294,25 +297,10 @@ namespace Akaibu_Project.Controllers
         {
             var loggedUser = getLoggedUser();
 
-            List<Status> FinishedEmpty = new();
-            List<Status> WatchedEmpty = new();
-            List<Status> PlannedEmpty = new();
 
             ListsModel model;
 
-            if (loggedUser == null)
-            {
-                model = new ListsModel
-                {
-                    Finished = FinishedEmpty,
-                    Watched = WatchedEmpty,
-                    Planned = PlannedEmpty
-                };
-                return View("Lists", model);
-            }
-
-            if (loggedUser.isLogged)
-            {
+           
                 var userEmail = loggedUser.Login;
 
 
@@ -320,25 +308,25 @@ namespace Akaibu_Project.Controllers
                 .Include(u => u.Status)
                 .FirstOrDefault(u => u.Login == userEmail);
 
-                model = new ListsModel
-                {
-                    Finished = user.Status.Where(s => s.StatusValue == "Finished").ToList(),
-                    Watched = user.Status.Where(s => s.StatusValue == "Watched").ToList(),
-                    Planned = user.Status.Where(s => s.StatusValue == "Planned").ToList()
-                };
+            model = new ListsModel
+            {
+                Finished = _context.Users
+                .Where(u => u.Nick == loggedUser.Nick && u.Status.Any(s => s.StatusValue == "Finished"))
+                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Finished"))
+                .ToList(),
+                Watched = _context.Users
+                .Where(u => u.Nick == loggedUser.Nick && u.Status.Any(s => s.StatusValue == "Watched"))
+                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Watched"))
+                .ToList(),
+                Planned = _context.Users
+                .Where(u => u.Nick == loggedUser.Nick && u.Status.Any(s => s.StatusValue == "Planned"))
+                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Planned"))
+                .ToList()
+            };
                 return View("Lists", model);
 
-            }
-            else
-            {
-                model = new ListsModel
-                {
-                    Finished = FinishedEmpty,
-                    Watched = WatchedEmpty,
-                    Planned = PlannedEmpty
-                };
-                return View("Lists", model);
-            }
+           
+          
 
 
 

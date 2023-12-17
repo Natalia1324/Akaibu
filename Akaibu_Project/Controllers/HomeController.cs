@@ -224,6 +224,58 @@ namespace Akaibu_Project.Controllers
            
         }
 
+        public IActionResult Comments(int id)
+        {
+            var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
+
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            return View("Comments", anime);
+        }
+
+        [HttpPost]
+        public IActionResult AddRatingAndComment(int animeId, int newRating, string newCommentText)
+        {
+
+            if (loggedUser.isLogged) 
+            {
+
+                var anime = _context.DBAnime.Find(animeId);
+
+
+                if (anime != null)
+                {
+
+                    var newComment = new Comments
+                    {
+                        DateTheCommentWasAdded = DateTime.Now,
+                        CommentText = newCommentText,
+                        MyRating = newRating.ToString(),
+                        Users = loggedUser, 
+                        UsersId = loggedUser.Id, 
+                        DBAnimeId = anime.Id
+                    };
+
+                    _context.Comments.Add(newComment);
+
+                    _context.SaveChanges();
+
+                    return Comments(animeId);
+                }
+                else
+                {
+                    return NotFound("Anime not found");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
         public IActionResult Lists()
         {
             List<Status> FinishedEmpty = new();

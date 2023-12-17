@@ -12,6 +12,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Akaibu_Project.Controllers
 {
@@ -20,12 +23,13 @@ namespace Akaibu_Project.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly DBAkaibuContext _context;
 
+
         //Sesja
-        private readonly IDistributedCache _cache;
+        //private readonly IDistributedCache _cache;
 
         private Users _loggeduser;
 
-        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context, IDistributedCache cache)
+        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context)
         {
             _logger = logger;
             _context = context;
@@ -38,6 +42,77 @@ namespace Akaibu_Project.Controllers
             return View();
         }
 
+        public IActionResult Login()
+        {
+
+            return View(_loggeduser);
+
+        }
+
+        [HttpPost]
+        public IActionResult Login(Users newUser)
+        {
+            var u = _context.Users
+             .FirstOrDefault(u => u.Nick == newUser.Nick && u.Password == newUser.Password);
+
+            if (u != null)
+            {
+                newUser.isLogged = true;
+                _loggeduser = newUser;
+                HttpContext.Session.SetObject("LoggedUser", _loggeduser);
+                return View("Index", _loggeduser);
+
+            }
+            else
+            {
+
+
+                return View("Index", _loggeduser);
+            }
+        }
+
+        [HttpPost]
+        [Route("/Home/Logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("LoggedUser");
+            return Ok();
+        }
+
+        public IActionResult Register()
+        {
+            return View(_loggeduser);
+        }
+
+        [HttpPost]
+        public IActionResult Register(Users newUser)
+        {
+
+            var u = _context.Users
+            .FirstOrDefault(u => u.Nick == newUser.Nick && u.Login == newUser.Login);
+
+            if (u != null)
+            {
+
+
+                return View("Index", _loggeduser);
+
+            }
+            else
+            {
+
+                newUser.Ranks = 1;
+                _context.Users.Add(newUser);
+                _context.SaveChanges();
+                newUser.isLogged = true;
+                _loggeduser = newUser;
+                HttpContext.Session.SetObject("LoggedUser", _loggeduser);
+                return View("Index", _loggeduser);
+            }
+
+
+        }
+        
         public IActionResult Account()
         {
             if (User.Identity.IsAuthenticated)
@@ -53,6 +128,7 @@ namespace Akaibu_Project.Controllers
 
             return View();
         }
+        
 
         public IActionResult Privacy()
         {

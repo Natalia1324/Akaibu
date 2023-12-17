@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Akaibu_Project.Entions
 {
@@ -18,5 +19,7 @@ namespace Akaibu_Project.Entions
 
         public ICollection<Status> Status { get; set; }
         // Properties
+        [NotMapped]
+        public bool isLogged { get; set; } = false;
     }
 }

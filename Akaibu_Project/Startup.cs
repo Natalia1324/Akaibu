@@ -32,11 +32,13 @@ namespace Akaibu_Project
         public void ConfigureServices(IServiceCollection services)
         {
             //Sesja
+            /*
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = "localhost"; // Adres serwera Redis
                 options.InstanceName = "SampleInstance"; // Nazwa instancji
             });
+            */
 
 
             services.AddDbContext<DBAkaibuContext>(options =>
@@ -44,6 +46,12 @@ namespace Akaibu_Project
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DBAkaibuContext>();
             services.AddControllersWithViews();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddRazorPages();
         }
 
@@ -54,6 +62,7 @@ namespace Akaibu_Project
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                
             }
             else
             {
@@ -68,6 +77,7 @@ namespace Akaibu_Project
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

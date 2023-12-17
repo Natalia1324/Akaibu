@@ -3,16 +3,56 @@
     ViewData["Title"] = "Comments";
 }
 
+<div class="container mt-4">
+    <h2>Anime @Model.Title) comments section</h2>
 
-<h2>Anime @Model.Title comments section</h2>
-
-<div>
-    <ul style="list-style: none;">
+    <ul class="list-unstyled">
         @foreach (var comment in Model.Comments)
         {
-            <li>@comment.Users.Nick @comment.DateTheCommentWasAdded.ToString("dd MMMM yyyy HH:mm")</li>
-            <li>Rating @comment.MyRating</li>
-            <li>@comment.CommentText</li>
+                <li class="mb-3">
+                    <strong>@comment.Users.Nick</strong>
+                    <span class="text-muted">@comment.DateTheCommentWasAdded.ToString("dd MMMM yyyy HH:mm")</span>
+                    <p>Rating: @comment.MyRating</p>
+                    <p>@comment.CommentText</p>
+                </li>
         }
     </ul>
 </div>
+
+<div class="container mt-4">
+    <h3>Add Rating and Comment</h3>
+    <form id="ratingForm" asp-action="AddRatingAndComment" method="post">
+        <input type="hidden" name="animeId" value="@Model.Id" />
+
+        <div class="form-group">
+            <label for="newRating">Rating:</label>
+            <input type="number" class="form-control" name="newRating" id="newRating" required min="1" max="10" oninput="toggleCommentForm()" />
+        </div>
+
+        <div id="commentForm" style="display:none;">
+            <div class="form-group">
+                <label for="newCommentText">Comment:</label>
+                <textarea class="form-control" name="newCommentText" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleCommentForm() {
+
+        var ratingInput = document.getElementById("newRating");
+        var commentForm = document.getElementById("commentForm");
+
+        // Jeśli ocena jest wprowadzona, pokaż formularz komentarza
+        if (ratingInput.value !== "") {
+            commentForm.style.display = "block";
+        } else {
+            commentForm.style.display = "none";
+        }
+    }
+</script>
+
+

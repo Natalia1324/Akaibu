@@ -23,13 +23,14 @@ namespace Akaibu_Project.Controllers
         //Sesja
         private readonly IDistributedCache _cache;
 
+        private Users _loggeduser;
+
         public HomeController(ILogger<HomeController> logger, DBAkaibuContext context, IDistributedCache cache)
         {
             _logger = logger;
             _context = context;
 
-            //Sesja
-            _cache = cache;
+            _loggeduser = new Users();
         }
 
         public IActionResult Index()
@@ -41,7 +42,7 @@ namespace Akaibu_Project.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-
+   
 
             }
             else
@@ -152,12 +153,56 @@ namespace Akaibu_Project.Controllers
 
         public IActionResult Comments(int id)
         {
-            var anime = _context.DBAnime.Find(id);
-            if(anime == null)
+            var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
+
+            if (anime == null)
             {
                 return NotFound();
             }
+            
             return View("Comments", anime);
+        }
+
+        [HttpPost]
+        public IActionResult AddRatingAndComment(int animeId, int newRating, string newCommentText)
+        {
+
+            bool userIsLoggedIn = true; // do zmiany na uzytkownika sesji
+
+            if (userIsLoggedIn) //do zmiany na uzytkownika sesji
+            {
+     
+                var anime = _context.DBAnime.Find(animeId);
+
+    
+                if (anime != null)
+                {
+
+                    var newComment = new Comments
+                    {
+                        DateTheCommentWasAdded = DateTime.Now,
+                        CommentText = newCommentText,
+                        MyRating = newRating.ToString(),
+                        Users = _context.Users.Find(1), //loggeduser na uzytkownika sesji
+                        UsersId = 1, //loggedUser.id na uzytkownika sesji
+                        DBAnimeId = anime.Id
+                    };
+
+                    _context.Comments.Add(newComment);
+
+                    _context.SaveChanges();
+
+                    return Comments(animeId);
+                }
+                else
+                {
+                    return NotFound("Anime not found");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login"); 
+            }
         }
 
         public IActionResult Lists()

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    [Migration("20231125200448_AddData")]
-    partial class AddData
+    [Migration("20231217110309_NowaBazaDanych")]
+    partial class NowaBazaDanych
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,6 +91,53 @@ namespace Akaibu_Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DBAnime");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 5,
+                            Author = "Madhouse",
+                            DateOfProductionFinish = new DateTime(2007, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfProductionStart = new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NumberOfEpisodes = 37,
+                            ShortStory = "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...",
+                            StatusAnime = "Finished",
+                            Tag = "Akcja, Tajemnica, Kryminalne",
+                            Title = "Death Note"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Author = "A.C.G.T.",
+                            DateOfProductionStart = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NumberOfEpisodes = 25,
+                            ShortStory = "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...",
+                            StatusAnime = "Ongoing",
+                            Tag = "Akcja, Przygodowe, Fantasy",
+                            Title = "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Author = "Author1",
+                            DateOfProductionStart = new DateTime(2023, 12, 17, 12, 3, 8, 840, DateTimeKind.Local).AddTicks(1626),
+                            NumberOfEpisodes = 12,
+                            ShortStory = "Short story 1",
+                            StatusAnime = "Status1",
+                            Tag = "Tag1",
+                            Title = "Anime1"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Author = "Author2",
+                            DateOfProductionStart = new DateTime(2023, 12, 17, 12, 3, 8, 842, DateTimeKind.Local).AddTicks(6187),
+                            NumberOfEpisodes = 24,
+                            ShortStory = "Short story 2",
+                            StatusAnime = "Status2",
+                            Tag = "Tag2",
+                            Title = "Anime2"
+                        });
                 });
 
             modelBuilder.Entity("Akaibu_Project.Entions.Reports", b =>
@@ -170,6 +217,24 @@ namespace Akaibu_Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 8,
+                            Login = "user1@example.com",
+                            Nick = "User1",
+                            Password = "hashed_password1",
+                            Ranks = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Login = "user2@example.com",
+                            Nick = "User2",
+                            Password = "hashed_password2",
+                            Ranks = 2
+                        });
                 });
 
             modelBuilder.Entity("Akaibu_Project.Entions.Comments", b =>

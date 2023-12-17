@@ -9,12 +9,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using System.Diagnostics.Eventing.Reader;
+
+
+
 
 namespace Akaibu_Project.Controllers
 {
@@ -22,19 +24,11 @@ namespace Akaibu_Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly DBAkaibuContext _context;
-
-
-        //Sesja
-        //private readonly IDistributedCache _cache;
-
-   
-
         public HomeController(ILogger<HomeController> logger, DBAkaibuContext context)
         {
             _logger = logger;
             _context = context;
 
-            
         }
 
         private Users getLoggedUser()
@@ -44,13 +38,135 @@ namespace Akaibu_Project.Controllers
 
         public IActionResult Index()
         {
+
             return View(getLoggedUser());
+
+        }
+
+        public IActionResult Privacy()
+        {
+
+            return View(getLoggedUser());
+        }
+
+        public IActionResult Add_Anime()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Add_Anime(DBAnime model, bool submitButtonClicked)
+        {
+
+            if (ModelState.IsValid)
+            {
+                // Sprawdź, czy anime o podanym tytule już istnieje
+                var existingAnime = _context.DBAnime.FirstOrDefault(a => a.Title == model.Title);
+
+                if (existingAnime != null)
+                {
+                    // Jeśli istnieje rekord o tej samej nazwie, zaktualizuj go
+                    existingAnime.NumberOfEpisodes = model.NumberOfEpisodes;
+                    existingAnime.Author = model.Author;
+                    existingAnime.ShortStory = model.ShortStory;
+                    existingAnime.Tag = model.Tag;
+                    existingAnime.DateOfProductionStart = model.DateOfProductionStart;
+                    existingAnime.DateOfProductionFinish = model.DateOfProductionFinish;
+                    existingAnime.StatusAnime = model.StatusAnime;
+
+                    _context.Update(existingAnime);
+                }
+                else
+                {
+                    var anime = new DBAnime
+                    {
+                        Title = model.Title,
+                        NumberOfEpisodes = model.NumberOfEpisodes,
+                        Author = model.Author,
+                        ShortStory = model.ShortStory,
+                        Tag = model.Tag,
+                        DateOfProductionStart = model.DateOfProductionStart,
+                        DateOfProductionFinish = model.DateOfProductionFinish,
+                        StatusAnime = model.StatusAnime
+                    };
+                    _context.DBAnime.Add(anime);
+                }
+                // Dodaj anime do bazy danych
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Index"); // Przekieruj gdziekolwiek po pomyślnym dodaniu
+            }
+
+            return View(model);
+
+        }
+
+        public IActionResult Account()
+        {
+            var loggedUser = getLoggedUser();
+
+            if (loggedUser == null)
+            {
+                return View("Login");
+            }
+
+            if (loggedUser.isLogged)
+            {
+
+                return View(loggedUser);
+            }
+            else
+            {
+                return View("Login");
+
+            }
+
+
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Search(string query, string tag)
+        {
+            var tagList = tag?.Split(',').Select(t => t.Trim()).ToList();
+
+            var results = _context.DBAnime
+                .Where(a => string.IsNullOrEmpty(query) || a.Title.Contains(query) || a.ShortStory.Contains(query))
+                .ToList()
+                .Where(a => tagList == null || tagList.All(t => a.Tag.Contains(t)))
+                .ToList();
+
+            // Utwórz model wyników wyszukiwania
+            var model = new SearchResults
+            {
+                YourSearchResultsList = results
+            };
+
+            // Przekieruj do widoku z wynikami wyszukiwania
+            return View("SearchResults", model);
+        }
+
+        public IActionResult AnimeDetails(int id)
+        {
+            var anime = _context.DBAnime.Find(id);
+
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            return View(anime);
         }
 
         public IActionResult Login()
         {
 
-            return View();
+            return View(); //zmiana
 
         }
 
@@ -64,17 +180,12 @@ namespace Akaibu_Project.Controllers
             {
                 newUser.isLogged = true;
                 var loggedUser = newUser;
-                loggedUser.Id = u.Id;
-                loggedUser.Login = u.Login;
-                loggedUser.Ranks = u.Ranks;
                 HttpContext.Session.SetObject("LoggedUser", loggedUser);
                 return View("Index", loggedUser);
 
             }
             else
             {
-
-
                 return View("Index", getLoggedUser());
             }
         }
@@ -115,14 +226,26 @@ namespace Akaibu_Project.Controllers
                 var loggedUser = newUser;
                 HttpContext.Session.SetObject("LoggedUser", loggedUser);
                 return View("Index", loggedUser);
+
             }
 
-
         }
-        
-        public IActionResult Account()
-        {
 
+        public IActionResult Comments(int id)
+        {
+            var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
+
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            return View("Comments", anime);
+        }
+
+        [HttpPost]
+        public IActionResult AddRatingAndComment(int animeId, int newRating, string newCommentText)
+        {
 
             var loggedUser = getLoggedUser();
 
@@ -134,139 +257,9 @@ namespace Akaibu_Project.Controllers
             if (loggedUser.isLogged)
             {
 
-                return View(loggedUser);
-            }
-            else
-            {
-
-                return View("Login");
-            }
-
-           
-        }
-        
-
-        public IActionResult Privacy()
-        {
-            return View(getLoggedUser());
-        }
-
-        public IActionResult Add_Anime()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Add_Anime(DBAnime model, bool submitButtonClicked)
-        {
-            
-                if (ModelState.IsValid)
-                {
-                // Sprawdź, czy anime o podanym tytule już istnieje
-                var existingAnime = _context.DBAnime.FirstOrDefault(a => a.Title == model.Title);
-
-                if (existingAnime != null)
-                {
-                    // Jeśli istnieje rekord o tej samej nazwie, zaktualizuj go
-                    existingAnime.NumberOfEpisodes = model.NumberOfEpisodes;
-                    existingAnime.Author = model.Author;
-                    existingAnime.ShortStory = model.ShortStory;
-                    existingAnime.Tag = model.Tag;
-                    existingAnime.DateOfProductionStart = model.DateOfProductionStart;
-                    existingAnime.DateOfProductionFinish = model.DateOfProductionFinish;
-                    existingAnime.StatusAnime = model.StatusAnime;
-
-                    _context.Update(existingAnime);
-                }
-                else
-                {
-                    var anime = new DBAnime
-                    {
-                        Title = model.Title,
-                        NumberOfEpisodes = model.NumberOfEpisodes,
-                        Author = model.Author,
-                        ShortStory = model.ShortStory,
-                        Tag = model.Tag,
-                        DateOfProductionStart = model.DateOfProductionStart,
-                        DateOfProductionFinish = model.DateOfProductionFinish,
-                        StatusAnime = model.StatusAnime
-                    };
-                    _context.DBAnime.Add(anime);
-                }
-                 // Dodaj anime do bazy danych
-
-                    _context.SaveChanges();
-
-                    return RedirectToAction("Index"); // Przekieruj gdziekolwiek po pomyślnym dodaniu
-                }
-            
-            return View(model);
-            
-        }
-
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult Search(string query, string tag)
-        {
-            var tagList = tag?.Split(',').Select(t => t.Trim()).ToList();
-
-            var results = _context.DBAnime
-                .Where(a => string.IsNullOrEmpty(query) || a.Title.Contains(query) || a.ShortStory.Contains(query))
-                .ToList()
-                .Where(a => tagList == null || tagList.All(t => a.Tag.Contains(t)))
-                .ToList();
-
-            // Utwórz model wyników wyszukiwania
-            var model = new SearchResults
-            {
-                YourSearchResultsList = results
-            };
-
-            // Przekieruj do widoku z wynikami wyszukiwania
-            return View("SearchResults", model);
-        }
-
-        public IActionResult AnimeDetails(int id)
-        {
-            var anime = _context.DBAnime.Find(id);
-
-            if (anime == null)
-            {
-                return NotFound();
-            }
-
-            return View(anime);
-        }
-
-        public IActionResult Comments(int id)
-        {
-            var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
-
-            if (anime == null)
-            {
-                return NotFound();
-            }
-            
-            return View("Comments", anime);
-        }
-
-        [HttpPost]
-        public IActionResult AddRatingAndComment(int animeId, int newRating, string newCommentText)
-        {
-
-            bool userIsLoggedIn = true; // do zmiany na uzytkownika sesji
-
-            if (userIsLoggedIn) //do zmiany na uzytkownika sesji
-            {
-     
                 var anime = _context.DBAnime.Find(animeId);
 
-    
+
                 if (anime != null)
                 {
 
@@ -275,8 +268,8 @@ namespace Akaibu_Project.Controllers
                         DateTheCommentWasAdded = DateTime.Now,
                         CommentText = newCommentText,
                         MyRating = newRating.ToString(),
-                        Users = _context.Users.Find(1), //loggeduser na uzytkownika sesji
-                        UsersId = 1, //loggedUser.id na uzytkownika sesji
+                        Users = loggedUser,
+                        UsersId = loggedUser.Id,
                         DBAnimeId = anime.Id
                     };
 
@@ -293,45 +286,63 @@ namespace Akaibu_Project.Controllers
             }
             else
             {
-                return RedirectToAction("Login"); 
+                return RedirectToAction("Login");
             }
         }
 
         public IActionResult Lists()
         {
+            var loggedUser = getLoggedUser();
+
             List<Status> FinishedEmpty = new();
             List<Status> WatchedEmpty = new();
             List<Status> PlannedEmpty = new();
-            if (User.Identity.IsAuthenticated)
-            {
-                var userEmail = User.Identity.Name;
 
+            ListsModel model;
 
-                var user = _context.Users
-                .Include(u => u.Status)
-                .FirstOrDefault(u => u.Login == userEmail);
-                
-                    var viewModel = new ListsModel
-                    {
-                        Finished = user.Status.Where(s => s.StatusValue == "Finished").ToList(),
-                        Watched = user.Status.Where(s => s.StatusValue == "Watched").ToList(),
-                        Planned = user.Status.Where(s => s.StatusValue == "Planned").ToList()
-                    };
-                    return View("Lists", viewModel);
-               
-            }
-            else
+            if (loggedUser == null)
             {
-                var emptyModel = new ListsModel
+                model = new ListsModel
                 {
                     Finished = FinishedEmpty,
                     Watched = WatchedEmpty,
                     Planned = PlannedEmpty
                 };
-                return View("Lists", emptyModel);
+                return View("Lists", model);
             }
 
-           
+            if (loggedUser.isLogged)
+            {
+                var userEmail = loggedUser.Login;
+
+
+                var user = _context.Users
+                .Include(u => u.Status)
+                .FirstOrDefault(u => u.Login == userEmail);
+
+                model = new ListsModel
+                {
+                    Finished = user.Status.Where(s => s.StatusValue == "Finished").ToList(),
+                    Watched = user.Status.Where(s => s.StatusValue == "Watched").ToList(),
+                    Planned = user.Status.Where(s => s.StatusValue == "Planned").ToList()
+                };
+                return View("Lists", model);
+
+            }
+            else
+            {
+                model = new ListsModel
+                {
+                    Finished = FinishedEmpty,
+                    Watched = WatchedEmpty,
+                    Planned = PlannedEmpty
+                };
+                return View("Lists", model);
+            }
+
+
+
+
         }
 
 

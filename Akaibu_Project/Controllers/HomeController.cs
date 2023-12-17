@@ -12,6 +12,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Akaibu_Project.Controllers
 {
@@ -20,16 +23,18 @@ namespace Akaibu_Project.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly DBAkaibuContext _context;
 
-        //Sesja
-        private readonly IDistributedCache _cache;
 
-        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context, IDistributedCache cache)
+        //Sesja
+        //private readonly IDistributedCache _cache;
+
+        private Users _loggeduser;
+
+        public HomeController(ILogger<HomeController> logger, DBAkaibuContext context)
         {
             _logger = logger;
             _context = context;
 
-            //Sesja
-            _cache = cache;
+            _loggeduser = new Users();
         }
 
         public IActionResult Index()
@@ -37,11 +42,82 @@ namespace Akaibu_Project.Controllers
             return View();
         }
 
+        public IActionResult Login()
+        {
+
+            return View(_loggeduser);
+
+        }
+
+        [HttpPost]
+        public IActionResult Login(Users newUser)
+        {
+            var u = _context.Users
+             .FirstOrDefault(u => u.Nick == newUser.Nick && u.Password == newUser.Password);
+
+            if (u != null)
+            {
+                newUser.isLogged = true;
+                _loggeduser = newUser;
+                HttpContext.Session.SetObject("LoggedUser", _loggeduser);
+                return View("Index", _loggeduser);
+
+            }
+            else
+            {
+
+
+                return View("Index", _loggeduser);
+            }
+        }
+
+        [HttpPost]
+        [Route("/Home/Logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("LoggedUser");
+            return Ok();
+        }
+
+        public IActionResult Register()
+        {
+            return View(_loggeduser);
+        }
+
+        [HttpPost]
+        public IActionResult Register(Users newUser)
+        {
+
+            var u = _context.Users
+            .FirstOrDefault(u => u.Nick == newUser.Nick && u.Login == newUser.Login);
+
+            if (u != null)
+            {
+
+
+                return View("Index", _loggeduser);
+
+            }
+            else
+            {
+
+                newUser.Ranks = 1;
+                _context.Users.Add(newUser);
+                _context.SaveChanges();
+                newUser.isLogged = true;
+                _loggeduser = newUser;
+                HttpContext.Session.SetObject("LoggedUser", _loggeduser);
+                return View("Index", _loggeduser);
+            }
+
+
+        }
+        
         public IActionResult Account()
         {
             if (User.Identity.IsAuthenticated)
             {
-
+   
 
             }
             else
@@ -52,6 +128,7 @@ namespace Akaibu_Project.Controllers
 
             return View();
         }
+        
 
         public IActionResult Privacy()
         {
@@ -152,12 +229,56 @@ namespace Akaibu_Project.Controllers
 
         public IActionResult Comments(int id)
         {
-            var anime = _context.DBAnime.Find(id);
-            if(anime == null)
+            var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
+
+            if (anime == null)
             {
                 return NotFound();
             }
+            
             return View("Comments", anime);
+        }
+
+        [HttpPost]
+        public IActionResult AddRatingAndComment(int animeId, int newRating, string newCommentText)
+        {
+
+            bool userIsLoggedIn = true; // do zmiany na uzytkownika sesji
+
+            if (userIsLoggedIn) //do zmiany na uzytkownika sesji
+            {
+     
+                var anime = _context.DBAnime.Find(animeId);
+
+    
+                if (anime != null)
+                {
+
+                    var newComment = new Comments
+                    {
+                        DateTheCommentWasAdded = DateTime.Now,
+                        CommentText = newCommentText,
+                        MyRating = newRating.ToString(),
+                        Users = _context.Users.Find(1), //loggeduser na uzytkownika sesji
+                        UsersId = 1, //loggedUser.id na uzytkownika sesji
+                        DBAnimeId = anime.Id
+                    };
+
+                    _context.Comments.Add(newComment);
+
+                    _context.SaveChanges();
+
+                    return Comments(animeId);
+                }
+                else
+                {
+                    return NotFound("Anime not found");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login"); 
+            }
         }
 
         public IActionResult Lists()

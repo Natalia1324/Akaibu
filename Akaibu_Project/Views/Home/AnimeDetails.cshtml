@@ -1,4 +1,5 @@
-﻿@model Akaibu_Project.Entions.DBAnime
+﻿@using Akaibu_Project.Entions
+@model Akaibu_Project.Entions.DBAnime
 
 @{
     ViewData["Title"] = "Anime Details";
@@ -59,17 +60,22 @@
             @Html.DisplayFor(model => model.StatusAnime)
         </dd>
     </dl>
+    @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true)
+    {
+        
+            <form method="post" action="@Url.Action("AddToFinishedList", "Home")">
+                @Html.HiddenFor(model => model.Id)
+                <button type="submit">Add to Finished List</button>
+            </form>
 
-     <form method="post" action="@Url.Action("AddToDatabase", "Anime")">
-        @Html.HiddenFor(model => model.Title)
-        @Html.HiddenFor(model => model.Author)
-        @Html.HiddenFor(model => model.NumberOfEpisodes)
-        @Html.HiddenFor(model => model.ShortStory)
-        @Html.HiddenFor(model => model.Tag)
-        @Html.HiddenFor(model => model.DateOfProductionStart)
-        @Html.HiddenFor(model => model.DateOfProductionFinish)
-        @Html.HiddenFor(model => model.StatusAnime)
+            <form method="post" action="@Url.Action("AddToCurrentlyWatchedList", "Home")">
+                @Html.HiddenFor(model => model.Id)
+                <button type="submit">Add to Currently Watched List</button>
+            </form>
 
-        <button type="submit" class="btn btn-primary">Add to Database</button>
-    </form>
-</div>
+            <form method="post" action="@Url.Action("AddToPlannedList", "Home")">
+                @Html.HiddenFor(model => model.Id)
+                <button type="submit">Add to Planned List</button>
+            </form>
+        }
+        </div>

@@ -141,14 +141,24 @@ namespace Akaibu_Project.Controllers
                 .Where(a => tagList == null || tagList.All(t => a.Tag.Contains(t)))
                 .ToList();
 
-            // Utwórz model wyników wyszukiwania
             var model = new SearchResults
             {
                 YourSearchResultsList = results
             };
+            var logged = getLoggedUser();
+            if (logged==null)
+            {
+                Users user = new();
+                user.search = model;
+                return View("SearchResults", user);
+            }
+            else
+            {
+                logged.search = model;
+                return View("SearchResults", logged);
+            }
 
-            // Przekieruj do widoku z wynikami wyszukiwania
-            return View("SearchResults", model);
+           
         }
 
         public IActionResult AnimeDetails(int id)
@@ -294,10 +304,50 @@ namespace Akaibu_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddToDatabase(DBAnime anime)
+        public IActionResult AddToFinishedList(DBAnime anime)
         {
-            _context.DBAnime.Add(anime);
-            return RedirectToAction("Index", "Home");
+            var logged = getLoggedUser();
+            Status status = new Status();
+            status.UsersId = logged.Id;
+            status.DBAnimeId = anime.Id;
+            status.LastEpizod = 0;
+            status.StatusValue = "Finished";
+            _context.Status.Add(status);
+            _context.SaveChanges();
+
+            return View("Index"); 
+        }
+
+        [HttpPost]
+        public IActionResult AddToCurrentlyWatchedList(DBAnime anime)
+        {
+
+            var logged = getLoggedUser();
+            Status status = new Status();
+            status.UsersId = logged.Id;
+            status.DBAnimeId = anime.Id;
+            status.LastEpizod = 0;
+            status.StatusValue = "Watched";
+            _context.Status.Add(status);
+            _context.SaveChanges();
+
+            return View("Index");  
+        }
+
+        [HttpPost]
+        public IActionResult AddToPlannedList(DBAnime anime)
+        {
+
+        var logged = getLoggedUser();
+        Status status=new Status();
+            status.UsersId = logged.Id;
+            status.DBAnimeId = anime.Id;
+            status.LastEpizod = 0;
+            status.StatusValue = "Planned";
+            _context.Status.Add(status);
+            _context.SaveChanges();
+
+            return View("Index");
         }
 
         public IActionResult Lists()
@@ -330,7 +380,7 @@ namespace Akaibu_Project.Controllers
         .ToList(),
                 Watched = _context.Users
                 .Where(u => u.Nick == loggedUser.Nick && u.Status.Any(s => s.StatusValue == "Watched"))
-                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Finished"))
+                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Watched"))
                 .Select(s => new StatusModel
                 {
                     LastEpizod = s.LastEpizod,
@@ -341,7 +391,7 @@ namespace Akaibu_Project.Controllers
         .ToList(),
                 Planned = _context.Users
                 .Where(u => u.Nick == loggedUser.Nick && u.Status.Any(s => s.StatusValue == "Planned"))
-                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Finished"))
+                .SelectMany(u => u.Status.Where(s => s.StatusValue == "Planned"))
                 .Select(s => new StatusModel
                 {
                     LastEpizod = s.LastEpizod,

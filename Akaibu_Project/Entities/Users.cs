@@ -24,6 +24,9 @@ namespace Akaibu_Project.Entions
         public bool isLogged { get; set; } = false;
 
         [NotMapped]
-        public ListsModel lists { get; set; } 
+        public ListsModel lists { get; set; }
+
+        [NotMapped]
+        public SearchResults search { get; set; }
     }
 }

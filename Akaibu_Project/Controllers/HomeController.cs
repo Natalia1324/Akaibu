@@ -281,7 +281,7 @@ namespace Akaibu_Project.Controllers
                         DateTheCommentWasAdded = DateTime.Now,
                         CommentText = newCommentText,
                         MyRating = newRating.ToString(),
-                        Users = loggedUser,
+                        //Users = loggedUser,
                         UsersId = loggedUser.Id,
                         DBAnimeId = anime.Id
                     };

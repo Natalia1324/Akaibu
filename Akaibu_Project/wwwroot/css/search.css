@@ -1,0 +1,24 @@
+﻿.form-group {
+    text-align: start;
+    float: left;
+    max-width: 40%;
+    box-sizing: border-box;
+    flex: 1;
+ 
+}
+
+    .form-group * {
+        margin: 0;
+    }
+
+
+#centralny {
+    display: flex;
+    height: 100vh; /* 100% wysokości widoku */
+}
+
+#lewy, #prawy {
+    flex: 1;
+    box-sizing: border-box;
+    border: 1px solid #000; /* Dodane obramowanie dla wizualizacji */
+}

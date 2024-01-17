@@ -30,6 +30,12 @@
     <Compile Remove="Migrations\20231217101647_Inicjalizacja_danymi.Designer.cs" />
     <Compile Remove="Migrations\20231217104302_Inicjalizacja1.cs" />
     <Compile Remove="Migrations\20231217104302_Inicjalizacja1.Designer.cs" />
+    <Compile Remove="Migrations\20231217110309_NowaBazaDanych.cs" />
+    <Compile Remove="Migrations\20231217110309_NowaBazaDanych.Designer.cs" />
+    <Compile Remove="Migrations\20231218163524_NowaNazwaMigracji.cs" />
+    <Compile Remove="Migrations\20231218163524_NowaNazwaMigracji.Designer.cs" />
+    <Compile Remove="Migrations\20231229180627_Raports.cs" />
+    <Compile Remove="Migrations\20231229180627_Raports.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

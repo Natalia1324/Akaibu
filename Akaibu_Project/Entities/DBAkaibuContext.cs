@@ -199,6 +199,26 @@ namespace Akaibu_Project.Entities
             }
             // Dodaj więcej danych, jeśli to konieczne
         );
+            // Przykładowe dane do tabeli Reports
+            modelBuilder.Entity<Reports>().HasData(
+                new Reports
+                {
+                    Id = Guid.NewGuid(),
+                    ReportText = "Report 1",
+                    DateTheReportWasAdded = DateTime.Now,
+                    DBAnimeId = 5,
+                    UsersId = 8
+                },
+                new Reports
+                {
+                    Id = Guid.NewGuid(),
+                    ReportText = "Report 2",
+                    DateTheReportWasAdded = DateTime.Now,
+                    DBAnimeId = 6,
+                    UsersId = 9
+                }
+            // Dodaj więcej danych, jeśli to konieczne
+            );
 
 
             /*
@@ -228,26 +248,7 @@ namespace Akaibu_Project.Entities
             );
             
              
-            // Przykładowe dane do tabeli Reports
-            modelBuilder.Entity<Reports>().HasData(
-                new Reports
-                {
-                    Id = Guid.NewGuid(),
-                    ReportText = "Report 1",
-                    DateTheReportWasAdded = DateTime.Now,
-                    DBAnimeId = 1,
-                    UsersId = 5
-                },
-                new Reports
-                {
-                    Id = Guid.NewGuid(),
-                    ReportText = "Report 2",
-                    DateTheReportWasAdded = DateTime.Now,
-                    DBAnimeId = 2,
-                    UsersId = 5
-                }
-            // Dodaj więcej danych, jeśli to konieczne
-            );
+           
             
             // Przykładowe dane do tabeli Status
             modelBuilder.Entity<Status>().HasData(
@@ -267,7 +268,6 @@ namespace Akaibu_Project.Entities
                 }
             );
 
-            *
             */
         }
     }

@@ -4,14 +4,16 @@ using Akaibu_Project.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    partial class DBAkaibuContextModelSnapshot : ModelSnapshot
+    [Migration("20231218163524_NowaNazwaMigracji")]
+    partial class NowaNazwaMigracji
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,7 +120,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2023, 12, 29, 19, 6, 26, 604, DateTimeKind.Local).AddTicks(9435),
+                            DateOfProductionStart = new DateTime(2023, 12, 18, 17, 35, 23, 761, DateTimeKind.Local).AddTicks(7594),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -129,7 +131,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2023, 12, 29, 19, 6, 26, 607, DateTimeKind.Local).AddTicks(3511),
+                            DateOfProductionStart = new DateTime(2023, 12, 18, 17, 35, 23, 764, DateTimeKind.Local).AddTicks(1127),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
@@ -164,24 +166,6 @@ namespace Akaibu_Project.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("Reports");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("bedb3442-51bf-49ee-bea2-9c8faf466980"),
-                            DBAnimeId = 5,
-                            DateTheReportWasAdded = new DateTime(2023, 12, 29, 19, 6, 26, 608, DateTimeKind.Local).AddTicks(6014),
-                            ReportText = "Report 1",
-                            UsersId = 8
-                        },
-                        new
-                        {
-                            Id = new Guid("b4d92219-e380-4e7f-965c-458e5ef3587a"),
-                            DBAnimeId = 6,
-                            DateTheReportWasAdded = new DateTime(2023, 12, 29, 19, 6, 26, 608, DateTimeKind.Local).AddTicks(6705),
-                            ReportText = "Report 2",
-                            UsersId = 9
-                        });
                 });
 
             modelBuilder.Entity("Akaibu_Project.Entions.Status", b =>

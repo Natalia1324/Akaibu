@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Panel";
+    var panelData = ViewBag.PanelData;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    
+    <h2>Welcome to the Admin Panel</h2>
+    <p>Raports:</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Report Text</th>
+                <th>Date Added</th>
+                <th>DBAnime Id</th>
+                <th>User Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in panelData.Reports)
+            {
+                <tr>
+                    <td>@report.ReportText</td>
+                    <td>@report.DateTheReportWasAdded</td>
+                    <td>@report.DBAnimeId</td>
+                    <td>@report.UsersId</td>
+                    <td>
+                        <form method="post" action="@Url.Action("BanUser", "Home")">
+                            <input type="hidden" name="userId" value="@report.UsersId" />
+                            <button type="submit" style="background-color: red; color: white;">Ban</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>Users:</p>
+    <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Nick</th>
+                    <th>Login</th>
+                    <th>Rank</th>
+                    <!-- Dodaj więcej kolumn w miarę potrzeb -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in panelData.Users)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Nick</td>
+                        <td>@user.Login</td>
+                        <td>@user.Ranks</td>
+                        <!-- Dodaj więcej kolumn w miarę potrzeb -->
+                    </tr>
+                }
+            </tbody>
+        </table>
+</body>
+</html>

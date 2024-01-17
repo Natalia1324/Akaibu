@@ -12,16 +12,26 @@ a {
   color: #0366d6;
 }
 
+/*Przycisk z niiebieską obramówką*/
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
 
+/*Pasek nawigacyjny u góry*/
+.navbar {
+    background-color: #66494B !important;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: #E9987D !important; /* Kolor tekstu dla elementów nawigacyjnych */
+}
+
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
@@ -36,10 +46,10 @@ html {
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #000000;
 }
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #000000;
 }
 
 .box-shadow {
@@ -57,15 +67,22 @@ html {
   position: relative;
   min-height: 100%;
 }
-
+/*Ogolna strona*/
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+
+    background-color: #393033;
+    color: #E9987D; /* Kolor tekstu na biały lub inny kontrastowy kolor */
 }
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+
+    background-color: #2c2727; /* Kolor stopki na ciemniejszy odcień brązowego */
+    z-index: 1; /* Ustawienie z-index, aby stopka była widoczna nad innymi elementami */
 }
+

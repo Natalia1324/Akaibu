@@ -2,6 +2,29 @@
     ViewData["Title"] = "Privacy Policy";
     @model Akaibu_Project.Entions.Users
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    <link rel="stylesheet" type="text/css" href="~/css/privacy.css">
+</head>
+<body class="privacy-policy-page">
+    <div class="privacy-container">
+        <div class="content-section">
+            <h1>@ViewData["Title"]</h1>
+            <p>Use this page to detail your site's privacy policy.</p>
+            <!-- Dodatkowe treści strony Privacy Policy -->
+        </div>
+        <div class="right-section">
+            <img src="/image/Privacy.GIF" alt="Privacy Policy Image" />
+        </div>
+    </div>
+
+    <!-- Dodatkowe skrypty i inne elementy, jeśli są potrzebne -->
+
+</body>
+</html>

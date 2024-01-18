@@ -21,4 +21,14 @@
     flex: 1;
     box-sizing: border-box;
     border: 1px solid #000; /* Dodane obramowanie dla wizualizacji */
+
+}
+
+input{
+    border-radius: 7px;
+
+}
+
+#tag {
+    border-radius: 7px;
 }

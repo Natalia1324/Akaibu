@@ -7,28 +7,37 @@
 }
 
 @model Akaibu_Project.Entions.Users
-
+<style>
+    #sebutton {
+        background-color: #E9987D;
+        color: #fff;
+    }
+</style>
 <head>
     <link rel="stylesheet" type="text/css" href="~/css/search.css">
+
 </head>
 
-<h2 style=" text-align: center ">Search Results</h2>
+<h2 ">Search Results</h2>
 
 <form asp-controller="Home" asp-action="Search" method="get" id="searchForm">
    
       
-            <label style="position: static; float: left; color: #E9987D" for="query">Search by Name:</label>
-            <input type="text" id="query" name="query"><br>
-            <label style="position: static; float: left; color: #E9987D" for="tag">Search by Tag:</label>
-            <input type="text" id="tag" name="tag"><br>
+            <label style=" color: #E9987D" for="query">Search by Name:</label>
+    <input style=" border-radius: 7px " type="text" id="query" name="query"><br>
+            <label style=" border-radius: 7px " style=" color: #E9987D" for="tag">Search by Tag:</label>
+    <input style=" border-radius: 7px " type="text" id="tag" name="tag"><br>
       
        
    
 
         <div class="form-group">
-            <button type="submit">Search</button>
+        <button  id="sebutton" style=" border-radius: 7px; " type="submit">Search</button>
         </div>
+    
 </form>
+<br>
+<br>
 
 <div id="passwordContainer">
     <!-- Tutaj umieść kod do wyświetlania hasła -->

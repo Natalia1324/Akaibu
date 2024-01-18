@@ -12,6 +12,17 @@
     <title>Register</title>
     <link rel="stylesheet" type="text/css" href="~/css/site.css">
     <link rel="stylesheet" type="text/css" href="~/css/register.css">
+    <style>
+        button{
+             border-radius: 7px;
+             background-color: #E9987D;
+             color: #fff;
+        }
+        input{
+            border-radius: 7px;
+        }
+
+    </style>
 </head>
 <body class ="register-page">
     <div class="register-container">
@@ -27,19 +38,19 @@
 
                 <div class="form-field">
                     @Html.TextBoxFor(model => model.Nick, new { @placeholder = "Nick", @required = "required" })
-                    <label for="nick">Nick</label>
+                    <!--<label for="nick">Nick</label>-->
                 </div>
-
+                <br>
                 <div class="form-field">
                     @Html.TextBoxFor(model => model.Login, new { @placeholder = "Email", @required = "required" })
-                    <label for="email">Email</label>
+                    <!--<label for="email">Email</label>-->
                 </div>
-
+                <br>
                 <div class="form-field">
                     @Html.PasswordFor(model => model.Password, new { @placeholder = "Password", @required = "required" })
-                    <label for="password">Password</label>
+                    <!--<label for="password">Password</label>-->
                 </div>
-
+                <br>
                 <button type="submit">Sign In</button>
             }
         </div>

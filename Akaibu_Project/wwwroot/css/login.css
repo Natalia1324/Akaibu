@@ -1,11 +1,12 @@
 ﻿/* register.css */
 
-.login-container {
+.register-container {
     display: flex;
     height: 100%;
 }
 
 .left-section {
+    width: 49%;
     flex: 1;
     margin-right: 300px;
     background-color: #393033;
@@ -18,6 +19,7 @@
 }
 
 .right-section {
+    width: 49%;
     flex: 1;
     background-color: #554141;
     color: #fff;
@@ -34,6 +36,7 @@ h2 {
 }
 
     h1#hello-text {
+        margin-top: 79%;
         margin-right: -300px;
     }
 
@@ -42,6 +45,6 @@ p#glad-text {
 }
 
 /* Dodatkowe style specyficzne dla strony rejestracji */
-.login-container .new-element {
+.register-container .new-element {
     color: #FF0000;
 }

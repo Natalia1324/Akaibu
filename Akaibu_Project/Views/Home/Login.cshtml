@@ -13,6 +13,46 @@
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="~/css/site.css">
     <link rel="stylesheet" type="text/css" href="~/css/login.css">
+    <style>
+        button {
+            border-radius: 7px;
+            background-color: #E9987D;
+            color: #fff;
+        }
+
+        input {
+            border-radius: 7px;
+        }
+
+        .left-section {
+            width: 40%;
+            height:50%;
+            flex: 1;
+            margin-right: 300px;
+            background-color: #393033;
+            color: #E9987D;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .right-section {
+            width: 50%;
+            height: 50%;
+            flex: 1;
+            float: right;
+            background-color: #554141;
+            color: #fff;
+            padding: 133px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+    </style>
 </head>
 <body >
     <div class="register-container">
@@ -29,14 +69,14 @@
 
                 <div class="form-field">
                     @Html.TextBoxFor(model => model.Nick, new { @placeholder = "Nick", @required = "required" })
-                    <label for="nick">Nick</label>
+                    <!-- <label for="nick">Nick</label>-->
                 </div>
-
+                <br>
                 <div class="form-field">
                     @Html.PasswordFor(model => model.Password, new { @placeholder = "Password", @required = "required" })
-                    <label for="password">Password</label>
+                    <!--<label for="password">Password</label>>-->
                 </div>
-
+                <br>
                 <button type="submit">Sign un</button>
             }
         </div>

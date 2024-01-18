@@ -10,32 +10,50 @@
 <html>
 <head>
     <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    <link rel="stylesheet" type="text/css" href="~/css/register.css">
+    <style>
+        button{
+             border-radius: 7px;
+             background-color: #E9987D;
+             color: #fff;
+        }
+        input{
+            border-radius: 7px;
+        }
+
+    </style>
 </head>
-<body>
-    <h2>Register</h2>
-    @using (Html.BeginForm("Register", "Home", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
+<body class ="register-page">
+    <div class="register-container">
+        <div class="left-section">
+            <h1 id ="hello-text">Hello, Friend!</h1>
+            <p id ="glad-text">I'm glad you're here.</p>
+        </div>
+        <div class="right-section">
+            <h2 style="margin-bottom: 50px;">Create an Account</h2>
+            @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
 
-                <div class="form-group">
-            @Html.LabelFor(model => model.Nick)
-            @Html.TextBoxFor(model => model.Nick, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Nick)
+                <div class="form-field">
+                    @Html.TextBoxFor(model => model.Nick, new { @placeholder = "Nick", @required = "required" })
+                    <!--<label for="nick">Nick</label>-->
                 </div>
-
-                <div class="form-group">
-            @Html.Label("Email")
-            @Html.TextBoxFor(model => model.Login, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Login)
+                <br>
+                <div class="form-field">
+                    @Html.TextBoxFor(model => model.Login, new { @placeholder = "Email", @required = "required" })
+                    <!--<label for="email">Email</label>-->
                 </div>
-
-                <div class="form-group">
-            @Html.LabelFor(model => model.Password)
-            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Password)
+                <br>
+                <div class="form-field">
+                    @Html.PasswordFor(model => model.Password, new { @placeholder = "Password", @required = "required" })
+                    <!--<label for="password">Password</label>-->
                 </div>
-
-                <button type="submit" class="btn btn-primary">Register</button>
-    }
+                <br>
+                <button type="submit">Sign In</button>
+            }
+        </div>
+    </div>
 </body>
 </html>

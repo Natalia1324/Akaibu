@@ -12,50 +12,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Form</title>
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    <link rel="stylesheet" type="text/css" href="~/css/addanime.css">
     <style>
         .error {
             color: red;
         }
     </style>
 </head>
-<body>
-    <h2>Anime Information Form</h2>
-    <form action="/Home/Add_Anime" method="post" onsubmit="setSubmitButtonClicked()">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
-        <br>
+<body class ="add-anime-page">
+    <div class="add-anime-container">
+        <div class="content-section">
+            <h1 style="position: static; text-align: center; margin-bottom: 35px;">Anime Information Form</h1>
+            <form action="/Home/Add_Anime" method="post" onsubmit="setSubmitButtonClicked()">
 
-        <label for="numberOfEpisodes">Number of Episodes:</label>
-        <input type="number" id="numberOfEpisodes" name="numberOfEpisodes" required>
-        <br>
+                <label style="position: static; float: left; text-align: left; color: #E9987D" for="title">Title:</label>
+                <input style=" border-radius: 7px; " type="text" id="title" name="title"><br>
 
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" required>
-        <br>
+                <label style="position: static; float: left; color: #E9987D" for="numberOfEpisodes">Number of Episodes:</label>
+                <input style=" border-radius: 7px ;" type="number" id="numberOfEpisodes" name="numberOfEpisodes" required>
+                <br>
 
-        <label for="shortStory">Short Story:</label>
-        <textarea id="shortStory" name="shortStory" required></textarea>
-        <br>
+                <label style="position: static; float: left; color: #E9987D" for="author">Author:</label>
+                <input style=" border-radius: 7px ;" type="text" id="author" name="author" required>
+                <br>
 
-        <label for="tag">Tag:</label>
-        <input type="text" id="tag" name="tag" required>
-        <br>
+                <label style="position: static; float: left; color: #E9987D" for="shortStory">Short Story:</label>
+                <textarea style=" border-radius: 7px; " id="shortStory" name="shortStory" required></textarea>
+                <br>
 
-        <label for="dateOfProductionStart">Date of Production Start:</label>
-        <input type="date" id="dateOfProductionStart" name="dateOfProductionStart" required>
-        <br>
+                <label style="position: static; float: left; color: #E9987D" for="tag">Tag:</label>
+                <input style=" border-radius: 7px; " type="text" id="tag" name="tag" required>
+                <br>
 
-        <label for="dateOfProductionFinish">Date of Production Finish:</label>
-        <input type="date" id="dateOfProductionFinish" name="dateOfProductionFinish">
-        <br>
+                <label style="position: static; float: left; color: #E9987D" for="dateOfProductionStart">Date of Production Start:</label>
+                <input style=" border-radius: 7px; " type="date" id="dateOfProductionStart" name="dateOfProductionStart" required>
+                <br>
 
-        <label for="statusAnime">Status Anime:</label>
-        <input type="text" id="statusAnime" name="statusAnime" required>
-        <br>
+                <label style="position: static; float: left; color: #E9987D" for="dateOfProductionFinish">Date of Production Finish:</label>
+                <input style=" border-radius: 7px; " type="date" id="dateOfProductionFinish" name="dateOfProductionFinish">
+                <br>
 
-        <input type="hidden" name="submitButtonClicked" value="false">
-        <input type="submit" value="Submit">
-    </form>
+                <label style="position: static; float: left; color: #E9987D " for="statusAnime">Status Anime:</label>
+                <input style=" border-radius: 7px; " type="text" id="statusAnime" name="statusAnime" required>
+                <br>
+
+                <input type="hidden" name="submitButtonClicked" value="false">
+                <button style=" border-radius: 7px ;" type="submit">Submit</button>
+            </form>
+           
+            
+        </div>
+       
+       
+    </div>
 
     <script>
         document.querySelector('form').addEventListener('submit', function (event) {

@@ -181,6 +181,67 @@ namespace Akaibu_Project.Controllers
         }
 
         [HttpPost]
+        public IActionResult BanUser(int userId)
+        {
+            var loggedUser = getLoggedUser();
+
+            // Sprawdź, czy użytkownik ma uprawnienia admina
+            if (loggedUser != null && loggedUser.Ranks == 1)
+            {
+                // Pobierz użytkownika do zbanowania
+                var userToBan = _context.Users.Find(userId);
+
+                // Sprawdź, czy użytkownik istnieje
+                if (userToBan != null)
+                {
+                    // Zmień rangę użytkownika na 69 (lub inną wybraną)
+                    userToBan.Ranks = 69;
+
+                    // Zapisz zmiany w bazie danych
+                    _context.SaveChanges();
+                }
+
+                // Przekieruj z powrotem do panelu admina lub gdziekolwiek indziej
+                return RedirectToAction("Panel");
+            }
+            else
+            {
+                // Jeśli użytkownik nie ma uprawnień admina, możesz przekierować go
+                // gdzie indziej lub wyświetlić komunikat o braku uprawnień
+                return RedirectToAction("Index");
+            }
+        }
+
+        //[HttpPost]
+        public IActionResult Panel()
+        {
+
+            var loggedUser = getLoggedUser();
+
+            // Przykład sprawdzenia, czy użytkownik ma uprawnienia admina
+            if (loggedUser != null && loggedUser.Ranks == 1)
+            {
+                // Przykładowe dane dla raportów
+                var reportsData = _context.Reports.ToList();
+
+                // Przykładowe dane dla użytkowników
+                var usersData = _context.Users.ToList();
+
+                // Przekaż dynamiczny model do widoku
+                ViewBag.PanelData = new { Reports = reportsData, Users = usersData };
+
+                return View();
+
+            }
+            else
+            {
+                // Jeśli użytkownik nie ma uprawnień admina, możesz przekierować go
+                // gdzie indziej lub wyświetlić komunikat o braku uprawnień
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [HttpPost]
         public IActionResult Login(Users newUser)
         {
             var u = _context.Users
@@ -281,7 +342,7 @@ namespace Akaibu_Project.Controllers
                         DateTheCommentWasAdded = DateTime.Now,
                         CommentText = newCommentText,
                         MyRating = newRating.ToString(),
-                        Users = loggedUser,
+                        //Users = loggedUser,
                         UsersId = loggedUser.Id,
                         DBAnimeId = anime.Id
                     };

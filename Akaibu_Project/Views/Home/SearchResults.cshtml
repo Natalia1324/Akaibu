@@ -13,23 +13,21 @@
         color: #fff;
     }
 </style>
-<head>
-    <link rel="stylesheet" type="text/css" href="~/css/search.css">
 
-</head>
 
 <h2 ">Search Results</h2>
 
 <form asp-controller="Home" asp-action="Search" method="get" id="searchForm">
    
-      
+      <div class= "from-group">
             <label style=" color: #E9987D" for="query">Search by Name:</label>
     <input style=" border-radius: 7px " type="text" id="query" name="query"><br>
+    </div>
+
+        <div class="from-group">
             <label style=" border-radius: 7px " style=" color: #E9987D" for="tag">Search by Tag:</label>
     <input style=" border-radius: 7px " type="text" id="tag" name="tag"><br>
-      
-       
-   
+        </div>
 
         <div class="form-group">
         <button  id="sebutton" style=" border-radius: 7px; " type="submit">Search</button>
@@ -51,9 +49,17 @@
                     <h4>@result.Title</h4>
                     <!-- Dodaj więcej pól, które chcesz wyświetlić -->
                     <!-- Dodaj link do strony z detalami anime -->
-                    <a asp-controller="Home" asp-action="AnimeDetails" asp-route-id="@result.Id">Details</a>
+                    <!-- Dodaj link do strony z detalami anime -->
+                @Html.Raw($"<a href=\"{Url.Action("AnimeDetails", "Home", new { id = result.Id })}\">Details</a>")
+
                     <!-- Link do strony z komentarzami anime -->
-                    <a asp-controller="Home" asp-action="Comments" asp-route-id="@result.Id">Comments</a>
+                @Html.Raw($"<a href=\"{Url.Action("Comments", "Home", new { id = result.Id })}\">Comments</a>")
+
+
+
+                  <!--  <a asp-controller="Home"  asp-action="AnimeDetails" asp-route-id="@result.Id">Details</a> -->
+                    <!-- Link do strony z komentarzami anime -->
+                    <!--   <a asp-controller="Home"  asp-action="Comments" asp-route-id="@result.Id">Comments</a> -->
                 </li>
             }
         </ul>

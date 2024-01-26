@@ -10,6 +10,13 @@
     ViewData["Title"] = "Comments";
 }
 
+    <style>
+        #commbutton {
+            background-color: #E9987D;
+            color: #fff;
+        }
+    </style>
+
 <div class="container mt-4">
     <h2>Anime @Model.Title comments section</h2>
 
@@ -19,7 +26,17 @@
                 <li class="mb-3">
                     <strong>@comment.Users.Nick</strong>
                     <span class="text-muted">@comment.DateTheCommentWasAdded.ToString("dd MMMM yyyy HH:mm")</span>
-                    <p>Rating: @comment.MyRating</p>
+                    @{
+                        int rating = 0;
+                        int.TryParse(comment.MyRating, out rating);
+                    }
+                    <p>
+                        Rating:
+                        @for (int i = 0; i < rating; i++)
+                        {
+                            <i class="fas fa-star"></i>
+                        }
+                    </p>
                     <p>@comment.CommentText</p>
                 </li>
         }
@@ -49,7 +66,7 @@
                 <textarea class="form-control" name="newCommentText" required></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+                <button id="commbutton" type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 </div>

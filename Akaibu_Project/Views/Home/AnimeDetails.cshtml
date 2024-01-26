@@ -5,6 +5,23 @@
     ViewData["Title"] = "Anime Details";
 }
 
+<style>
+    #dit1button {
+        background-color: #BA7F79;
+        color: #000;
+    }
+
+    #dit2button {
+        background-color: #E19D80;
+        color: #000;
+    }
+
+    #dit3button {
+        background-color: #D4A6A3;
+        color: #000;
+    }
+</style>
+
 <h2>Anime Details</h2>
 
 <div>
@@ -65,17 +82,19 @@
         
             <form method="post" action="@Url.Action("AddToFinishedList", "Home")">
                 @Html.HiddenFor(model => model.Id)
-                <button type="submit">Add to Finished List</button>
+            <button id="dit1button" style=" border-radius: 7px; type="submit">Add to Finished List</button>
             </form>
+        <br>
 
             <form method="post" action="@Url.Action("AddToCurrentlyWatchedList", "Home")">
                 @Html.HiddenFor(model => model.Id)
-                <button type="submit">Add to Currently Watched List</button>
+            <button id="dit2button" style=" border-radius: 7px; type="submit">Add to Currently Watched List</button>
             </form>
+        <br>
 
             <form method="post" action="@Url.Action("AddToPlannedList", "Home")">
                 @Html.HiddenFor(model => model.Id)
-                <button type="submit">Add to Planned List</button>
+            <button id="dit3button" style=" border-radius: 7px; type="submit">Add to Planned List</button>
             </form>
         }
         </div>

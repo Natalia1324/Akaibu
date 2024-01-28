@@ -48,9 +48,7 @@
             <tr>
                 <th>Report Text</th>
                 <th>Date Added</th>
-                <th>DBAnime Id</th>
-                <th>User Id</th>
-                <th>Actions</th>
+                <th>From User</th>
             </tr>
         </thead>
         <tbody>
@@ -59,13 +57,12 @@
                 <tr>
                     <td>@report.ReportText</td>
                     <td>@report.DateTheReportWasAdded</td>
-                    <td>@report.DBAnimeId</td>
-                    <td>@report.UsersId</td>
                     <td>
-                        <form method="post" action="@Url.Action("BanUser", "Home")">
-                            <input type="hidden" name="userId" value="@report.UsersId" />
-                            <button type="submit" style="background-color: red; color: white;">Ban</button>
-                        </form>
+                    @{
+                        var user = ((IEnumerable<dynamic>)panelData.Users).FirstOrDefault(u => u.Id == report.UsersId);
+                        var userName = (user != null) ? user.Nick : "Brak użytkownika";
+                        @userName
+                        }
                     </td>
                 </tr>
             }
@@ -79,6 +76,7 @@
                     <th>Nick</th>
                     <th>Login</th>
                     <th>Rank</th>
+                     <th>Actions</th>
                     <!-- Dodaj więcej kolumn w miarę potrzeb -->
                 </tr>
             </thead>
@@ -90,7 +88,12 @@
                         <td>@user.Nick</td>
                         <td>@user.Login</td>
                         <td>@user.Ranks</td>
-                        <!-- Dodaj więcej kolumn w miarę potrzeb -->
+                    <td>
+                        <form method="post" action="@Url.Action("BanUser", "Home")">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <button type="submit" style="background-color: red; color: white;">Ban</button>
+                        </form>
+                    </td>
                     </tr>
                 }
             </tbody>

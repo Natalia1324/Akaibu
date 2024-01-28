@@ -1,0 +1,23 @@
+﻿@model Akaibu_Project.Entions.Reports
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularz raportu</title>
+</head>
+<body>
+
+    <h2>Napisz raport</h2>
+
+    <form asp-controller="Home" asp-action="SendReport" method="post">
+        <textarea asp-for="ReportText" rows="4" cols="50" maxlength="500" required></textarea>
+
+        <br>
+
+        <button type="submit">Wyślij</button>
+    </form>
+
+</body>
+</html>

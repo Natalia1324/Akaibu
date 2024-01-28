@@ -41,6 +41,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" id="listsButton">Lists</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Add_Anime">Add Anime</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SendReport">Wyslij Raport</a>
+                                </li>
                             }
                             @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true && userRank == 1)
                             {
@@ -48,9 +54,7 @@
                                     <a class="nav-link text-dark" id="PanelButton">Admin Panel</a>
                                 </li>
                             }
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Add_Anime">Add Anime</a>
-                            </li>
+         
                         }
                         else
                         {

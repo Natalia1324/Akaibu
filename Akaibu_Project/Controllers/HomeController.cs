@@ -198,11 +198,12 @@ namespace Akaibu_Project.Controllers
                     userToBan.Ranks = 69;
 
                     // Zapisz zmiany w bazie danych
+                    _context.Update(userToBan);
                     _context.SaveChanges();
                 }
 
                 // Przekieruj z powrotem do panelu admina lub gdziekolwiek indziej
-                return RedirectToAction("Panel");
+                return RedirectToAction("Privacy");
             }
             else
             {
@@ -293,7 +294,7 @@ namespace Akaibu_Project.Controllers
             else
             {
 
-                newUser.Ranks = 1;
+                newUser.Ranks = 0;
                 _context.Users.Add(newUser);
                 _context.SaveChanges();
                 newUser.isLogged = true;
@@ -304,6 +305,34 @@ namespace Akaibu_Project.Controllers
             }
 
         }
+
+
+        public IActionResult SendReport()
+        {
+            return (View());
+        }
+
+        [HttpPost]
+        public IActionResult SendReport(string reportText)
+        {
+            // Tutaj możesz dodać obiekt raportu do kolekcji lub bazy danych
+            // Przykład: Raports.dodajRaport(raport);
+
+            // Możesz wykonać inne operacje po dodaniu raportu
+
+            // Przekierowanie na inną stronę lub powrót do strony głównej
+            var raport = new Reports
+            {
+                ReportText = reportText,
+                DateTheReportWasAdded = DateTime.Now,
+                UsersId = getLoggedUser().Id,
+                DBAnimeId = 1
+            };
+            _context.Reports.Add(raport);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
 
         public IActionResult Comments(int id)
         {

@@ -285,12 +285,12 @@ namespace Akaibu_Project.Controllers
         {
 
             var u = _context.Users
-            .FirstOrDefault(u => u.Nick == newUser.Nick && u.Login == newUser.Login);
+            .FirstOrDefault(u => (u.Nick == newUser.Nick && u.Login == newUser.Login) || u.Login == newUser.Login);
 
             if (u != null)
             {
-
-                return View("Index", getLoggedUser());
+                ModelState.AddModelError(string.Empty, "The user is already registered");
+                return View();
 
             }
             else

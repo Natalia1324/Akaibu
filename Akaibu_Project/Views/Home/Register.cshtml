@@ -22,6 +22,16 @@
             border-radius: 7px;
         }
 
+        .error-message {
+            margin-top: 20px;
+        }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            list-style-type: none;
+            padding: 0;
+        }
+
     </style>
 </head>
 <body class ="register-page">
@@ -52,6 +62,12 @@
                 </div>
                 <br>
                 <button type="submit">Sign Up</button>
+
+                <br>
+
+                <div class="form-field error-message">
+                    @Html.ValidationSummary()
+                </div>
             }
         </div>
     </div>

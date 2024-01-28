@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Akaibu_Project</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Akaibu</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,7 +31,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Account">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Credits</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" id="searchButton">Search</a>
@@ -45,7 +45,7 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Add_Anime">Add Anime</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SendReport">Wyslij Raport</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SendReport">Send Report</a>
                                 </li>
                             }
                             @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true && userRank == 1)
@@ -81,7 +81,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Akaibu_Project - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Akaibu - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

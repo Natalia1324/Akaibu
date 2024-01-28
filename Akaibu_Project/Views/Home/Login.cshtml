@@ -52,6 +52,17 @@
             text-align: center;
         }
 
+        .error-message {
+            margin-top: 20px;
+        }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            list-style-type: none;
+            padding: 0;
+        }
+
+
     </style>
 </head>
 <body >
@@ -78,8 +89,15 @@
                 </div>
                 <br>
                 <button type="submit">Sign in</button>
+                <br>
+
+                <div class="form-field error-message">
+                    @Html.ValidationSummary()
+                </div>
+               
+                
             }
-        </div>
+            
     </div>
 </body>
 </html>

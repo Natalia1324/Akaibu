@@ -261,7 +261,9 @@ namespace Akaibu_Project.Controllers
             }
             else
             {
-                return View("Index", getLoggedUser());
+                //return View("Index", getLoggedUser());
+                ModelState.AddModelError(string.Empty, "Invalid username or password");
+                return View();
             }
         }
 

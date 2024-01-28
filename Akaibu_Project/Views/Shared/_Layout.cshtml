@@ -59,10 +59,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="BanPage">Ban Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                                <a class="nav-link text-dark" id="BanPage">Ban Page</a>
                             </li>
                         }
 
@@ -119,6 +116,13 @@
         $(document).ready(function () {
             $("#loginButton").click(function () {
                 window.location.href = "/Home/Login";
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#BanPage").click(function () {
+                window.location.href = "/Home/BanPage";
             });
         });
     </script>

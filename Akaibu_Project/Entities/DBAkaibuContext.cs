@@ -196,8 +196,17 @@ namespace Akaibu_Project.Entities
                 Login = "user2@example.com",
                 Password = "hashed_password2",
                 Ranks = 2
-            }
-            // Dodaj więcej danych, jeśli to konieczne
+            },
+             new Users
+             {
+                 Id = 10,
+                 Nick = "User3",
+                 Login = "user3@example.com",
+                 Password = "hashed_password3",
+                 Ranks = 69,
+                 Bans = "GD lutowanie studenta <3 "
+             }
+        // Dodaj więcej danych, jeśli to konieczne
         );
             // Przykładowe dane do tabeli Reports
             modelBuilder.Entity<Reports>().HasData(

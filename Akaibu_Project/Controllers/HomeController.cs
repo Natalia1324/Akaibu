@@ -242,6 +242,26 @@ namespace Akaibu_Project.Controllers
             }
         }
 
+
+        public IActionResult BanPage()
+        {
+
+            var loggedUser = getLoggedUser();
+
+            // Przykład sprawdzenia, czy użytkownik ma uprawnienia admina
+            if (loggedUser != null && loggedUser.Ranks == 69)
+            {
+                return View(loggedUser);// loggedUser.Bans
+
+            }
+            else
+            {
+                // Jeśli użytkownik nie ma uprawnień admina, możesz przekierować go
+                // gdzie indziej lub wyświetlić komunikat o braku uprawnień
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         [HttpPost]
         public IActionResult Login(Users newUser)
         {

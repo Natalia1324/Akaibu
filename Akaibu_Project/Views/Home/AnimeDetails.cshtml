@@ -5,6 +5,10 @@
     ViewData["Title"] = "Anime Details";
 }
 
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+</head>
+
 <style>
     #dit1button {
         background-color: #BA7F79;
@@ -60,14 +64,17 @@
             Date of Production Start
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateOfProductionStart)
+            @Model.DateOfProductionStart.ToString("dd.MM.yyyy")
         </dd>
 
         <dt class="col-sm-2">
             Date of Production Finish
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateOfProductionFinish)
+            @{
+                String finishProduction = Model.DateOfProductionFinish.HasValue ? Model.DateOfProductionFinish.Value.ToString("dd.MM.yyyy") : "In progress";
+            }
+            @finishProduction
         </dd>
 
         <dt class="col-sm-2">
@@ -75,6 +82,20 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StatusAnime)
+        </dd>
+
+        <dt class="col-sm-2">
+            Rating
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                double averageRating = Model.Comments.Any() ? Model.Comments.Average(comment => Double.Parse(comment.MyRating)) : 0.0;
+            }
+            @for (int i = 0; i < (int)Math.Round(averageRating); i++)
+            {
+                <i class="fas fa-star"></i>
+            }
+            (@averageRating.ToString("0.00"))
         </dd>
     </dl>
     @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true)

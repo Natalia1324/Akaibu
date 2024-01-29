@@ -93,6 +93,8 @@
                     <td>
                         <form method="post" action="@Url.Action("BanUser", "Home")">
                             <input type="hidden" name="userId" value="@user.Id" />
+                            <label for="reason">Ban Reason:</label>
+                            <input type="text" id="reason" name="reason" placeholder="Enter ban reason" />
                             <button type="submit" style="background-color: red; color: white;">Ban</button>
                         </form>
                     </td>

@@ -12,46 +12,123 @@
     <h1 class="display-4">This is your account.</h1>
     <p>Here you can browse your data.</p>
 
-
-    @*
-
     @if (Model != null)
     {
-        @foreach (var obj in Model.users)
+        string encryptedPassword = "", rank = "";
+        bool isPasswordShown = false;
+
+        for (int i = 0; i < Model.Password.Length; i++)
         {
-                            <b>Account Id:@obj.Id </b>
-                            <b>Account Nick:@obj.Nick </b>
-                            <b>Account Login:@obj.Login </b>
-                            <b>Account Password:@obj.Password </b>
-                            <b>Account Ranks:@obj.Ranks </b>
+            encryptedPassword += "*";
+        }
+
+        if (Model.Ranks  == 0)
+        {
+            rank = "user";
+        }
+        else if (Model.Ranks == 1)
+        {
+            rank = "admin";
+        }
+        else if (Model.Ranks == 69)
+        {
+            rank = "banned user";
+        }
+        else
+        {
+            rank = "wrong rank";
         }
 
 
+        <p ALIGN="LEFT"><b>Id:</b> @Model.Id </p>
+        <p ALIGN="LEFT"><b>Rank: </b> @rank</p>
+        <p ALIGN="LEFT"><b>Nick: </b> @Model.Nick</p>
+        <p ALIGN="LEFT"><b>Email:</b> @Model.Login. </p>
 
+        <p style="text-align:left;">
+            <strong>Password: </strong>
+            <span style="hidden-password">@encryptedPassword</span>
+        </p>
 
-    }
+        <div align="left">
+            <input type="button" id="show-password-button" value="Show password" style="border-radius: 7px;background-color: #E9987D; color: white;" onclick="changePasswordDisplay()" />
+        </div>
 
-    *@
+        <br>
 
+        <p ALIGN="LEFT"><b>Statistics</b></p>
 
-    @if (Model != null)
-    {
-            <p><b>Account Id: @Model.Id </b></p>
-            <p><b>Account Nick: @Model.Nick </b></p>
-            <p><b>Account Login: @Model.Login </b></p>
-            <p><b>Account Password: @Model.Password </b></p>
-            <p><b>Account Ranks: @Model.Ranks </b></p>
+        if (Model.Commensts != null)
+        {
+            <p ALIGN="LEFT">
+                <b>Number of comments:</b>@Model.Commensts.Count
+            </p>
+        }
+        else
+        {
+            <p ALIGN="LEFT"><b>Number of comments: 0</b></p>
+        }
 
+        if (Model.lists != null)
+        {
+            if (Model.lists.Finished != null)
+            {
+                <p ALIGN="LEFT"><b>Number of finished anime:</b>@Model.lists.Finished.Count </p>
+            }
+            else
+            {
+                <p ALIGN="LEFT"><b>Number of finished anime: 0</b></p>
+            }
+
+            if (Model.lists.Watched != null)
+            {
+                <p ALIGN="LEFT"><b>Number of watched anime:</b>@Model.lists.Watched.Count </p>
+            }
+            else
+            {
+                <p ALIGN="LEFT"><b>Number of watched anime: 0</b></p>
+            }
+
+            if (Model.lists.Planned != null)
+            {
+                <p ALIGN="LEFT"><b>Number of planned anime:</b>@Model.lists.Planned.Count </p>
+            }
+            else
+            {
+                <p ALIGN="LEFT"><b>Number of planned anime: 0</b></p>
+            }
+        }
+        else
+        {
+            <p ALIGN="LEFT"><b>Number of finished anime: 0</b></p>
+            <p ALIGN="LEFT"><b>Number of watched anime: 0</b></p>
+            <p ALIGN="LEFT"><b>Number of planned anime: 0</b></p>
+
+        }
+
+        <br>
+
+        <div>
+
+        <form asp-controller="Home" asp-action="ChangePassword" method="post" style="position: static; float: left; text-align: left">
+            <textarea asp-for="Password" rows="1" cols="50" maxlength="50" required></textarea>
+
+            <br>
+
+                <button type="submit" style="position: static; float: left; text-align: left;background-color: #E9987D; color: white">Change password</button>
+        </form>
+
+        </div>
+
+        <br>
     }
     else
     {
-                <p> <b>Account Id:      </b> 0     </p>
-                <p> <b>Account Nick:    </b> user0 </p>
-                <p> <b>Account Login:   </b> null  </p>
-                <p> <b>Account Password:</b> nulll </p>
-                <p> <b>Account Rank:    </b> Guest </p>
+        <p ALIGN = "LEFT"> <b>Account Id:      </b> 0     </p>
+        <p ALIGN = "LEFT"> <b>Account Nick:    </b> user0 </p>
+        <p ALIGN = "LEFT"> <b>Account Login:   </b> null  </p>
+        <p ALIGN = "LEFT"> <b>Account Password:</b> nulll </p>
+        <p ALIGN = "LEFT"> <b>Account Rank:    </b> Guest </p>
     }
-
-
 
 </div>

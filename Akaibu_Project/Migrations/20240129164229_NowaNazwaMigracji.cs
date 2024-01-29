@@ -132,8 +132,8 @@ namespace Akaibu_Project.Migrations
                 {
                     { 5, "Madhouse", new DateTime(2007, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 37, "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...", "Finished", "Akcja, Tajemnica, Kryminalne", "Death Note" },
                     { 6, "A.C.G.T.", null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 25, "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...", "Ongoing", "Akcja, Przygodowe, Fantasy", "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su" },
-                    { 7, "Author1", null, new DateTime(2024, 1, 29, 12, 42, 57, 242, DateTimeKind.Local).AddTicks(4039), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
-                    { 8, "Author2", null, new DateTime(2024, 1, 29, 12, 42, 57, 244, DateTimeKind.Local).AddTicks(2998), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
+                    { 7, "Author1", null, new DateTime(2024, 1, 29, 17, 42, 29, 548, DateTimeKind.Local).AddTicks(9111), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
+                    { 8, "Author2", null, new DateTime(2024, 1, 29, 17, 42, 29, 551, DateTimeKind.Local).AddTicks(7849), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
                 });
 
             migrationBuilder.InsertData(
@@ -150,12 +150,12 @@ namespace Akaibu_Project.Migrations
             migrationBuilder.InsertData(
                 table: "Reports",
                 columns: new[] { "Id", "DBAnimeId", "DateTheReportWasAdded", "ReportText", "UsersId" },
-                values: new object[] { new Guid("3cec8fc9-6c3b-4146-ae8a-aeb09140170e"), 5, new DateTime(2024, 1, 29, 12, 42, 57, 245, DateTimeKind.Local).AddTicks(2043), "Report 1", 8 });
+                values: new object[] { new Guid("7c71cdb4-16bd-485b-a4ea-6a4ccb03e00a"), 5, new DateTime(2024, 1, 29, 17, 42, 29, 553, DateTimeKind.Local).AddTicks(837), "Report 1", 8 });
 
             migrationBuilder.InsertData(
                 table: "Reports",
                 columns: new[] { "Id", "DBAnimeId", "DateTheReportWasAdded", "ReportText", "UsersId" },
-                values: new object[] { new Guid("ef3e9805-2e68-407f-aa02-814f5b7e2756"), 6, new DateTime(2024, 1, 29, 12, 42, 57, 245, DateTimeKind.Local).AddTicks(2320), "Report 2", 9 });
+                values: new object[] { new Guid("8be05363-8e07-42d0-9e1a-d66adedefd1d"), 6, new DateTime(2024, 1, 29, 17, 42, 29, 553, DateTimeKind.Local).AddTicks(1535), "Report 2", 9 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_DBAnimeId",

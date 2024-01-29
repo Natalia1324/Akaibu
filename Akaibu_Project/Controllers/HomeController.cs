@@ -247,12 +247,15 @@ namespace Akaibu_Project.Controllers
         public IActionResult BanPage()
         {
 
-            var loggedUser = getLoggedUser();
+            var loggedUser = getLoggedUser();  
+            
+                // Pobierz użytkownika do zbanowania
+                var userToBan = _context.Users.Find(loggedUser.Id);
 
             // Przykład sprawdzenia, czy użytkownik ma uprawnienia admina
             if (loggedUser != null && loggedUser.Ranks == 69)
             {
-                return View(loggedUser);// loggedUser.Bans
+                return View(userToBan);// loggedUser.Bans
 
             }
             else

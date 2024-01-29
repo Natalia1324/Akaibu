@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    [Migration("20240129114257_NowaNazwaMigracji")]
+    [Migration("20240129164229_NowaNazwaMigracji")]
     partial class NowaNazwaMigracji
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,7 +120,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 1, 29, 12, 42, 57, 242, DateTimeKind.Local).AddTicks(4039),
+                            DateOfProductionStart = new DateTime(2024, 1, 29, 17, 42, 29, 548, DateTimeKind.Local).AddTicks(9111),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -131,7 +131,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 1, 29, 12, 42, 57, 244, DateTimeKind.Local).AddTicks(2998),
+                            DateOfProductionStart = new DateTime(2024, 1, 29, 17, 42, 29, 551, DateTimeKind.Local).AddTicks(7849),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
@@ -170,17 +170,17 @@ namespace Akaibu_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3cec8fc9-6c3b-4146-ae8a-aeb09140170e"),
+                            Id = new Guid("7c71cdb4-16bd-485b-a4ea-6a4ccb03e00a"),
                             DBAnimeId = 5,
-                            DateTheReportWasAdded = new DateTime(2024, 1, 29, 12, 42, 57, 245, DateTimeKind.Local).AddTicks(2043),
+                            DateTheReportWasAdded = new DateTime(2024, 1, 29, 17, 42, 29, 553, DateTimeKind.Local).AddTicks(837),
                             ReportText = "Report 1",
                             UsersId = 8
                         },
                         new
                         {
-                            Id = new Guid("ef3e9805-2e68-407f-aa02-814f5b7e2756"),
+                            Id = new Guid("8be05363-8e07-42d0-9e1a-d66adedefd1d"),
                             DBAnimeId = 6,
-                            DateTheReportWasAdded = new DateTime(2024, 1, 29, 12, 42, 57, 245, DateTimeKind.Local).AddTicks(2320),
+                            DateTheReportWasAdded = new DateTime(2024, 1, 29, 17, 42, 29, 553, DateTimeKind.Local).AddTicks(1535),
                             ReportText = "Report 2",
                             UsersId = 9
                         });

@@ -205,7 +205,7 @@ namespace Akaibu_Project.Entities
                  Login = "user3@example.com",
                  Password = "hashed_password3",
                  Ranks = 69,
-                 Bans = "GD lutowanie studenta <3 "
+                 Bans = "lutowanie studenta <3 "
              },
              new Users
              {
@@ -214,7 +214,7 @@ namespace Akaibu_Project.Entities
                  Login = "user4@example.com",
                  Password = "hashed_password3",
                  Ranks = 69,
-                 Bans = "GD lutowanie studenta <3 "
+                 Bans = "lutowanie studenta <3 "
              }
 
 

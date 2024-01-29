@@ -180,13 +180,33 @@ namespace Akaibu_Project.Controllers
 
         }
 
+
+
         [HttpPost]
-        public IActionResult BanUser(int userId, string reason)
+        public IActionResult ChangePassword(string newPassword)
+        {
+            var loggedUser = getLoggedUser();
+
+            if (loggedUser != null && newPassword != null)
+            {
+                // Zmień hasło użytkownika.
+                loggedUser.Password = newPassword;
+
+                // Zapisz zmiany w bazie danych
+                _context.Update(loggedUser);
+                _context.SaveChanges();
+            }
+
+           return RedirectToAction("Index");
+        }
+
+            [HttpPost]
+        public IActionResult BanUser(int userId)
         {
             var loggedUser = getLoggedUser();
 
             // Sprawdź, czy użytkownik ma uprawnienia admina
-            if (loggedUser != null && loggedUser.Ranks == 1 && reason != null)
+            if (loggedUser != null && loggedUser.Ranks == 1)
             {
                 // Pobierz użytkownika do zbanowania
                 var userToBan = _context.Users.Find(userId);
@@ -196,7 +216,6 @@ namespace Akaibu_Project.Controllers
                 {
                     // Zmień rangę użytkownika na 69 (lub inną wybraną)
                     userToBan.Ranks = 69;
-                    userToBan.Bans = reason;
 
                     // Zapisz zmiany w bazie danych
                     _context.Update(userToBan);
@@ -247,15 +266,12 @@ namespace Akaibu_Project.Controllers
         public IActionResult BanPage()
         {
 
-            var loggedUser = getLoggedUser();  
-            
-                // Pobierz użytkownika do zbanowania
-                var userToBan = _context.Users.Find(loggedUser.Id);
+            var loggedUser = getLoggedUser();
 
             // Przykład sprawdzenia, czy użytkownik ma uprawnienia admina
             if (loggedUser != null && loggedUser.Ranks == 69)
             {
-                return View(userToBan);// loggedUser.Bans
+                return View(loggedUser);// loggedUser.Bans
 
             }
             else

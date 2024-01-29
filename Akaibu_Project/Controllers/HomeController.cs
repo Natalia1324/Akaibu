@@ -317,6 +317,7 @@ namespace Akaibu_Project.Controllers
             {
 
                 newUser.Ranks = 0;
+                newUser.Bans = "";
                 _context.Users.Add(newUser);
                 _context.SaveChanges();
                 newUser.isLogged = true;

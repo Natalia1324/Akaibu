@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    [Migration("20240117173938_Akaibu")]
-    partial class Akaibu
+    [Migration("20240129114257_NowaNazwaMigracji")]
+    partial class NowaNazwaMigracji
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,7 +120,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 1, 17, 18, 39, 38, 272, DateTimeKind.Local).AddTicks(934),
+                            DateOfProductionStart = new DateTime(2024, 1, 29, 12, 42, 57, 242, DateTimeKind.Local).AddTicks(4039),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -131,7 +131,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 1, 17, 18, 39, 38, 273, DateTimeKind.Local).AddTicks(9628),
+                            DateOfProductionStart = new DateTime(2024, 1, 29, 12, 42, 57, 244, DateTimeKind.Local).AddTicks(2998),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
@@ -170,17 +170,17 @@ namespace Akaibu_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7cbb23b4-f851-4e64-90a9-b8b924c931e5"),
+                            Id = new Guid("3cec8fc9-6c3b-4146-ae8a-aeb09140170e"),
                             DBAnimeId = 5,
-                            DateTheReportWasAdded = new DateTime(2024, 1, 17, 18, 39, 38, 275, DateTimeKind.Local).AddTicks(6155),
+                            DateTheReportWasAdded = new DateTime(2024, 1, 29, 12, 42, 57, 245, DateTimeKind.Local).AddTicks(2043),
                             ReportText = "Report 1",
                             UsersId = 8
                         },
                         new
                         {
-                            Id = new Guid("1642a7e7-3052-4894-87da-b21a9078e54b"),
+                            Id = new Guid("ef3e9805-2e68-407f-aa02-814f5b7e2756"),
                             DBAnimeId = 6,
-                            DateTheReportWasAdded = new DateTime(2024, 1, 17, 18, 39, 38, 275, DateTimeKind.Local).AddTicks(6430),
+                            DateTheReportWasAdded = new DateTime(2024, 1, 29, 12, 42, 57, 245, DateTimeKind.Local).AddTicks(2320),
                             ReportText = "Report 2",
                             UsersId = 9
                         });
@@ -214,6 +214,9 @@ namespace Akaibu_Project.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Bans")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -252,6 +255,24 @@ namespace Akaibu_Project.Migrations
                             Nick = "User2",
                             Password = "hashed_password2",
                             Ranks = 2
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Bans = "GD lutowanie studenta <3 ",
+                            Login = "user3@example.com",
+                            Nick = "User3",
+                            Password = "hashed_password3",
+                            Ranks = 69
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Bans = "GD lutowanie studenta <3 ",
+                            Login = "user4@example.com",
+                            Nick = "User4",
+                            Password = "hashed_password3",
+                            Ranks = 69
                         });
                 });
 

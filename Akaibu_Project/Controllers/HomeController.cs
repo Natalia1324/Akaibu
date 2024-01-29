@@ -181,12 +181,12 @@ namespace Akaibu_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult BanUser(int userId)
+        public IActionResult BanUser(int userId, string reason)
         {
             var loggedUser = getLoggedUser();
 
             // Sprawdź, czy użytkownik ma uprawnienia admina
-            if (loggedUser != null && loggedUser.Ranks == 1)
+            if (loggedUser != null && loggedUser.Ranks == 1 && reason != null)
             {
                 // Pobierz użytkownika do zbanowania
                 var userToBan = _context.Users.Find(userId);
@@ -196,6 +196,7 @@ namespace Akaibu_Project.Controllers
                 {
                     // Zmień rangę użytkownika na 69 (lub inną wybraną)
                     userToBan.Ranks = 69;
+                    userToBan.Bans = reason;
 
                     // Zapisz zmiany w bazie danych
                     _context.Update(userToBan);

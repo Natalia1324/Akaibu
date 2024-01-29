@@ -42,6 +42,7 @@ namespace Akaibu_Project.Entities
                 eb.Property(nick => nick.Ranks).IsRequired();
                 eb.Property(passwd => passwd.Password).IsRequired();
 
+
                 // Ustawia domyślną wartość 0 dla pola Ranks w encji Users
                 eb.Property(ranks => ranks.Ranks).HasDefaultValue(0);
             });
@@ -205,7 +206,18 @@ namespace Akaibu_Project.Entities
                  Password = "hashed_password3",
                  Ranks = 69,
                  Bans = "GD lutowanie studenta <3 "
+             },
+             new Users
+             {
+                 Id = 21,
+                 Nick = "User4",
+                 Login = "user4@example.com",
+                 Password = "hashed_password3",
+                 Ranks = 69,
+                 Bans = "GD lutowanie studenta <3 "
              }
+
+
         // Dodaj więcej danych, jeśli to konieczne
         );
             // Przykładowe dane do tabeli Reports

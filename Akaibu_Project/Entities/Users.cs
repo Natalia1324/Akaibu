@@ -12,6 +12,7 @@ namespace Akaibu_Project.Entions
         public string Login { get; set; }
         public string Password { get; set; }
         public int Ranks { get; set; }
+        public string Bans {  get; set; }
 
         // Referensts
         public ICollection<Comments> Commensts { get; set; }

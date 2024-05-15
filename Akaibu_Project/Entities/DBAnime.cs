@@ -19,6 +19,7 @@ namespace Akaibu_Project.Entions
         public DateTime? DateOfProductionFinish { get; set; }
         public string StatusAnime { get; set; }
 
+        public List<Episods> Episods { get; set; } = new List<Episods>();
         public List<Comments> Comments { get; set; } = new List<Comments>();
         public ICollection<Reports> Reports { get; set;}
         public ICollection<Status> Status { get; set; }

@@ -9,7 +9,7 @@ namespace Akaibu_Project.Entions
         //[Required]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public int Number { get; set; }
+        public float Number { get; set; }
         public string Description { get; set; }
         public TimeSpan EpizodLenght { get; set; }
         public DateTime TehEoisodeWasAdded { get; set; }

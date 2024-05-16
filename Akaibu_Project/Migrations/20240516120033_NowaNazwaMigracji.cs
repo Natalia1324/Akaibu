@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Akaibu_Project.Migrations
 {
-    public partial class NowaBazaDanych : Migration
+    public partial class NowaNazwaMigracji : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,7 +36,8 @@ namespace Akaibu_Project.Migrations
                     Nick = table.Column<string>(nullable: false),
                     Login = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
-                    Ranks = table.Column<int>(nullable: false, defaultValue: 0)
+                    Ranks = table.Column<int>(nullable: false, defaultValue: 0),
+                    Bans = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,56 +45,24 @@ namespace Akaibu_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "Episods",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    DateTheCommentWasAdded = table.Column<DateTime>(nullable: false),
-                    CommentText = table.Column<string>(nullable: false),
-                    MyRating = table.Column<string>(nullable: false),
-                    DBAnimeId = table.Column<int>(nullable: false),
-                    UsersId = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Number = table.Column<float>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    EpizodLenght = table.Column<TimeSpan>(nullable: false),
+                    TehEoisodeWasAdded = table.Column<DateTime>(nullable: false),
+                    DBAnimeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Episods", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_DBAnime_DBAnimeId",
+                        name: "FK_Episods_DBAnime_DBAnimeId",
                         column: x => x.DBAnimeId,
                         principalTable: "DBAnime",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Comments_Users_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reports",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    ReportText = table.Column<string>(nullable: false),
-                    DateTheReportWasAdded = table.Column<DateTime>(nullable: false),
-                    DBAnimeId = table.Column<int>(nullable: false),
-                    UsersId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reports", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reports_DBAnime_DBAnimeId",
-                        column: x => x.DBAnimeId,
-                        principalTable: "DBAnime",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reports_Users_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -124,6 +93,82 @@ namespace Akaibu_Project.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    DateTheCommentWasAdded = table.Column<DateTime>(nullable: false),
+                    CommentText = table.Column<string>(nullable: false),
+                    MyRating = table.Column<string>(nullable: false),
+                    DBAnimeId = table.Column<int>(nullable: false),
+                    UsersId = table.Column<int>(nullable: false),
+                    EpisodsId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_DBAnime_DBAnimeId",
+                        column: x => x.DBAnimeId,
+                        principalTable: "DBAnime",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Episods_EpisodsId",
+                        column: x => x.EpisodsId,
+                        principalTable: "Episods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ReportText = table.Column<string>(nullable: false),
+                    DateTheReportWasAdded = table.Column<DateTime>(nullable: false),
+                    DBAnimeId = table.Column<int>(nullable: false),
+                    UsersId = table.Column<int>(nullable: false),
+                    CommentsId = table.Column<Guid>(nullable: false),
+                    EpisodsId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_Comments_CommentsId",
+                        column: x => x.CommentsId,
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reports_DBAnime_DBAnimeId",
+                        column: x => x.DBAnimeId,
+                        principalTable: "DBAnime",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reports_Episods_EpisodsId",
+                        column: x => x.EpisodsId,
+                        principalTable: "Episods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reports_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "DBAnime",
                 columns: new[] { "Id", "Author", "DateOfProductionFinish", "DateOfProductionStart", "NumberOfEpisodes", "ShortStory", "StatusAnime", "Tag", "Title" },
@@ -131,17 +176,17 @@ namespace Akaibu_Project.Migrations
                 {
                     { 5, "Madhouse", new DateTime(2007, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 37, "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...", "Finished", "Akcja, Tajemnica, Kryminalne", "Death Note" },
                     { 6, "A.C.G.T.", null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 25, "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...", "Ongoing", "Akcja, Przygodowe, Fantasy", "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su" },
-                    { 7, "Author1", null, new DateTime(2023, 12, 17, 12, 3, 8, 840, DateTimeKind.Local).AddTicks(1626), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
-                    { 8, "Author2", null, new DateTime(2023, 12, 17, 12, 3, 8, 842, DateTimeKind.Local).AddTicks(6187), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
+                    { 7, "Author1", null, new DateTime(2024, 5, 16, 14, 0, 32, 681, DateTimeKind.Local).AddTicks(4365), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
+                    { 8, "Author2", null, new DateTime(2024, 5, 16, 14, 0, 32, 685, DateTimeKind.Local).AddTicks(5651), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Login", "Nick", "Password", "Ranks" },
+                columns: new[] { "Id", "Bans", "Login", "Nick", "Password", "Ranks" },
                 values: new object[,]
                 {
-                    { 8, "user1@example.com", "User1", "hashed_password1", 1 },
-                    { 9, "user2@example.com", "User2", "hashed_password2", 2 }
+                    { 8, null, "user1@example.com", "User1", "hashed_password1", 1 },
+                    { 9, null, "user2@example.com", "User2", "hashed_password2", 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -150,14 +195,34 @@ namespace Akaibu_Project.Migrations
                 column: "DBAnimeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_EpisodsId",
+                table: "Comments",
+                column: "EpisodsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_UsersId",
                 table: "Comments",
                 column: "UsersId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Episods_DBAnimeId",
+                table: "Episods",
+                column: "DBAnimeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_CommentsId",
+                table: "Reports",
+                column: "CommentsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reports_DBAnimeId",
                 table: "Reports",
                 column: "DBAnimeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_EpisodsId",
+                table: "Reports",
+                column: "EpisodsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reports_UsersId",
@@ -173,19 +238,22 @@ namespace Akaibu_Project.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Comments");
-
-            migrationBuilder.DropTable(
                 name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "Status");
 
             migrationBuilder.DropTable(
-                name: "DBAnime");
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Episods");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "DBAnime");
         }
     }
 }

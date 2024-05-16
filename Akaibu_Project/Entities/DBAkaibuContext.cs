@@ -32,6 +32,17 @@ namespace Akaibu_Project.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder){
 
+            modelBuilder.Entity<Episods>(eb => {
+                eb.Property(e => e.Id)
+                 .ValueGeneratedOnAdd();
+
+                eb.Property(n => n.Name).IsRequired();
+                eb.Property(num => num.Number).IsRequired();
+                eb.Property(desc => desc.Description).IsRequired();
+                eb.Property(len => len.EpizodLenght).IsRequired();
+                eb.Property(date => date.TehEoisodeWasAdded).IsRequired();
+            });
+
             // Konfiguruje encję Users w modelu danych
             modelBuilder.Entity<Users>(eb=>{
                 eb.Property(e => e.Id)
@@ -113,7 +124,6 @@ namespace Akaibu_Project.Entities
                 eb.HasOne(x => x.DBAnime)
                     .WithMany(a => a.Status)
                     .HasForeignKey(x => x.DBAnimeId);
-
             });
 
 
@@ -128,7 +138,11 @@ namespace Akaibu_Project.Entities
                 .WithMany(c => c.Reports)
                 .HasForeignKey(w => w.EpisodsId);
             });
-
+            modelBuilder.Entity<Comments>(eb => {
+                eb.HasOne(w => w.Episods)
+                .WithMany(c => c.Comments)
+                .HasForeignKey(w => w.EpisodsId);
+            });
 
             SeedData(modelBuilder);
 

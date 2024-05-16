@@ -8,11 +8,11 @@ namespace Akaibu_Project.Entions
     {
         //[Required]
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public float Number { get; set; }
         public string Description { get; set; }
-        public TimeSpan EpizodLenght { get; set; }
-        public DateTime TehEoisodeWasAdded { get; set; }
+        public TimeSpan EpisodeLenght { get; set; }
+        public DateTime DateTheEpisodWasAdded { get; set; }
 
         public DBAnime DBAnime { get; set; }
         public int DBAnimeId { get; set; }

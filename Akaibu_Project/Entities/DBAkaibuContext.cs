@@ -36,11 +36,11 @@ namespace Akaibu_Project.Entities
                 eb.Property(e => e.Id)
                  .ValueGeneratedOnAdd();
 
-                eb.Property(n => n.Name).IsRequired();
+                eb.Property(n => n.Title).IsRequired();
                 eb.Property(num => num.Number).IsRequired();
-                eb.Property(desc => desc.Description).IsRequired();
-                eb.Property(len => len.EpizodLenght).IsRequired();
-                eb.Property(date => date.TehEoisodeWasAdded).IsRequired();
+                eb.Property(desc => desc.Description).IsRequired();// ewentualna zmiana
+                eb.Property(len => len.EpisodeLenght).IsRequired();// ewentualna zmiana
+                eb.Property(date => date.DateTheEpisodWasAdded).IsRequired();// ewentualna zmiana
             });
 
             // Konfiguruje encję Users w modelu danych
@@ -59,9 +59,14 @@ namespace Akaibu_Project.Entities
             });
 
             modelBuilder.Entity<Comments>(eb => {
+                eb.Property(e => e.Id)
+                 .ValueGeneratedOnAdd();
+
                 eb.Property(c => c.CommentText).IsRequired();
-                eb.Property(m => m.MyRating).IsRequired();
-                eb.Property(D => D.DateTheCommentWasAdded).IsRequired(); 
+                eb.Property(m => m.MyRating).IsRequired(false);
+                eb.Property(D => D.DateTheCommentWasAdded)
+                .IsRequired()
+                .HasDefaultValueSql("GETDATE()");
             });
 
             modelBuilder.Entity<DBAnime>(eb => {
@@ -71,17 +76,22 @@ namespace Akaibu_Project.Entities
                 eb.Property(t => t.Title).IsRequired();
                 eb.Property(n => n.NumberOfEpisodes).IsRequired();
                 eb.Property(a => a.Author).IsRequired();
-                eb.Property(s => s.ShortStory).IsRequired();
-                eb.Property(st => st.StatusAnime).IsRequired();
+                eb.Property(s => s.ShortStory).IsRequired(false);
+                eb.Property(st => st.StatusAnime).IsRequired(false);
             });
 
             modelBuilder.Entity<Reports>(eb => {
+                eb.Property(e => e.Id)
+                 .ValueGeneratedOnAdd();
+
                 eb.Property(t => t.ReportText).IsRequired();
-                eb.Property(d => d.DateTheReportWasAdded).IsRequired();
+                eb.Property(d => d.DateTheReportWasAdded)
+                .IsRequired()
+                .HasDefaultValueSql("GETDATE()");
             });
 
             modelBuilder.Entity<Status>(eb => {
-                eb.Property(le => le.LastEpizod).IsRequired();
+                eb.Property(le => le.LastEpizod).IsRequired(false);
                 eb.Property(sv => sv.StatusValue).IsRequired();
             });
 

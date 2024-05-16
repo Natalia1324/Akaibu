@@ -15,10 +15,10 @@ namespace Akaibu_Project.Entions
         public string Bans {  get; set; }
 
         // Referensts
-        public ICollection<Comments> Commensts { get; set; }
+        public List<Comments> Commensts { get; set; } = new List<Comments>();
         public List<Reports> Reports { get; set; } = new List<Reports>();
 
-        public ICollection<Status> Status { get; set; }
+        public List<Status> Status { get; set; } = new List<Status>();
         // Properties
         [NotMapped]
         public bool isLogged { get; set; } = false;

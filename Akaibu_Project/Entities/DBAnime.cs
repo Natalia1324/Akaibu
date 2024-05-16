@@ -21,7 +21,7 @@ namespace Akaibu_Project.Entions
 
         public List<Episods> Episods { get; set; } = new List<Episods>();
         public List<Comments> Comments { get; set; } = new List<Comments>();
-        public ICollection<Reports> Reports { get; set;}
-        public ICollection<Status> Status { get; set; }
+        public List<Reports> Reports { get; set; } = new List<Reports>();
+        public List<Status> Status { get; set; } = new List<Status>();
     }
 }

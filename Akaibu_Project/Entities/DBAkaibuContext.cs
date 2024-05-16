@@ -27,8 +27,9 @@ namespace Akaibu_Project.Entities
         public DbSet<Reports> Reports { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Users> Users { get; set; }
+        public DbSet<Episods> Episods { get; set; }
 
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder){
 
             // Konfiguruje encję Users w modelu danych
@@ -74,7 +75,6 @@ namespace Akaibu_Project.Entities
             });
 
 
-
             // Referencje for Comments 
             modelBuilder.Entity<Users>(eb => {
                  eb.HasMany(w => w.Commensts)
@@ -115,7 +115,21 @@ namespace Akaibu_Project.Entities
                     .HasForeignKey(x => x.DBAnimeId);
 
             });
-            
+
+
+            // Referencje for Episods
+            modelBuilder.Entity<Episods>(eb => {
+                eb.HasOne(w => w.DBAnime)
+                .WithMany(c => c.Episods)
+                .HasForeignKey(w => w.DBAnimeId);
+            });
+            modelBuilder.Entity<Reports>(eb => {
+                eb.HasOne(w => w.Episods)
+                .WithMany(c => c.Reports)
+                .HasForeignKey(w => w.EpisodsId);
+            });
+
+
             SeedData(modelBuilder);
 
         }

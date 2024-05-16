@@ -11,7 +11,7 @@ namespace Akaibu_Project.Entions
         public DBAnime DBAnime { get; set; }
         public int DBAnimeId { get; set; }
 
-        public int LastEpizod { get; set; }
+        public int? LastEpizod { get; set; }
         public string StatusValue {  get; set; }
     }
 }

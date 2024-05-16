@@ -91,7 +91,7 @@ namespace Akaibu_Project.Entities
             });
 
             modelBuilder.Entity<Status>(eb => {
-                eb.Property(le => le.LastEpizod).IsRequired(false);
+                eb.Property(le => le.LastEpizod).IsRequired();
                 eb.Property(sv => sv.StatusValue).IsRequired();
             });
 

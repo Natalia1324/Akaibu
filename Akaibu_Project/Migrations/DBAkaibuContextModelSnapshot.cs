@@ -33,13 +33,14 @@ namespace Akaibu_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateTheCommentWasAdded")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("EpisodsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MyRating")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsersId")
@@ -77,11 +78,9 @@ namespace Akaibu_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShortStory")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StatusAnime")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tag")
@@ -123,7 +122,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 5, 16, 14, 0, 32, 681, DateTimeKind.Local).AddTicks(4365),
+                            DateOfProductionStart = new DateTime(2024, 5, 16, 18, 36, 59, 635, DateTimeKind.Local).AddTicks(2868),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -134,7 +133,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 5, 16, 14, 0, 32, 685, DateTimeKind.Local).AddTicks(5651),
+                            DateOfProductionStart = new DateTime(2024, 5, 16, 18, 36, 59, 637, DateTimeKind.Local).AddTicks(8812),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
@@ -152,22 +151,22 @@ namespace Akaibu_Project.Migrations
                     b.Property<int>("DBAnimeId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateTheEpisodWasAdded")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("EpizodLenght")
+                    b.Property<TimeSpan>("EpisodeLenght")
                         .HasColumnType("time");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Number")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("TehEoisodeWasAdded")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -189,7 +188,9 @@ namespace Akaibu_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateTheReportWasAdded")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("EpisodsId")
                         .HasColumnType("uniqueidentifier");
@@ -222,7 +223,8 @@ namespace Akaibu_Project.Migrations
                     b.Property<int>("UsersId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LastEpizod")
+                    b.Property<int?>("LastEpizod")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("StatusValue")

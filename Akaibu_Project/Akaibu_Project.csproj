@@ -8,6 +8,30 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.cs" />
     <Compile Remove="Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs" />
+    <Compile Remove="Migrations\20240516163659_NowaNazwaMigracji.cs" />
+    <Compile Remove="Migrations\20240516163659_NowaNazwaMigracji.Designer.cs" />
+    <Compile Remove="Migrations\20240521125215_NowaNazwaMigracji.cs" />
+    <Compile Remove="Migrations\20240521125215_NowaNazwaMigracji.Designer.cs" />
+    <Compile Remove="Migrations\20240521125311_NowaNazwaMigracji.cs" />
+    <Compile Remove="Migrations\20240521125311_NowaNazwaMigracji.Designer.cs" />
+    <Compile Remove="Migrations\20240521125614_NowaNazwaMigracji.cs" />
+    <Compile Remove="Migrations\20240521125614_NowaNazwaMigracji.Designer.cs" />
+    <Compile Remove="Migrations\20240521130014_NowaNazwaMigracji1.cs" />
+    <Compile Remove="Migrations\20240521130014_NowaNazwaMigracji1.Designer.cs" />
+    <Compile Remove="Migrations\20240521130141_NowaNazwaMigracji1.cs" />
+    <Compile Remove="Migrations\20240521130141_NowaNazwaMigracji1.Designer.cs" />
+    <Compile Remove="Migrations\20240521130516_NowaNazwaMigracji1.cs" />
+    <Compile Remove="Migrations\20240521130516_NowaNazwaMigracji1.Designer.cs" />
+    <Compile Remove="Migrations\20240521131703_NowaNazwaMigracji1.cs" />
+    <Compile Remove="Migrations\20240521131703_NowaNazwaMigracji1.Designer.cs" />
+    <Compile Remove="Migrations\20240521132006_NowaNazwaMigracji1.cs" />
+    <Compile Remove="Migrations\20240521132006_NowaNazwaMigracji1.Designer.cs" />
+    <Compile Remove="Migrations\20240521132248_NowaNazwaMigracji1.cs" />
+    <Compile Remove="Migrations\20240521132248_NowaNazwaMigracji1.Designer.cs" />
+    <Compile Remove="Migrations\20240521132549_NowaNazwaMigracji1.cs" />
+    <Compile Remove="Migrations\20240521132549_NowaNazwaMigracji1.Designer.cs" />
+    <Compile Remove="Migrations\20240521133933_NowaNazwaMigracji1.cs" />
+    <Compile Remove="Migrations\20240521133933_NowaNazwaMigracji1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +50,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

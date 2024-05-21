@@ -7,7 +7,7 @@ namespace Akaibu_Project.Entities
 {
     public class DBAkaibuContext : DbContext
     {
-       
+
         public DBAkaibuContext(DbContextOptions<DBAkaibuContext> options) : base(options)
         {
 
@@ -38,9 +38,9 @@ namespace Akaibu_Project.Entities
 
                 eb.Property(n => n.Title).IsRequired();
                 eb.Property(num => num.Number).IsRequired();
-                eb.Property(desc => desc.Description).IsRequired();// ewentualna zmiana
-                eb.Property(len => len.EpisodeLenght).IsRequired();// ewentualna zmiana
-                eb.Property(date => date.DateTheEpisodWasAdded).IsRequired();// ewentualna zmiana
+                eb.Property(desc => desc.Description).IsRequired();// 
+                eb.Property(len => len.EpisodeLenght).IsRequired();// 
+                eb.Property(date => date.DateTheEpisodWasAdded).IsRequired();//
             });
 
             // Konfiguruje encję Users w modelu danych
@@ -63,7 +63,7 @@ namespace Akaibu_Project.Entities
                  .ValueGeneratedOnAdd();
 
                 eb.Property(c => c.CommentText).IsRequired();
-                eb.Property(m => m.MyRating).IsRequired(false);
+                eb.Property(m => m.MyRating).IsRequired();//false
                 eb.Property(D => D.DateTheCommentWasAdded)
                 .IsRequired()
                 .HasDefaultValueSql("GETDATE()");
@@ -76,8 +76,8 @@ namespace Akaibu_Project.Entities
                 eb.Property(t => t.Title).IsRequired();
                 eb.Property(n => n.NumberOfEpisodes).IsRequired();
                 eb.Property(a => a.Author).IsRequired();
-                eb.Property(s => s.ShortStory).IsRequired(false);
-                eb.Property(st => st.StatusAnime).IsRequired(false);
+                eb.Property(s => s.ShortStory).IsRequired();//false
+                eb.Property(st => st.StatusAnime).IsRequired();//false
             });
 
             modelBuilder.Entity<Reports>(eb => {
@@ -117,7 +117,8 @@ namespace Akaibu_Project.Entities
             modelBuilder.Entity<DBAnime>(eb => {
                 eb.HasMany(w => w.Reports)
                 .WithOne(c => c.DBAnime)
-                .HasForeignKey(w => w.DBAnimeId);
+                .HasForeignKey(w => w.DBAnimeId)
+                .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Referencje for Status
@@ -128,12 +129,14 @@ namespace Akaibu_Project.Entities
                 // Konfiguracja relacji wiele do jeden z tabelą Users
                 eb.HasOne(x => x.Users)
                     .WithMany(u => u.Status)
-                    .HasForeignKey(x => x.UsersId);
+                    .HasForeignKey(x => x.UsersId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 // Konfiguracja relacji wiele do jeden z tabelą DBAnime
                 eb.HasOne(x => x.DBAnime)
                     .WithMany(a => a.Status)
-                    .HasForeignKey(x => x.DBAnimeId);
+                    .HasForeignKey(x => x.DBAnimeId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
 
@@ -146,12 +149,14 @@ namespace Akaibu_Project.Entities
             modelBuilder.Entity<Reports>(eb => {
                 eb.HasOne(w => w.Episods)
                 .WithMany(c => c.Reports)
-                .HasForeignKey(w => w.EpisodsId);
+                .HasForeignKey(w => w.EpisodsId)
+                .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<Comments>(eb => {
                 eb.HasOne(w => w.Episods)
                 .WithMany(c => c.Comments)
-                .HasForeignKey(w => w.EpisodsId);
+                .HasForeignKey(w => w.EpisodsId)
+                .OnDelete(DeleteBehavior.Restrict);
             });
 
             SeedData(modelBuilder);
@@ -169,53 +174,53 @@ namespace Akaibu_Project.Entities
         private void SeedData(ModelBuilder modelBuilder)
         {
             // Przykładowe dane do tabeli DBAnime
-            modelBuilder.Entity<DBAnime>().HasData(
-                 new DBAnime
-                 {
-                     Id = 5,
-                     Title = "Death Note",
-                     NumberOfEpisodes = 37,
-                     Author = "Madhouse",
-                     ShortStory = "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...",
-                     Tag = "Akcja, Tajemnica, Kryminalne",
-                     DateOfProductionStart = new DateTime(2006, 10, 04),
-                     DateOfProductionFinish = new DateTime(2007, 06, 27),
-                     StatusAnime = "Finished"
-                 },
-                new DBAnime
-                {
-                    Id = 6,
-                    Title = "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su",
-                    NumberOfEpisodes = 25,
-                    Author = "A.C.G.T.",
-                    ShortStory = "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...",
-                    Tag = "Akcja, Przygodowe, Fantasy",
-                    DateOfProductionStart = new DateTime(2023, 10, 01),
-                    DateOfProductionFinish = null,
-                    StatusAnime = "Ongoing"
-                },
-                new DBAnime
-                {
-                    Id = 7,
-                    Title = "Anime1",
-                    NumberOfEpisodes = 12,
-                    Author = "Author1",
-                    ShortStory = "Short story 1",
-                    Tag = "Tag1",
-                    DateOfProductionStart = DateTime.Now,
-                    StatusAnime = "Status1"
-                },
-                new DBAnime
-                {
-                    Id = 8,
-                    Title = "Anime2",
-                    NumberOfEpisodes = 24,
-                    Author = "Author2",
-                    ShortStory = "Short story 2",
-                    Tag = "Tag2",
-                    DateOfProductionStart = DateTime.Now,
-                    StatusAnime = "Status2"
-                });
+            //modelBuilder.Entity<DBAnime>().HasData(
+            //     new DBAnime
+            //     {
+            //         Id = 5,
+            //         Title = "Death Note",
+            //         NumberOfEpisodes = 37,
+            //         Author = "Madhouse",
+            //         ShortStory = "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...",
+            //         Tag = "Akcja, Tajemnica, Kryminalne",
+            //         DateOfProductionStart = new DateTime(2006, 10, 04),
+            //         DateOfProductionFinish = new DateTime(2007, 06, 27),
+            //         StatusAnime = "Finished"
+            //     },
+            //    new DBAnime
+            //    {
+            //        Id = 6,
+            //        Title = "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su",
+            //        NumberOfEpisodes = 25,
+            //        Author = "A.C.G.T.",
+            //        ShortStory = "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...",
+            //        Tag = "Akcja, Przygodowe, Fantasy",
+            //        DateOfProductionStart = new DateTime(2023, 10, 01),
+            //        DateOfProductionFinish = null,
+            //        StatusAnime = "Ongoing"
+            //    },
+            //    new DBAnime
+            //    {
+            //        Id = 7,
+            //        Title = "Anime1",
+            //        NumberOfEpisodes = 12,
+            //        Author = "Author1",
+            //        ShortStory = "Short story 1",
+            //        Tag = "Tag1",
+            //        DateOfProductionStart = DateTime.Now,
+            //        StatusAnime = "Status1"
+            //    },
+            //    new DBAnime
+            //    {
+            //        Id = 8,
+            //        Title = "Anime2",
+            //        NumberOfEpisodes = 24,
+            //        Author = "Author2",
+            //        ShortStory = "Short story 2",
+            //        Tag = "Tag2",
+            //        DateOfProductionStart = DateTime.Now,
+            //        StatusAnime = "Status2"
+            //    });
 
             // Przykładowe dane do tabeli Users
             modelBuilder.Entity<Users>().HasData(

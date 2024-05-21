@@ -5,6 +5,7 @@ namespace Akaibu_Project.Entions
 {
     public class Reports
     {
+        
         public Guid Id { get; set; }
         public string ReportText { get; set; }
         public DateTime DateTheReportWasAdded { get; set; }

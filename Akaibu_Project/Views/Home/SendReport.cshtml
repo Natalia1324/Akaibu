@@ -1,13 +1,6 @@
 ﻿@model Akaibu_Project.Entions.Reports
 
 <!DOCTYPE html>
-<style>
-    #senbutton {
-        background-color: #E9987D;
-        color: #fff;
-    }
-</style>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,15 +9,14 @@
 </head>
 <body>
 
-    <h2>Napisz raport:</h2>
-    <br>
+    <h2>Napisz raport</h2>
 
     <form asp-controller="Home" asp-action="SendReport" method="post">
-        <textarea asp-for="ReportText" style=" border-radius: 7px; rows="4" cols="50" maxlength="500" required></textarea>
+        <textarea asp-for="ReportText" rows="4" cols="50" maxlength="500" required></textarea>
 
         <br>
 
-        <button id="senbutton" style=" border-radius: 7px; type="submit">Wyślij</button>
+        <button type="submit">Wyślij</button>
     </form>
 
 </body>

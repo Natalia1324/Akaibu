@@ -9,12 +9,10 @@
 <head>
     <meta charset="utf-8" />
     <title>BanPage</title>
-    <link rel="stylesheet" type="text/css" href="~/css/privacy.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-          
         }
 
         h2 {
@@ -43,19 +41,13 @@
     </style>
 </head>
 <body>
-    <div class="content-section">
+    
     <h2>Ban for: @Model.Nick! </h2>
-        @if (Model != null)
+    @if (true)
     {
         <p><b>Account Nick: @Model.Nick </b></p>
         <p><b>Account Reason: @Model.Bans </b></p>
 
     }
-    </div>
-
-    <div class="right-section">
-        <img src="/image/Ban.PNG" alt="Ban Image" width="50%" height="50%" />
-         </div>
-   
 </body>
 </html>

@@ -11,26 +11,93 @@
 <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    <link rel="stylesheet" type="text/css" href="~/css/login.css">
+    <style>
+        button {
+            border-radius: 7px;
+            background-color: #E9987D;
+            color: #fff;
+        }
+
+        input {
+            border-radius: 7px;
+        }
+
+        .left-section {
+            width: 40%;
+            height: 50%;
+            flex: 1;
+            margin-right: 300px;
+            background-color: #393033;
+            color: #E9987D;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .right-section {
+            width: 50%;
+            height: 50%;
+            flex: 1;
+            float: right;
+            background-color: #554141;
+            color: #fff;
+            padding: 133px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .error-message {
+            margin-top: 20px;
+        }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            list-style-type: none;
+            padding: 0;
+        }
+
+    </style>
 </head>
 <body>
-    <h2>Login</h2>
-    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
+    <div class="register-container">
+        <div class="left-section">
+            <h1 id="hello-text">Welcome Back!</h1>
+            <p id="glad-text">=^v^=</p>
+        </div>
+        <div class="right-section">
+            <h2 style="margin-bottom: 50px;">
+                Login to Your Account
+            </h2>
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
 
-                    <div class="form-group">
-            @Html.LabelFor(model => model.Nick)
-            @Html.TextBoxFor(model => model.Nick, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Nick)
-                    </div>
+                <div class="form-field">
+                    @Html.TextBoxFor(model => model.Nick, new { @placeholder = "Nick", @required = "required" })
+                    <!-- <label for="nick">Nick</label>-->
+                </div>
+                <br>
+                <div class="form-field">
+                    @Html.PasswordFor(model => model.Password, new { @placeholder = "Password", @required = "required" })
+                    <!--<label for="password">Password</label>>-->
+                </div>
+                <br>
+                <button type="submit">Sign in</button>
+                <br>
 
-                    <div class="form-group">
-            @Html.LabelFor(model => model.Password)
-            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Password)
-                    </div>
+                <div class="form-field error-message">
+                    @Html.ValidationSummary()
+                </div>
 
-                    <button type="submit" class="btn btn-primary">Login</button>
-    }
+
+            }
+
+        </div>
 </body>
 </html>

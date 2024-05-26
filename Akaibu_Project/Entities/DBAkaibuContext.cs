@@ -36,9 +36,9 @@ namespace Akaibu_Project.Entities
                 eb.Property(e => e.Id)
                  .ValueGeneratedOnAdd();
 
-                eb.Property(n => n.Title).IsRequired();
-                eb.Property(num => num.Number).IsRequired();
-                eb.Property(desc => desc.Description).IsRequired();// 
+                eb.Property(n => n.Title).IsRequired().HasMaxLength(300);
+                eb.Property(num => num.Number).IsRequired(); 
+                eb.Property(desc => desc.Description).IsRequired().HasMaxLength(1000);// 
                 eb.Property(len => len.EpisodeLenght).IsRequired();// 
                 eb.Property(date => date.DateTheEpisodWasAdded).IsRequired();//
             });
@@ -49,10 +49,10 @@ namespace Akaibu_Project.Entities
                  .ValueGeneratedOnAdd();
 
                 // Ustawia wymaganie, żeby pola w encji Users było niepuste (nie mogą być null)
-                eb.Property(nick => nick.Nick).IsRequired();
-                eb.Property(login => login.Login).IsRequired();
+                eb.Property(nick => nick.Nick).IsRequired().HasMaxLength(20);
+                eb.Property(login => login.Login).IsRequired().HasMaxLength(20);
                 eb.Property(nick => nick.Ranks).IsRequired();
-                eb.Property(passwd => passwd.Password).IsRequired();
+                eb.Property(passwd => passwd.Password).IsRequired().HasMaxLength(20).HasAnnotation("MinLength", 8); // minimalna długość hasła;
 
                 // Ustawia domyślną wartość 0 dla pola Ranks w encji Users
                 eb.Property(ranks => ranks.Ranks).HasDefaultValue(0);
@@ -62,8 +62,8 @@ namespace Akaibu_Project.Entities
                 eb.Property(e => e.Id)
                  .ValueGeneratedOnAdd();
 
-                eb.Property(c => c.CommentText).IsRequired();
-                eb.Property(m => m.MyRating).IsRequired();//false
+                eb.Property(c => c.CommentText).IsRequired().HasMaxLength(500);
+                eb.Property(m => m.MyRating).IsRequired(false);//false
                 eb.Property(D => D.DateTheCommentWasAdded)
                 .IsRequired()
                 .HasDefaultValueSql("GETDATE()");
@@ -73,25 +73,26 @@ namespace Akaibu_Project.Entities
                 eb.Property(e => e.Id)
                  .ValueGeneratedOnAdd();
 
-                eb.Property(t => t.Title).IsRequired();
+                eb.Property(t => t.Title).IsRequired().HasMaxLength(100);
                 eb.Property(n => n.NumberOfEpisodes).IsRequired();
-                eb.Property(a => a.Author).IsRequired();
-                eb.Property(s => s.ShortStory).IsRequired();//false
-                eb.Property(st => st.StatusAnime).IsRequired();//false
+                eb.Property(a => a.Author).IsRequired().HasMaxLength(100);
+                eb.Property(s => s.ShortStory).IsRequired(false).HasMaxLength(2000);//false
+                eb.Property(st => st.StatusAnime).IsRequired(false);//false
             });
 
             modelBuilder.Entity<Reports>(eb => {
                 eb.Property(e => e.Id)
                  .ValueGeneratedOnAdd();
 
-                eb.Property(t => t.ReportText).IsRequired();
+                eb.Property(t => t.ReportText)
+                .IsRequired()
+                .HasMaxLength(500); 
                 eb.Property(d => d.DateTheReportWasAdded)
                 .IsRequired()
                 .HasDefaultValueSql("GETDATE()");
             });
 
             modelBuilder.Entity<Status>(eb => {
-                eb.Property(le => le.LastEpizod).IsRequired();
                 eb.Property(sv => sv.StatusValue).IsRequired();
             });
 
@@ -112,7 +113,8 @@ namespace Akaibu_Project.Entities
             modelBuilder.Entity<Users>(eb => {
                 eb.HasMany(w => w.Reports)
                .WithOne(c => c.Users)
-               .HasForeignKey(w => w.UsersId);
+               .HasForeignKey(w => w.UsersId)
+               .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<DBAnime>(eb => {
                 eb.HasMany(w => w.Reports)
@@ -137,6 +139,12 @@ namespace Akaibu_Project.Entities
                     .WithMany(a => a.Status)
                     .HasForeignKey(x => x.DBAnimeId)
                     .OnDelete(DeleteBehavior.Restrict);
+
+                
+                eb.HasOne(s => s.Episods)
+                .WithOne(e => e.Status)
+                .HasForeignKey<Status>(s => s.EpisodsId)
+                .OnDelete(DeleteBehavior.Restrict); // Użycie DeleteBehavior.Restrict zamiast Cascade
             });
 
 

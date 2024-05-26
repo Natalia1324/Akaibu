@@ -18,5 +18,7 @@ namespace Akaibu_Project.Entions
         public int DBAnimeId { get; set; }
         public List<Reports> Reports { get; set; } = new List<Reports>();
         public List<Comments> Comments { get; set; } = new List<Comments>();
+
+        public Status Status { get; set; } // Nawiazanie do Status
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Akaibu_Project.Entions
@@ -15,5 +16,9 @@ namespace Akaibu_Project.Entions
         public int DBAnimeId { get; set; }
         public Users Users { get; set; }
         public int UsersId { get; set; }
+        public List<Reports> Reports { get; set; } = new List<Reports>();
+        public Episods Episods { get; set; }
+        public Guid EpisodsId { get; set;}
+        
     }
 }

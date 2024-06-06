@@ -14,6 +14,6 @@ namespace Akaibu_Project.Entions
 
         public string StatusValue {  get; set; }
         public Episods Episods { get; set; }
-        public Guid EpisodsId { get; set; }
+        public Guid? EpisodsId { get; set; }
     }
 }

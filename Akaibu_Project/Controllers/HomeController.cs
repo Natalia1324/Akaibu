@@ -163,7 +163,7 @@ namespace Akaibu_Project.Controllers
 
         public IActionResult AnimeDetails(int id)
         {
-            var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
+            var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
 
             if (anime == null)
             {
@@ -172,6 +172,10 @@ namespace Akaibu_Project.Controllers
 
             return View(anime);
         }
+
+       
+
+        
 
         public IActionResult Login()
         {
@@ -442,7 +446,7 @@ namespace Akaibu_Project.Controllers
             Status status = new Status();
             status.UsersId = logged.Id;
             status.DBAnimeId = anime.Id;
-            status.LastEpizod = 0;
+            status.EpisodsId = null;
             status.StatusValue = "Finished";
             _context.Status.Add(status);
             _context.SaveChanges();
@@ -458,7 +462,8 @@ namespace Akaibu_Project.Controllers
             Status status = new Status();
             status.UsersId = logged.Id;
             status.DBAnimeId = anime.Id;
-            status.LastEpizod = 0;
+            status.EpisodsId = null;
+            //status.Episods.Number = 0;
             status.StatusValue = "Watched";
             _context.Status.Add(status);
             _context.SaveChanges();
@@ -474,7 +479,8 @@ namespace Akaibu_Project.Controllers
         Status status=new Status();
             status.UsersId = logged.Id;
             status.DBAnimeId = anime.Id;
-            status.LastEpizod = 0;
+            status.EpisodsId = null;
+            //status.Episods.Number = 0;
             status.StatusValue = "Planned";
             _context.Status.Add(status);
             _context.SaveChanges();
@@ -504,7 +510,7 @@ namespace Akaibu_Project.Controllers
                 .SelectMany(u => u.Status.Where(s => s.StatusValue == "Finished"))
                 .Select(s => new StatusModel
                 {
-                    LastEpizod = s.LastEpizod,
+                    LastEpizod = s.Episods.Number,
                    StatusValue = s.StatusValue,
                     AnimeAuthor = s.DBAnime != null ? s.DBAnime.Author : "N/A",
                   AnimeTitle = s.DBAnime != null ? s.DBAnime.Title : "N/A"
@@ -515,7 +521,7 @@ namespace Akaibu_Project.Controllers
                 .SelectMany(u => u.Status.Where(s => s.StatusValue == "Watched"))
                 .Select(s => new StatusModel
                 {
-                    LastEpizod = s.LastEpizod,
+                    LastEpizod = s.Episods.Number,
                     StatusValue = s.StatusValue,
                     AnimeAuthor = s.DBAnime != null ? s.DBAnime.Author : "N/A",
                     AnimeTitle = s.DBAnime != null ? s.DBAnime.Title : "N/A"
@@ -526,7 +532,7 @@ namespace Akaibu_Project.Controllers
                 .SelectMany(u => u.Status.Where(s => s.StatusValue == "Planned"))
                 .Select(s => new StatusModel
                 {
-                    LastEpizod = s.LastEpizod,
+                    LastEpizod = s.Episods.Number,
                     StatusValue = s.StatusValue,
                     AnimeAuthor = s.DBAnime != null ? s.DBAnime.Author : "N/A",
                     AnimeTitle = s.DBAnime != null ? s.DBAnime.Title : "N/A"
@@ -538,11 +544,6 @@ namespace Akaibu_Project.Controllers
             loggedUser.lists = model;
             
                 return View("Lists", loggedUser);
-
-           
-          
-
-
 
 
         }

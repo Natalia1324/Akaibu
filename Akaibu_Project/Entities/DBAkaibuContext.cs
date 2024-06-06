@@ -140,11 +140,12 @@ namespace Akaibu_Project.Entities
                     .HasForeignKey(x => x.DBAnimeId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                
+
                 eb.HasOne(s => s.Episods)
                 .WithOne(e => e.Status)
                 .HasForeignKey<Status>(s => s.EpisodsId)
-                .OnDelete(DeleteBehavior.Restrict); // Użycie DeleteBehavior.Restrict zamiast Cascade
+                .OnDelete(DeleteBehavior.Restrict);
+                //.IsRequired(false); // Użycie DeleteBehavior.Restrict zamiast Cascade
             });
 
 
@@ -181,54 +182,69 @@ namespace Akaibu_Project.Entities
 
         private void SeedData(ModelBuilder modelBuilder)
         {
-            // Przykładowe dane do tabeli DBAnime
-            //modelBuilder.Entity<DBAnime>().HasData(
-            //     new DBAnime
-            //     {
-            //         Id = 5,
-            //         Title = "Death Note",
-            //         NumberOfEpisodes = 37,
-            //         Author = "Madhouse",
-            //         ShortStory = "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...",
-            //         Tag = "Akcja, Tajemnica, Kryminalne",
-            //         DateOfProductionStart = new DateTime(2006, 10, 04),
-            //         DateOfProductionFinish = new DateTime(2007, 06, 27),
-            //         StatusAnime = "Finished"
-            //     },
-            //    new DBAnime
-            //    {
-            //        Id = 6,
-            //        Title = "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su",
-            //        NumberOfEpisodes = 25,
-            //        Author = "A.C.G.T.",
-            //        ShortStory = "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...",
-            //        Tag = "Akcja, Przygodowe, Fantasy",
-            //        DateOfProductionStart = new DateTime(2023, 10, 01),
-            //        DateOfProductionFinish = null,
-            //        StatusAnime = "Ongoing"
-            //    },
-            //    new DBAnime
-            //    {
-            //        Id = 7,
-            //        Title = "Anime1",
-            //        NumberOfEpisodes = 12,
-            //        Author = "Author1",
-            //        ShortStory = "Short story 1",
-            //        Tag = "Tag1",
-            //        DateOfProductionStart = DateTime.Now,
-            //        StatusAnime = "Status1"
-            //    },
-            //    new DBAnime
-            //    {
-            //        Id = 8,
-            //        Title = "Anime2",
-            //        NumberOfEpisodes = 24,
-            //        Author = "Author2",
-            //        ShortStory = "Short story 2",
-            //        Tag = "Tag2",
-            //        DateOfProductionStart = DateTime.Now,
-            //        StatusAnime = "Status2"
-            //    });
+            //Przykładowe dane do tabeli DBAnime
+
+            modelBuilder.Entity<DBAnime>().HasData(
+                 new DBAnime
+                 {
+                     Id = 5,
+                     Title = "Death Note",
+                     NumberOfEpisodes = 37,
+                     Author = "Madhouse",
+                     ShortStory = "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...",
+                     Tag = "Akcja, Tajemnica, Kryminalne",
+                     DateOfProductionStart = new DateTime(2006, 10, 04),
+                     DateOfProductionFinish = new DateTime(2007, 06, 27),
+                     StatusAnime = "Finished"
+                 },
+                new DBAnime
+                {
+                    Id = 6,
+                    Title = "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su",
+                    NumberOfEpisodes = 25,
+                    Author = "A.C.G.T.",
+                    ShortStory = "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...",
+                    Tag = "Akcja, Przygodowe, Fantasy",
+                    DateOfProductionStart = new DateTime(2023, 10, 01),
+                    DateOfProductionFinish = null,
+                    StatusAnime = "Ongoing"
+                },
+                new DBAnime
+                {
+                    Id = 7,
+                    Title = "Anime1",
+                    NumberOfEpisodes = 12,
+                    Author = "Author1",
+                    ShortStory = "Short story 1",
+                    Tag = "Tag1",
+                    DateOfProductionStart = DateTime.Now,
+                    StatusAnime = "Status1"
+                },
+                new DBAnime
+                {
+                    Id = 8,
+                    Title = "Anime2",
+                    NumberOfEpisodes = 24,
+                    Author = "Author2",
+                    ShortStory = "Short story 2",
+                    Tag = "Tag2",
+                    DateOfProductionStart = DateTime.Now,
+                    StatusAnime = "Status2"
+                });
+
+
+            // Przykładowe dane do tabeli Episods
+            modelBuilder.Entity<Episods>().HasData(
+                new Episods
+                {
+                    Id = Guid.NewGuid(), // Generowanie nowego Guid dla Id
+                    Title = "Rebirth",
+                    Number = 1,
+                    Description = "Light Yagami finds the Death Note and starts to use it.",
+                    EpisodeLenght = new TimeSpan(0, 23, 0), // 23 minuty
+                    DateTheEpisodWasAdded = new DateTime(2006, 10, 04),
+                    DBAnimeId = 5
+                });
 
             // Przykładowe dane do tabeli Users
             modelBuilder.Entity<Users>().HasData(

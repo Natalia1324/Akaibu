@@ -4,7 +4,7 @@
     {
         public string AnimeTitle;
         public string AnimeAuthor;
-        public int LastEpizod;
+        public float LastEpizod;
         public string StatusValue;
 
     }

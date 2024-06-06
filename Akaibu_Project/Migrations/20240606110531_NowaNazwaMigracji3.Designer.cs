@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    [Migration("20240129164702_NowaNazwaMigracji21")]
-    partial class NowaNazwaMigracji21
+    [Migration("20240606110531_NowaNazwaMigracji3")]
+    partial class NowaNazwaMigracji3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,16 +29,21 @@ namespace Akaibu_Project.Migrations
 
                     b.Property<string>("CommentText")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<int>("DBAnimeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateTheCommentWasAdded")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("EpisodsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MyRating")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsersId")
@@ -47,6 +52,8 @@ namespace Akaibu_Project.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DBAnimeId");
+
+                    b.HasIndex("EpisodsId");
 
                     b.HasIndex("UsersId");
 
@@ -62,7 +69,8 @@ namespace Akaibu_Project.Migrations
 
                     b.Property<string>("Author")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<DateTime?>("DateOfProductionFinish")
                         .HasColumnType("datetime2");
@@ -74,11 +82,10 @@ namespace Akaibu_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShortStory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(2000)")
+                        .HasMaxLength(2000);
 
                     b.Property<string>("StatusAnime")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tag")
@@ -86,7 +93,8 @@ namespace Akaibu_Project.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -120,7 +128,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 1, 29, 17, 47, 1, 644, DateTimeKind.Local).AddTicks(6443),
+                            DateOfProductionStart = new DateTime(2024, 6, 6, 13, 5, 31, 315, DateTimeKind.Local).AddTicks(8677),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -131,12 +139,59 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 1, 29, 17, 47, 1, 647, DateTimeKind.Local).AddTicks(5886),
+                            DateOfProductionStart = new DateTime(2024, 6, 6, 13, 5, 31, 317, DateTimeKind.Local).AddTicks(2989),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
                             Tag = "Tag2",
                             Title = "Anime2"
+                        });
+                });
+
+            modelBuilder.Entity("Akaibu_Project.Entions.Episods", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DBAnimeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateTheEpisodWasAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<TimeSpan>("EpisodeLenght")
+                        .HasColumnType("time");
+
+                    b.Property<float>("Number")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DBAnimeId");
+
+                    b.ToTable("Episods");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c907670b-878e-42c7-bb70-b2d511e0b78c"),
+                            DBAnimeId = 5,
+                            DateTheEpisodWasAdded = new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Light Yagami finds the Death Note and starts to use it.",
+                            EpisodeLenght = new TimeSpan(0, 0, 23, 0, 0),
+                            Number = 1f,
+                            Title = "Rebirth"
                         });
                 });
 
@@ -146,44 +201,39 @@ namespace Akaibu_Project.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CommentsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("DBAnimeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateTheReportWasAdded")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("EpisodsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ReportText")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<int>("UsersId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CommentsId");
+
                     b.HasIndex("DBAnimeId");
+
+                    b.HasIndex("EpisodsId");
 
                     b.HasIndex("UsersId");
 
                     b.ToTable("Reports");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8cb30645-4ee4-414b-9fbd-bebe70d6dda3"),
-                            DBAnimeId = 5,
-                            DateTheReportWasAdded = new DateTime(2024, 1, 29, 17, 47, 1, 648, DateTimeKind.Local).AddTicks(9953),
-                            ReportText = "Report 1",
-                            UsersId = 8
-                        },
-                        new
-                        {
-                            Id = new Guid("aa834721-774d-4a28-a084-d0de32412b8e"),
-                            DBAnimeId = 6,
-                            DateTheReportWasAdded = new DateTime(2024, 1, 29, 17, 47, 1, 649, DateTimeKind.Local).AddTicks(661),
-                            ReportText = "Report 2",
-                            UsersId = 9
-                        });
                 });
 
             modelBuilder.Entity("Akaibu_Project.Entions.Status", b =>
@@ -194,14 +244,18 @@ namespace Akaibu_Project.Migrations
                     b.Property<int>("UsersId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LastEpizod")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("EpisodsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StatusValue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DBAnimeId", "UsersId");
+
+                    b.HasIndex("EpisodsId")
+                        .IsUnique()
+                        .HasFilter("[EpisodsId] IS NOT NULL");
 
                     b.HasIndex("UsersId");
 
@@ -220,15 +274,19 @@ namespace Akaibu_Project.Migrations
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Nick")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20)
+                        .HasAnnotation("MinLength", 8);
 
                     b.Property<int>("Ranks")
                         .ValueGeneratedOnAdd()
@@ -255,24 +313,6 @@ namespace Akaibu_Project.Migrations
                             Nick = "User2",
                             Password = "hashed_password2",
                             Ranks = 2
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Bans = "GD lutowanie studenta <3 ",
-                            Login = "user3@example.com",
-                            Nick = "User3",
-                            Password = "hashed_password3",
-                            Ranks = 69
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Bans = "GD lutowanie studenta <3 ",
-                            Login = "user4@example.com",
-                            Nick = "User4",
-                            Password = "hashed_password3",
-                            Ranks = 69
                         });
                 });
 
@@ -284,6 +324,12 @@ namespace Akaibu_Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Akaibu_Project.Entions.Episods", "Episods")
+                        .WithMany("Comments")
+                        .HasForeignKey("EpisodsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Akaibu_Project.Entions.Users", "Users")
                         .WithMany("Commensts")
                         .HasForeignKey("UsersId")
@@ -291,18 +337,39 @@ namespace Akaibu_Project.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Akaibu_Project.Entions.Episods", b =>
+                {
+                    b.HasOne("Akaibu_Project.Entions.DBAnime", "DBAnime")
+                        .WithMany("Episods")
+                        .HasForeignKey("DBAnimeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Akaibu_Project.Entions.Reports", b =>
                 {
+                    b.HasOne("Akaibu_Project.Entions.Comments", "Comments")
+                        .WithMany("Reports")
+                        .HasForeignKey("CommentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Akaibu_Project.Entions.DBAnime", "DBAnime")
                         .WithMany("Reports")
                         .HasForeignKey("DBAnimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Akaibu_Project.Entions.Episods", "Episods")
+                        .WithMany("Reports")
+                        .HasForeignKey("EpisodsId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Akaibu_Project.Entions.Users", "Users")
                         .WithMany("Reports")
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -311,13 +378,18 @@ namespace Akaibu_Project.Migrations
                     b.HasOne("Akaibu_Project.Entions.DBAnime", "DBAnime")
                         .WithMany("Status")
                         .HasForeignKey("DBAnimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("Akaibu_Project.Entions.Episods", "Episods")
+                        .WithOne("Status")
+                        .HasForeignKey("Akaibu_Project.Entions.Status", "EpisodsId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Akaibu_Project.Entions.Users", "Users")
                         .WithMany("Status")
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

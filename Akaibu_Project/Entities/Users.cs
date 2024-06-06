@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Akaibu_Project.Models;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,5 +23,11 @@ namespace Akaibu_Project.Entions
         // Properties
         [NotMapped]
         public bool isLogged { get; set; } = false;
+
+        [NotMapped]
+        public ListsModel lists { get; set; }
+
+        [NotMapped]
+        public SearchResults search { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using Akaibu_Project.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    partial class DBAkaibuContextModelSnapshot : ModelSnapshot
+    [Migration("20240606103446_NowaNazwaMigracji")]
+    partial class NowaNazwaMigracji
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,53 +99,6 @@ namespace Akaibu_Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DBAnime");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5,
-                            Author = "Madhouse",
-                            DateOfProductionFinish = new DateTime(2007, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateOfProductionStart = new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NumberOfEpisodes = 37,
-                            ShortStory = "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...",
-                            StatusAnime = "Finished",
-                            Tag = "Akcja, Tajemnica, Kryminalne",
-                            Title = "Death Note"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Author = "A.C.G.T.",
-                            DateOfProductionStart = new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NumberOfEpisodes = 25,
-                            ShortStory = "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...",
-                            StatusAnime = "Ongoing",
-                            Tag = "Akcja, Przygodowe, Fantasy",
-                            Title = "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 6, 6, 13, 5, 31, 315, DateTimeKind.Local).AddTicks(8677),
-                            NumberOfEpisodes = 12,
-                            ShortStory = "Short story 1",
-                            StatusAnime = "Status1",
-                            Tag = "Tag1",
-                            Title = "Anime1"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 6, 6, 13, 5, 31, 317, DateTimeKind.Local).AddTicks(2989),
-                            NumberOfEpisodes = 24,
-                            ShortStory = "Short story 2",
-                            StatusAnime = "Status2",
-                            Tag = "Tag2",
-                            Title = "Anime2"
-                        });
                 });
 
             modelBuilder.Entity("Akaibu_Project.Entions.Episods", b =>
@@ -179,18 +134,6 @@ namespace Akaibu_Project.Migrations
                     b.HasIndex("DBAnimeId");
 
                     b.ToTable("Episods");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c907670b-878e-42c7-bb70-b2d511e0b78c"),
-                            DBAnimeId = 5,
-                            DateTheEpisodWasAdded = new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Light Yagami finds the Death Note and starts to use it.",
-                            EpisodeLenght = new TimeSpan(0, 0, 23, 0, 0),
-                            Number = 1f,
-                            Title = "Rebirth"
-                        });
                 });
 
             modelBuilder.Entity("Akaibu_Project.Entions.Reports", b =>
@@ -242,7 +185,7 @@ namespace Akaibu_Project.Migrations
                     b.Property<int>("UsersId")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("EpisodsId")
+                    b.Property<Guid>("EpisodsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StatusValue")
@@ -252,8 +195,7 @@ namespace Akaibu_Project.Migrations
                     b.HasKey("DBAnimeId", "UsersId");
 
                     b.HasIndex("EpisodsId")
-                        .IsUnique()
-                        .HasFilter("[EpisodsId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("UsersId");
 
@@ -382,7 +324,8 @@ namespace Akaibu_Project.Migrations
                     b.HasOne("Akaibu_Project.Entions.Episods", "Episods")
                         .WithOne("Status")
                         .HasForeignKey("Akaibu_Project.Entions.Status", "EpisodsId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Akaibu_Project.Entions.Users", "Users")
                         .WithMany("Status")

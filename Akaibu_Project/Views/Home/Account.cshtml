@@ -1,134 +1,171 @@
-﻿
-@model Akaibu_Project.Entions.Users
-@*
-@model AccountModel
-*@
-
+﻿@model Akaibu_Project.Models.AccountModel
 @{
     ViewData["Title"] = "Account";
+    string encryptedPassword = new string('*', Model.user.Password?.Length ?? 0);
+    string rank = Model.user.Ranks switch
+    {
+        0 => "user",
+        1 => "admin",
+        69 => "banned user",
+        _ => "wrong rank"
+    };
 }
 
-<div class="text-center">
-    <h1 class="display-4">This is your account.</h1>
-    <p>Here you can browse your data.</p>
-
-    @if (Model != null)
-    {
-        string encryptedPassword = "", rank = "";
-        bool isPasswordShown = false;
-
-        for (int i = 0; i < Model.Password.Length; i++)
-        {
-            encryptedPassword += "*";
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <style>
+        .account-container {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        if (Model.Ranks  == 0)
-        {
-            rank = "user";
-        }
-        else if (Model.Ranks == 1)
-        {
-            rank = "admin";
-        }
-        else if (Model.Ranks == 69)
-        {
-            rank = "banned user";
-        }
-        else
-        {
-            rank = "wrong rank";
+        .account-content {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
+        .account-text-center {
+            text-align: center;
+        }
 
-        <p ALIGN="LEFT"><b>Id:</b> @Model.Id </p>
-        <p ALIGN="LEFT"><b>Rank: </b> @rank</p>
-        <p ALIGN="LEFT"><b>Nick: </b> @Model.Nick</p>
-        <p ALIGN="LEFT"><b>Email:</b> @Model.Login. </p>
+        .account-display-4 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
 
-        <p style="text-align:left;">
-            <strong>Password: </strong>
-            <span style="hidden-password">@encryptedPassword</span>
-        </p>
+        .account-info {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-        <div align="left">
-            <input type="button" id="show-password-button" value="Show password" style="border-radius: 7px;background-color: #E9987D; color: white;" onclick="changePasswordDisplay()" />
+            .account-info p {
+                margin: 10px 0;
+            }
+
+        .account-stats-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+            .account-stats-section p {
+                margin: 5px 0;
+            }
+
+        .account-form-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+            .account-form-section textarea {
+                width: 100%;
+                padding: 10px;
+                margin-top: 10px;
+            }
+
+            .account-form-section button {
+                margin-top: 10px;
+                background-color: #E9987D;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .account-form-section button:hover {
+                    background-color: #d97a64;
+                }
+    </style>
+</head>
+<body>
+    <div class="account-container">
+        <div class="account-content">
+            <div class="account-text-center">
+                <h1 class="account-display-4">This is your account.</h1>
+                <p>Here you can browse your data.</p>
+            </div>
+
+            @if (Model != null)
+            {
+                <div class="account-info">
+                    <p><strong>Rank:</strong> @rank</p>
+                    <p><strong>Nick:</strong> @Model.user.Nick</p>
+                    <p><strong>Email:</strong> @Model.user.Login</p>
+
+                    <p>
+                        <strong>Password:</strong>
+                        <span id="password-field">@encryptedPassword</span>
+                    </p>
+
+                    <div>
+                        <input type="button" id="show-password-button" value="Show password" style="border-radius: 7px; background-color: #E9987D; color: white;" onclick="changePasswordDisplay('@Model.user.Password', '@encryptedPassword')" />
+                    </div>
+                </div>
+
+                <div class="account-stats-section">
+                    <p><strong>Statistics</strong></p>
+
+                    <p><strong>Number of comments:</strong> @(Model.user.Commensts?.Count ?? 0)</p>
+
+                    <p><strong>Number of finished anime:</strong> @Model.FinishedCount</p>
+                    <p><strong>Number of watched anime:</strong> @Model.WatchedCount</p>
+                    <p><strong>Number of planned anime:</strong> @Model.PlannedCount</p>
+                </div>
+
+                <div class="account-form-section">
+                    <form asp-controller="Home" asp-action="ChangePassword" method="post" onsubmit="return validatePasswordChange()">
+                        <input type="text" id="new-password" name="newPassword" maxlength="50" required>
+                        <button type="submit">Change password</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="account-info">
+                    <p><strong>Account Nick:</strong> user0</p>
+                    <p><strong>Account Login:</strong> null</p>
+                    <p><strong>Account Password:</strong> null</p>
+                    <p><strong>Account Rank:</strong> Guest</p>
+                </div>
+            }
         </div>
+    </div>
 
-        <br>
+    <script>
+        function changePasswordDisplay(password, encryptedPassword) {
+            var passwordField = document.getElementById('password-field');
+            var button = document.getElementById('show-password-button');
 
-        <p ALIGN="LEFT"><b>Statistics</b></p>
-
-        if (Model.Commensts != null)
-        {
-            <p ALIGN="LEFT">
-                <b>Number of comments:</b>@Model.Commensts.Count
-            </p>
-        }
-        else
-        {
-            <p ALIGN="LEFT"><b>Number of comments: 0</b></p>
-        }
-
-        if (Model.lists != null)
-        {
-            if (Model.lists.Finished != null)
-            {
-                <p ALIGN="LEFT"><b>Number of finished anime:</b>@Model.lists.Finished.Count </p>
-            }
-            else
-            {
-                <p ALIGN="LEFT"><b>Number of finished anime: 0</b></p>
-            }
-
-            if (Model.lists.Watched != null)
-            {
-                <p ALIGN="LEFT"><b>Number of watched anime:</b>@Model.lists.Watched.Count </p>
-            }
-            else
-            {
-                <p ALIGN="LEFT"><b>Number of watched anime: 0</b></p>
-            }
-
-            if (Model.lists.Planned != null)
-            {
-                <p ALIGN="LEFT"><b>Number of planned anime:</b>@Model.lists.Planned.Count </p>
-            }
-            else
-            {
-                <p ALIGN="LEFT"><b>Number of planned anime: 0</b></p>
+            if (passwordField.textContent === password) {
+                passwordField.textContent = encryptedPassword;
+                button.value = 'Show password';
+            } else {
+                passwordField.textContent = password;
+                button.value = 'Hide password';
             }
         }
-        else
-        {
-            <p ALIGN="LEFT"><b>Number of finished anime: 0</b></p>
-            <p ALIGN="LEFT"><b>Number of watched anime: 0</b></p>
-            <p ALIGN="LEFT"><b>Number of planned anime: 0</b></p>
 
+        function validatePasswordChange() {
+            var password = document.getElementById("new-password").value;
+            if (password === "") {
+                alert("Password cannot be empty.");
+                return false;
+            }
+            return true;
         }
-
-        <br>
-
-        <div>
-
-        <form asp-controller="Home" asp-action="ChangePassword" method="post" style="position: static; float: left; text-align: left">
-            <textarea asp-for="Password" rows="1" cols="50" maxlength="50" required></textarea>
-
-            <br>
-
-                <button type="submit" style="position: static; float: left; text-align: left;background-color: #E9987D; color: white">Change password</button>
-        </form>
-
-        </div>
-
-        <br>
-    }
-    else
-    {
-        <p ALIGN = "LEFT"> <b>Account Id:      </b> 0     </p>
-        <p ALIGN = "LEFT"> <b>Account Nick:    </b> user0 </p>
-        <p ALIGN = "LEFT"> <b>Account Login:   </b> null  </p>
-        <p ALIGN = "LEFT"> <b>Account Password:</b> nulll </p>
-        <p ALIGN = "LEFT"> <b>Account Rank:    </b> Guest </p>
-    }
-
-</div>
+    </script>
+</body>
+</html>

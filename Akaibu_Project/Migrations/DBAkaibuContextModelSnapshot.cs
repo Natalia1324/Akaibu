@@ -126,7 +126,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 6, 6, 13, 5, 31, 315, DateTimeKind.Local).AddTicks(8677),
+                            DateOfProductionStart = new DateTime(2024, 6, 11, 19, 57, 4, 424, DateTimeKind.Local).AddTicks(4434),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -137,7 +137,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 6, 6, 13, 5, 31, 317, DateTimeKind.Local).AddTicks(2989),
+                            DateOfProductionStart = new DateTime(2024, 6, 11, 19, 57, 4, 426, DateTimeKind.Local).AddTicks(7199),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
@@ -183,7 +183,7 @@ namespace Akaibu_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c907670b-878e-42c7-bb70-b2d511e0b78c"),
+                            Id = new Guid("f046d238-c5c4-46fb-b048-b8278c4851c6"),
                             DBAnimeId = 5,
                             DateTheEpisodWasAdded = new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Light Yagami finds the Death Note and starts to use it.",

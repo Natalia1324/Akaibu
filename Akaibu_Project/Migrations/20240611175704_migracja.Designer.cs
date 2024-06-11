@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    [Migration("20240606103831_NowaNazwaMigracji1")]
-    partial class NowaNazwaMigracji1
+    [Migration("20240611175704_migracja")]
+    partial class migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,7 +128,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 6, 6, 12, 38, 31, 212, DateTimeKind.Local).AddTicks(7758),
+                            DateOfProductionStart = new DateTime(2024, 6, 11, 19, 57, 4, 424, DateTimeKind.Local).AddTicks(4434),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -139,7 +139,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 6, 6, 12, 38, 31, 214, DateTimeKind.Local).AddTicks(5997),
+                            DateOfProductionStart = new DateTime(2024, 6, 11, 19, 57, 4, 426, DateTimeKind.Local).AddTicks(7199),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
@@ -181,6 +181,18 @@ namespace Akaibu_Project.Migrations
                     b.HasIndex("DBAnimeId");
 
                     b.ToTable("Episods");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f046d238-c5c4-46fb-b048-b8278c4851c6"),
+                            DBAnimeId = 5,
+                            DateTheEpisodWasAdded = new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Light Yagami finds the Death Note and starts to use it.",
+                            EpisodeLenght = new TimeSpan(0, 0, 23, 0, 0),
+                            Number = 1f,
+                            Title = "Rebirth"
+                        });
                 });
 
             modelBuilder.Entity("Akaibu_Project.Entions.Reports", b =>
@@ -232,7 +244,7 @@ namespace Akaibu_Project.Migrations
                     b.Property<int>("UsersId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("EpisodsId")
+                    b.Property<Guid?>("EpisodsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StatusValue")
@@ -242,7 +254,8 @@ namespace Akaibu_Project.Migrations
                     b.HasKey("DBAnimeId", "UsersId");
 
                     b.HasIndex("EpisodsId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[EpisodsId] IS NOT NULL");
 
                     b.HasIndex("UsersId");
 
@@ -371,8 +384,7 @@ namespace Akaibu_Project.Migrations
                     b.HasOne("Akaibu_Project.Entions.Episods", "Episods")
                         .WithOne("Status")
                         .HasForeignKey("Akaibu_Project.Entions.Status", "EpisodsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Akaibu_Project.Entions.Users", "Users")
                         .WithMany("Status")

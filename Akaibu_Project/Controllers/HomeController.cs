@@ -105,7 +105,7 @@ namespace Akaibu_Project.Controllers
         public IActionResult Account()
         {
             var loggedUser = getLoggedUser();
-
+            
             if (loggedUser == null)
             {
                 return View("Login");
@@ -113,8 +113,24 @@ namespace Akaibu_Project.Controllers
 
             if (loggedUser.isLogged)
             {
-
-                return View(loggedUser);
+                AccountModel model = new AccountModel
+                {
+                    user = loggedUser,
+                    FinishedCount = _context.Users
+                    .Where(u => u.Nick == loggedUser.Nick)
+                    .SelectMany(u => u.Status)
+                    .Count(s => s.StatusValue == "Finished"),
+                        WatchedCount = _context.Users
+                    .Where(u => u.Nick == loggedUser.Nick)
+                    .SelectMany(u => u.Status)
+                    .Count(s => s.StatusValue == "Watched"),
+                        PlannedCount = _context.Users
+                    .Where(u => u.Nick == loggedUser.Nick)
+                    .SelectMany(u => u.Status)
+                    .Count(s => s.StatusValue == "Planned")
+                };
+                //Console.WriteLine("Ilosc ukonczonych: "+loggedUser.lists.Finished.Count);
+                return View(model);
             }
             else
             {
@@ -189,6 +205,7 @@ namespace Akaibu_Project.Controllers
         [HttpPost]
         public IActionResult ChangePassword(string newPassword)
         {
+            Console.WriteLine("Zmieniam haslo na: " + newPassword );
             var loggedUser = getLoggedUser();
 
             if (loggedUser != null && newPassword != null)
@@ -199,6 +216,8 @@ namespace Akaibu_Project.Controllers
                 // Zapisz zmiany w bazie danych
                 _context.Update(loggedUser);
                 _context.SaveChanges();
+                Logout();
+
             }
 
            return RedirectToAction("Index");
@@ -419,7 +438,8 @@ namespace Akaibu_Project.Controllers
                         MyRating = newRating.ToString(),
                         //Users = loggedUser,
                         UsersId = loggedUser.Id,
-                        DBAnimeId = anime.Id
+                        DBAnimeId = anime.Id,
+                        EpisodsId = System.Guid.NewGuid()
                     };
 
                     _context.Comments.Add(newComment);

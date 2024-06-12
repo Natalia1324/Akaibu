@@ -180,7 +180,13 @@ namespace Akaibu_Project.Controllers
         public IActionResult AnimeDetails(int id)
         {
             var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
-
+            
+            Console.WriteLine("Ilosc odcinkow: " + anime.Episods.Count);
+            foreach (var episode in anime.Episods)
+            {
+                Console.WriteLine("Odcinek " + episode.Number);
+            }
+            
             if (anime == null)
             {
                 return NotFound();
@@ -412,7 +418,7 @@ namespace Akaibu_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddRatingAndComment(int animeId, int newRating, string newCommentText)
+        public IActionResult AddRatingAndComment(int animeId, int newRating, int episodeNumber, string newCommentText)
         {
 
             var loggedUser = getLoggedUser();
@@ -426,11 +432,10 @@ namespace Akaibu_Project.Controllers
             {
 
                 var anime = _context.DBAnime.Find(animeId);
+                var episode = _context.Episods.FirstOrDefault(e => e.Number == episodeNumber && e.DBAnimeId == animeId);
 
-
-                if (anime != null)
+                if (anime != null && episode != null)
                 {
-
                     var newComment = new Comments
                     {
                         DateTheCommentWasAdded = DateTime.Now,
@@ -439,18 +444,19 @@ namespace Akaibu_Project.Controllers
                         //Users = loggedUser,
                         UsersId = loggedUser.Id,
                         DBAnimeId = anime.Id,
-                        EpisodsId = System.Guid.NewGuid()
+                        EpisodsId = episode.Id
                     };
+                    newComment.Episods = episode;
+                    _context.Entry(newComment.Episods).State = EntityState.Unchanged;
 
                     _context.Comments.Add(newComment);
-
                     _context.SaveChanges();
 
                     return Comments(animeId);
                 }
                 else
                 {
-                    return NotFound("Anime not found");
+                    return NotFound("Anime or episode not found");
                 }
             }
             else

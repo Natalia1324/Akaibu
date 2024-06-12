@@ -1,6 +1,4 @@
-﻿
-
-<head>
+﻿<head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 </head>
 
@@ -21,10 +19,22 @@
     <h2>Anime @Model.Title comments section</h2>
 
     <ul class="list-unstyled">
+            @foreach (var episode in Model.Episods)
+            {
+                <tr>
+                    <td>@episode.Title</td>
+                    <td>@episode.Number</td>
+                    <td>@episode.Description</td>
+                    <td>@episode.EpisodeLenght.TotalMinutes</td>
+                    <td>@episode.DateTheEpisodWasAdded.ToString("dd.MM.yyyy")</td>
+                </tr>
+            }
+
         @foreach (var comment in Model.Comments)
         {
                 <li class="mb-3">
                     <strong>@comment.Users.Nick</strong>
+
                     <span class="text-muted">@comment.DateTheCommentWasAdded.ToString("dd MMMM yyyy HH:mm")</span>
                     @{
                         int rating = 0;
@@ -49,59 +59,59 @@
         <input type="hidden" name="animeId" value="@Model.Id" />
 
         <div class="form-group">
-                <label style="position: static; float: left; text-align: left; color: #E9987D" for="newRating">Rating:</label>
-                <div class="rating">
-                    <i class="far fa-star" onclick="setRating(1)"></i>
-                    <i class="far fa-star" onclick="setRating(2)"></i>
-                    <i class="far fa-star" onclick="setRating(3)"></i>
-                    <i class="far fa-star" onclick="setRating(4)"></i>
-                    <i class="far fa-star" onclick="setRating(5)"></i>
-                    <input type="hidden" name="newRating" id="newRating" required />
-                </div>
+            <label style="position: static; float: left; text-align: left; color: #E9987D" for="newRating">Rating:</label>
+            <div class="rating">
+                <i class="far fa-star" onclick="setRating(1)"></i>
+                <i class="far fa-star" onclick="setRating(2)"></i>
+                <i class="far fa-star" onclick="setRating(3)"></i>
+                <i class="far fa-star" onclick="setRating(4)"></i>
+                <i class="far fa-star" onclick="setRating(5)"></i>
+                <input type="hidden" name="newRating" id="newRating" required />
             </div>
+        </div>
 
         <div id="commentForm" style="display:none;">
+            <div class="form-group">
+                <label for="episodeNumber">Episode Number:</label>
+                <input type="number" class="form-control" name="episodeNumber" id="episodeNumber" min="1" required />
+            </div>
             <div class="form-group">
                 <label for="newCommentText">Comment:</label>
                 <textarea class="form-control" name="newCommentText" required></textarea>
             </div>
-
-                <button id="commbutton" type="submit" class="btn btn-primary">Submit</button>
+            <button id="commbutton" type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 </div>
 
 <script>
+    var currentRating = 0;
 
-        var currentRating = 0;
+    function setRating(rating) {
+        currentRating = rating;
+        updateStars();
+        toggleCommentForm();
+    }
 
-        function setRating(rating) {
-            currentRating = rating;
-            updateStars();
-            toggleCommentForm();
-        }
-
-        function updateStars() {
-            for (var i = 1; i <= 5; i++) {
-                var star = document.querySelector(".rating i:nth-child(" + i + ")");
-                if (i <= currentRating) {
-                    star.classList.remove("far");
-                    star.classList.add("fas");
-                } else {
-                    star.classList.remove("fas");
-                    star.classList.add("far");
-                }
+    function updateStars() {
+        for (var i = 1; i <= 5; i++) {
+            var star = document.querySelector(".rating i:nth-child(" + i + ")");
+            if (i <= currentRating) {
+                star.classList.remove("far");
+                star.classList.add("fas");
+            } else {
+                star.classList.remove("fas");
+                star.classList.add("far");
             }
-
-            document.getElementById("newRating").value = currentRating;
         }
+
+        document.getElementById("newRating").value = currentRating;
+    }
 
     function toggleCommentForm() {
-
         var ratingInput = document.getElementById("newRating");
         var commentForm = document.getElementById("commentForm");
 
-        // Jeśli ocena jest wprowadzona, pokaż formularz komentarza
         if (ratingInput.value !== "") {
             commentForm.style.display = "block";
         } else {
@@ -110,5 +120,3 @@
     }
 </script>
 </body>
-
-

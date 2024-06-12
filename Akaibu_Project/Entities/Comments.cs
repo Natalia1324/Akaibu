@@ -18,7 +18,7 @@ namespace Akaibu_Project.Entions
         public int UsersId { get; set; }
         public List<Reports> Reports { get; set; } = new List<Reports>();
         public Episods Episods { get; set; }
-        public Guid EpisodsId { get; set;}
+        public Guid? EpisodsId { get; set;}
         
     }
 }

@@ -2,11 +2,14 @@
 @{
     ViewBag.Title = "Add Anime and Episodes";
 }
-
+<head>
+    <link rel="stylesheet" type="text/css" href="~/css/addanime.css">
+</head>
 <h1>Add New Anime and Episodes</h1>
 
 
 <form asp-action="Add_Anime" method="post">
+    <div class=" form-container">
     <h2>Anime Details</h2>
     <label for="Anime_Title">Title:</label>
     <input type="text" id="Anime_Title" name="Anime.Title" required><br>
@@ -65,6 +68,7 @@
     <hr>
 
     <button type="submit">Submit Anime and Episodes</button>
+ </div>
 
     <!-- Template for episode -->
     <template id="episodeTemplate" style="display:none;">

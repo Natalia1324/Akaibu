@@ -131,7 +131,7 @@ namespace Akaibu_Project.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AnimeDetails", new { id = anime.Id });
         }
 
 

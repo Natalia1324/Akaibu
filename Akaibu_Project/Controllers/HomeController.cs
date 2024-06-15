@@ -111,6 +111,31 @@ namespace Akaibu_Project.Controllers
         }
 
         [HttpPost]
+        [Route("Anime/AddEpisode")]
+        public IActionResult AddEpisode(int id, string title, int number, string description, int episodeLength, DateTime dateAdded)
+        {
+            var anime = _context.DBAnime.Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
+            if (anime != null)
+            {
+                var newEpisode = new Episods
+                {
+                    Id = Guid.NewGuid(),
+                    DBAnimeId = anime.Id,
+                    Title = title,
+                    Number = number,
+                    Description = description,
+                    EpisodeLenght = TimeSpan.FromMinutes(episodeLength),
+                    DateTheEpisodWasAdded = dateAdded
+                };
+                _context.Episods.Add(newEpisode);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
         [Route("Anime/CreateWithEpisodes")]
         public IActionResult CreateWithEpisodes(AnimeViewModel model)
         {
@@ -161,29 +186,29 @@ namespace Akaibu_Project.Controllers
             ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
             return View(model);
         }
-        public IActionResult Add_Episode()
-        {
-            ViewBag.Animes = _context.DBAnime.ToList();
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Add_Episode(AnimeViewModel model)
-        {
-            if (model != null)
-            {
+        //public IActionResult Add_Episode()
+        //{
+        //    ViewBag.Animes = _context.DBAnime.ToList();
+        //    return View();
+        //}
+        //[HttpPost]
+        //public IActionResult Add_Episode(AnimeViewModel model)
+        //{
+        //    if (model != null)
+        //    {
 
-                foreach (var episode in model.Episodes)
-                {
-                    episode.Id = Guid.NewGuid();
-                    _context.Episods.Add(episode);
-                }
-                _context.SaveChanges();
-                return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
-            }
+        //        foreach (var episode in model.Episodes)
+        //        {
+        //            episode.Id = Guid.NewGuid();
+        //            _context.Episods.Add(episode);
+        //        }
+        //        _context.SaveChanges();
+        //        return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
+        //    }
             
-            ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
-            return View(model);
-        }
+        //    ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
+        //    return View(model);
+        //}
         //[HttpPost]
         //public async Task<IActionResult> Add_Episode(Episods episode)
         //{

@@ -51,141 +51,325 @@ namespace Akaibu_Project.Controllers
             ViewBag.Animes = _context.DBAnime.ToList();
             return View();
         }
+        //[HttpPost]
+        //public IActionResult Add_Anime(AnimeViewModel model)
+        //{
+        //    if (model != null)
+        //    {
+        //        // Check if the anime already exists
+        //        var result = _context.DBAnime.FirstOrDefault(a => a.Title == model.Anime.Title);
+
+        //        // If anime does not exist, add it
+        //        if (result == null)
+        //        {
+        //            _context.DBAnime.Add(model.Anime);
+        //            _context.SaveChanges(); // SaveChanges here to get the anime Id
+
+        //            // Assign the Id from the newly added anime to episodes
+        //            foreach (var episode in model.Episodes)
+        //            {
+        //                episode.Id = Guid.NewGuid();
+        //                episode.DBAnimeId = model.Anime.Id; // Use the Id of the newly added anime
+        //                _context.Episods.Add(episode);
+        //            }
+        //        }
+        //        else // If anime exists, update it
+        //        {
+        //            _context.Update(model.Anime);
+
+        //            foreach (var episode in model.Episodes)
+        //            {
+        //                var existingEpisode = _context.Episods.FirstOrDefault(e => e.Id == episode.Id);
+
+        //                if (existingEpisode != null)
+        //                {
+        //                    // Update existing episode properties
+        //                    existingEpisode.DBAnimeId = result.Id; // Use the Id of the existing anime
+        //                    existingEpisode.Title = episode.Title;
+        //                    existingEpisode.Number = episode.Number;
+        //                    existingEpisode.Description = episode.Description;
+        //                    existingEpisode.EpisodeLenght = episode.EpisodeLenght;
+        //                    existingEpisode.DateTheEpisodWasAdded = episode.DateTheEpisodWasAdded;
+
+        //                    _context.Episods.Update(existingEpisode);
+        //                }
+        //                else
+        //                {
+        //                    // Add new episode
+        //                    episode.Id = Guid.NewGuid();
+        //                    episode.DBAnimeId = result.Id; // Use the Id of the existing anime
+        //                    _context.Episods.Add(episode);
+        //                }
+        //            }
+        //        }
+
+        //        _context.SaveChanges();
+        //        return RedirectToAction("Index"); // Redirect after successful save
+        //    }
+
+        //    return View();
+        //}
         [HttpPost]
         public IActionResult Add_Anime(AnimeViewModel model)
         {
             if (model != null)
             {
-                // Check if the anime already exists
-                var result = _context.DBAnime.FirstOrDefault(a => a.Title == model.Anime.Title);
-
-                // If anime does not exist, add it
-                if (result == null)
+                try
                 {
-                    _context.DBAnime.Add(model.Anime);
-                    _context.SaveChanges(); // SaveChanges here to get the anime Id
+                    // Check if the anime already exists
+                    var result = _context.DBAnime.FirstOrDefault(a => a.Title == model.Anime.Title);
 
-                    // Assign the Id from the newly added anime to episodes
-                    foreach (var episode in model.Episodes)
+                    if (result == null)
                     {
-                        episode.Id = Guid.NewGuid();
-                        episode.DBAnimeId = model.Anime.Id; // Use the Id of the newly added anime
-                        _context.Episods.Add(episode);
-                    }
-                }
-                else // If anime exists, update it
-                {
-                    _context.Update(model.Anime);
+                        // If anime does not exist, add it
+                        _context.DBAnime.Add(model.Anime);
+                        _context.SaveChanges(); // SaveChanges here to get the anime Id
 
-                    foreach (var episode in model.Episodes)
-                    {
-                        var existingEpisode = _context.Episods.FirstOrDefault(e => e.Id == episode.Id);
-
-                        if (existingEpisode != null)
+                        // Assign the Id from the newly added anime to episodes
+                        foreach (var episode in model.Episodes)
                         {
-                            // Update existing episode properties
-                            existingEpisode.DBAnimeId = result.Id; // Use the Id of the existing anime
-                            existingEpisode.Title = episode.Title;
-                            existingEpisode.Number = episode.Number;
-                            existingEpisode.Description = episode.Description;
-                            existingEpisode.EpisodeLenght = episode.EpisodeLenght;
-                            existingEpisode.DateTheEpisodWasAdded = episode.DateTheEpisodWasAdded;
-
-                            _context.Episods.Update(existingEpisode);
-                        }
-                        else
-                        {
-                            // Add new episode
                             episode.Id = Guid.NewGuid();
-                            episode.DBAnimeId = result.Id; // Use the Id of the existing anime
+                            episode.DBAnimeId = model.Anime.Id; // Use the Id of the newly added anime
                             _context.Episods.Add(episode);
                         }
                     }
-                }
+                    else
+                    {
+                        // If anime exists, update it
+                        _context.Update(model.Anime);
 
-                _context.SaveChanges();
-                return RedirectToAction("Index"); // Redirect after successful save
+                        foreach (var episode in model.Episodes)
+                        {
+                            var existingEpisode = _context.Episods.FirstOrDefault(e => e.Id == episode.Id);
+
+                            if (existingEpisode != null)
+                            {
+                                // Update existing episode properties
+                                existingEpisode.DBAnimeId = result.Id; // Use the Id of the existing anime
+                                existingEpisode.Title = episode.Title;
+                                existingEpisode.Number = episode.Number;
+                                existingEpisode.Description = episode.Description;
+                                existingEpisode.EpisodeLenght = episode.EpisodeLenght;
+                                existingEpisode.DateTheEpisodWasAdded = episode.DateTheEpisodWasAdded;
+
+                                _context.Episods.Update(existingEpisode);
+                            }
+                            else
+                            {
+                                // Add new episode
+                                episode.Id = Guid.NewGuid();
+                                episode.DBAnimeId = result.Id; // Use the Id of the existing anime
+                                _context.Episods.Add(episode);
+                            }
+                        }
+                    }
+
+                    _context.SaveChanges();
+                    return RedirectToAction("Index"); // Redirect after successful save
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (you can use any logging framework you prefer)
+                    _logger.LogError(ex, "An error occurred while adding/updating anime and episodes.");
+
+                    // Optionally, add a model error to provide feedback to the user
+                    ModelState.AddModelError("", "An error occurred while processing your request. Please try again later.");
+                    return RedirectToAction("Index");
+                }
             }
 
-            return View();
+            ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
+            return View(model);
         }
+
+
+        //[HttpPost]
+        //[Route("Anime/AddEpisode")]
+        //public IActionResult AddEpisode(int id, string title, int number, string description, int episodeLength, DateTime dateAdded)
+        //{
+        //    var anime = _context.DBAnime.Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
+        //    if (anime != null)
+        //    {
+        //        var newEpisode = new Episods
+        //        {
+        //            Id = Guid.NewGuid(),
+        //            DBAnimeId = anime.Id,
+        //            Title = title,
+        //            Number = number,
+        //            Description = description,
+        //            EpisodeLenght = TimeSpan.FromMinutes(episodeLength),
+        //            DateTheEpisodWasAdded = dateAdded
+        //        };
+        //        _context.Episods.Add(newEpisode);
+        //        _context.SaveChanges();
+        //    }
+
+        //    return RedirectToAction("AnimeDetails", new { id = anime.Id });
+        //}
 
         [HttpPost]
         [Route("Anime/AddEpisode")]
         public IActionResult AddEpisode(int id, string title, int number, string description, int episodeLength, DateTime dateAdded)
         {
-            var anime = _context.DBAnime.Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
-            if (anime != null)
+            try
             {
-                var newEpisode = new Episods
+                var anime = _context.DBAnime.Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
+                if (anime != null)
                 {
-                    Id = Guid.NewGuid(),
-                    DBAnimeId = anime.Id,
-                    Title = title,
-                    Number = number,
-                    Description = description,
-                    EpisodeLenght = TimeSpan.FromMinutes(episodeLength),
-                    DateTheEpisodWasAdded = dateAdded
-                };
-                _context.Episods.Add(newEpisode);
-                _context.SaveChanges();
+                    var newEpisode = new Episods
+                    {
+                        Id = Guid.NewGuid(),
+                        DBAnimeId = anime.Id,
+                        Title = title,
+                        Number = number,
+                        Description = description,
+                        EpisodeLenght = TimeSpan.FromMinutes(episodeLength),
+                        DateTheEpisodWasAdded = dateAdded
+                    };
+                    _context.Episods.Add(newEpisode);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("AnimeDetails", new { id = anime.Id });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Anime not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use any logging framework you prefer)
+                _logger.LogError(ex, "An error occurred while adding the episode.");
+
+                // Optionally, add a model error to provide feedback to the user
+                ModelState.AddModelError("", "An error occurred while adding the episode. Please try again later.");
+                return RedirectToAction("Index");
             }
 
-            return RedirectToAction("AnimeDetails", new { id = anime.Id });
+            return RedirectToAction("AnimeDetails", new { id = id });
         }
 
 
+        //[HttpPost]
+        //[Route("Anime/CreateWithEpisodes")]
+        //public IActionResult CreateWithEpisodes(AnimeViewModel model)
+        //{
+        //    if (model != null)
+        //    {
+        //        var result = _context.DBAnime.FirstOrDefault(a => a.Title == model.Anime.Title);
+        //        if (result == null)
+        //        {
+        //            _context.DBAnime.Add(model.Anime);
+        //            foreach (var episode in model.Episodes)
+        //            {
+        //                episode.Id = Guid.NewGuid();
+        //                _context.Episods.Add(episode);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            _context.Update(model.Anime);
+        //            foreach (var episode in model.Episodes)
+        //            {
+        //                var existingEpisode = _context.Episods.FirstOrDefault(e => e.Id == episode.Id);
+
+        //                if (existingEpisode != null)
+        //                {
+        //                    // Jeśli istnieje już odcinek o podanym Id, aktualizuj jego właściwości
+        //                    existingEpisode.DBAnimeId = episode.DBAnimeId;
+        //                    existingEpisode.Title = episode.Title;
+        //                    existingEpisode.Number = episode.Number;
+        //                    existingEpisode.Description = episode.Description;
+        //                    existingEpisode.EpisodeLenght = episode.EpisodeLenght;
+        //                    existingEpisode.DateTheEpisodWasAdded = episode.DateTheEpisodWasAdded;
+
+        //                    _context.Episods.Update(existingEpisode);
+        //                }
+        //                else
+        //                {
+        //                    // Jeśli odcinek nie istnieje, ustaw nowe Id i dodaj do kontekstu
+        //                    episode.Id = Guid.NewGuid();
+        //                    _context.Episods.Add(episode);
+        //                }
+        //            }
+        //        }
+
+        //        _context.SaveChanges();
+        //        return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
+        //    }
+
+        //    ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
+        //    return View(model);
+        //}
         [HttpPost]
         [Route("Anime/CreateWithEpisodes")]
         public IActionResult CreateWithEpisodes(AnimeViewModel model)
         {
             if (model != null)
             {
-                var result = _context.DBAnime.FirstOrDefault(a => a.Title == model.Anime.Title);
-                if (result == null)
+                try
                 {
-                    _context.DBAnime.Add(model.Anime);
-                    foreach (var episode in model.Episodes)
+                    var result = _context.DBAnime.FirstOrDefault(a => a.Title == model.Anime.Title);
+                    if (result == null)
                     {
-                        episode.Id = Guid.NewGuid();
-                        _context.Episods.Add(episode);
-                    }
-                }
-                else
-                {
-                    _context.Update(model.Anime);
-                    foreach (var episode in model.Episodes)
-                    {
-                        var existingEpisode = _context.Episods.FirstOrDefault(e => e.Id == episode.Id);
+                        _context.DBAnime.Add(model.Anime);
+                        _context.SaveChanges(); // SaveChanges tutaj, aby uzyskać Id anime
 
-                        if (existingEpisode != null)
+                        foreach (var episode in model.Episodes)
                         {
-                            // Jeśli istnieje już odcinek o podanym Id, aktualizuj jego właściwości
-                            existingEpisode.DBAnimeId = episode.DBAnimeId;
-                            existingEpisode.Title = episode.Title;
-                            existingEpisode.Number = episode.Number;
-                            existingEpisode.Description = episode.Description;
-                            existingEpisode.EpisodeLenght = episode.EpisodeLenght;
-                            existingEpisode.DateTheEpisodWasAdded = episode.DateTheEpisodWasAdded;
-
-                            _context.Episods.Update(existingEpisode);
-                        }
-                        else
-                        {
-                            // Jeśli odcinek nie istnieje, ustaw nowe Id i dodaj do kontekstu
                             episode.Id = Guid.NewGuid();
+                            episode.DBAnimeId = model.Anime.Id; // Ustawienie Id nowo dodanego anime
                             _context.Episods.Add(episode);
                         }
                     }
-                }
+                    else
+                    {
+                        _context.Update(model.Anime);
+                        foreach (var episode in model.Episodes)
+                        {
+                            var existingEpisode = _context.Episods.FirstOrDefault(e => e.Id == episode.Id);
 
-                _context.SaveChanges();
-                return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
+                            if (existingEpisode != null)
+                            {
+                                // Jeśli istnieje już odcinek o podanym Id, aktualizuj jego właściwości
+                                existingEpisode.DBAnimeId = result.Id; // Ustawienie Id istniejącego anime
+                                existingEpisode.Title = episode.Title;
+                                existingEpisode.Number = episode.Number;
+                                existingEpisode.Description = episode.Description;
+                                existingEpisode.EpisodeLenght = episode.EpisodeLenght;
+                                existingEpisode.DateTheEpisodWasAdded = episode.DateTheEpisodWasAdded;
+
+                                _context.Episods.Update(existingEpisode);
+                            }
+                            else
+                            {
+                                // Jeśli odcinek nie istnieje, ustaw nowe Id i dodaj do kontekstu
+                                episode.Id = Guid.NewGuid();
+                                episode.DBAnimeId = result.Id; // Ustawienie Id istniejącego anime
+                                _context.Episods.Add(episode);
+                            }
+                        }
+                    }
+
+                    _context.SaveChanges();
+                    return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (you can use any logging framework you prefer)
+                    _logger.LogError(ex, "An error occurred while creating/updating anime and episodes.");
+
+                    // Optionally, add a model error to provide feedback to the user
+                    ModelState.AddModelError("", "An error occurred while processing your request. Please try again later.");
+                    return RedirectToAction("Index");
+                }
             }
 
             ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
             return View(model);
         }
+
+
         //public IActionResult Add_Episode()
         //{
         //    ViewBag.Animes = _context.DBAnime.ToList();
@@ -205,7 +389,7 @@ namespace Akaibu_Project.Controllers
         //        _context.SaveChanges();
         //        return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
         //    }
-            
+
         //    ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
         //    return View(model);
         //}
@@ -443,6 +627,7 @@ namespace Akaibu_Project.Controllers
             }
             return View("Error");
         }
+
         [HttpPost]
         public IActionResult BanUser(int userId, string reason)
         {

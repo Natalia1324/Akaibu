@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 
@@ -71,8 +72,43 @@ namespace Akaibu_Project.Controllers
 
             return View(anime);
         }
+        public IActionResult Add_Episode()
+        {
+            ViewBag.Animes = _context.DBAnime.ToList();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add_Episode(AnimeViewModel model)
+        {
+            if (model != null)
+            {
+                foreach (var episode in model.Episodes)
+                {
+                    episode.Id = Guid.NewGuid();
+                    _context.Episods.Add(episode);
+                }
+                _context.SaveChanges();
+                return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
+            }
+            
+            ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
+            return View(model);
+        }
+        //[HttpPost]
+        //public async Task<IActionResult> Add_Episode(Episods episode)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        episode.Id = Guid.NewGuid();
+        //        _context.Episods.Add(episode);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
 
-    public IActionResult Account()
+        //    ViewBag.Animes = _context.DBAnime.ToList();
+        //    return View(episode);
+        //}
+        public IActionResult Account()
         {
             var loggedUser = getLoggedUser();
             

@@ -1,0 +1,63 @@
+﻿@model Akaibu_Project.Models.AnimeViewModel
+@{
+    ViewBag.Title = "Add Episodes";
+}
+
+<h1>Add New Episodes</h1>
+
+<form asp-action="Add_Episode" method="post">
+    <div id="episodes">
+        <div class="episode">
+            <h2>Episode</h2>
+            <div>
+                <label for="anime">Anime:</label>
+                <select name="Episodes[0].DBAnimeId" class="anime" asp-items="@(new SelectList(ViewBag.Animes, "Id", "Title"))"></select>
+            </div>
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" name="Episodes[0].Title" class="title" required />
+            </div>
+            <div>
+                <label for="number">Number:</label>
+                <input type="number" step="0.01" name="Episodes[0].Number" class="number" required />
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <textarea name="Episodes[0].Description" class="description" required></textarea>
+            </div>
+            <div>
+                <label for="episodeLenght">Episode Length:</label>
+                <input type="time" name="Episodes[0].EpisodeLenght" class="episodeLenght" required />
+            </div>
+            <div>
+                <label for="dateTheEpisodWasAdded">Date Added:</label>
+                <input type="date" name="Episodes[0].DateTheEpisodWasAdded" class="dateTheEpisodWasAdded" required />
+            </div>
+        </div>
+    </div>
+    <button type="button" id="addEpisodeButton">Add Another Episode</button>
+    <button type="submit">Add Episodes</button>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var episodeIndex = 1;
+
+            $("#addEpisodeButton").click(function () {
+                var newEpisode = $(".episode:first").clone();
+
+                newEpisode.find("input, select, textarea").each(function () {
+                    var name = $(this).attr("name");
+                    var newName = name.replace("Episodes[0]", "Episodes[" + episodeIndex + "]");
+                    $(this).attr("name", newName);
+                    $(this).val('');
+                });
+
+                $("#episodes").append(newEpisode);
+                episodeIndex++;
+            });
+        });
+    </script>
+}

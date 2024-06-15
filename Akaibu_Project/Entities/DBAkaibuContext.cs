@@ -253,7 +253,7 @@ namespace Akaibu_Project.Entities
                 Id = 8,
                 Nick = "User1",
                 Login = "user1@example.com",
-                Password = "hashed_password1", // Upewnij się, że używasz bezpiecznej metody haszowania hasła
+                Password = "xxx", // Upewnij się, że używasz bezpiecznej metody haszowania hasła
                 Ranks = 1
             },
             new Users

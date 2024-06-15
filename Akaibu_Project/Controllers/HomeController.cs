@@ -573,7 +573,6 @@ namespace Akaibu_Project.Controllers
                 ReportText = reportText,
                 DateTheReportWasAdded = DateTime.Now,
                 UsersId = getLoggedUser().Id,
-                DBAnimeId = 1
             };
             _context.Reports.Add(raport);
             _context.SaveChanges();

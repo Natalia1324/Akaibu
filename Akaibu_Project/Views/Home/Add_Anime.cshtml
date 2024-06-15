@@ -1,91 +1,93 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
-@{
-    ViewData["Title"] = "Add Anime";
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Form</title>
-    <link rel="stylesheet" type="text/css" href="~/css/site.css">
-    <link rel="stylesheet" type="text/css" href="~/css/addanime.css">
-    <style>
-        .error {
-            color: red;
-        }
-    </style>
+    <title>Add Anime and Episodes</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="scripts.js"></script>
 </head>
-<body class ="add-anime-page">
-    <div class="add-anime-container">
-        <div class="content-section">
-            <h1 style="position: static; text-align: center; margin-bottom: 35px;">Anime Information Form</h1>
-            <form action="/Home/Add_Anime" method="post" onsubmit="setSubmitButtonClicked()">
-
-                <label style="position: static; float: left; text-align: left; color: #E9987D" for="title">Title:</label>
-                <input style=" border-radius: 7px; " type="text" id="title" name="title"><br>
-
-                <label style="position: static; float: left; color: #E9987D" for="numberOfEpisodes">Number of Episodes:</label>
-                <input style=" border-radius: 7px ;" type="number" id="numberOfEpisodes" name="numberOfEpisodes" required>
-                <br>
-
-                <label style="position: static; float: left; color: #E9987D" for="author">Author:</label>
-                <input style=" border-radius: 7px ;" type="text" id="author" name="author" required>
-                <br>
-
-                <label style="position: static; float: left; color: #E9987D" for="shortStory">Short Story:</label>
-                <textarea style=" border-radius: 7px; " id="shortStory" name="shortStory" required></textarea>
-                <br>
-
-                <label style="position: static; float: left; color: #E9987D" for="tag">Tag:</label>
-                <input style=" border-radius: 7px; " type="text" id="tag" name="tag" required>
-                <br>
-
-                <label style="position: static; float: left; color: #E9987D" for="dateOfProductionStart">Date of Production Start:</label>
-                <input style=" border-radius: 7px; " type="date" id="dateOfProductionStart" name="dateOfProductionStart" required>
-                <br>
-
-                <label style="position: static; float: left; color: #E9987D" for="dateOfProductionFinish">Date of Production Finish:</label>
-                <input style=" border-radius: 7px; " type="date" id="dateOfProductionFinish" name="dateOfProductionFinish">
-                <br>
-
-                <label style="position: static; float: left; color: #E9987D " for="statusAnime">Status Anime:</label>
-                <input style=" border-radius: 7px; " type="text" id="statusAnime" name="statusAnime" required>
-                <br>
-
-                <input type="hidden" name="submitButtonClicked" value="false">
-                <button style=" border-radius: 7px ;" type="submit">Submit</button>
-            </form>
-           
-            
-        </div>
-       
-       
-    </div>
-
+<body>
     <script>
-        document.querySelector('form').addEventListener('submit', function (event) {
-            const requiredFields = ['title', 'numberOfEpisodes', 'author', 'shortStory', 'tag', 'dateOfProductionStart', 'statusAnime'];
+        document.addEventListener('DOMContentLoaded', () => {
+            const addEpisodeButton = document.getElementById('addEpisodeButton');
+            const episodesContainer = document.getElementById('episodesContainer');
+            const episodeTemplate = document.getElementById('episodeTemplate').content;
+            let episodeCount = 0;
 
-            for (const field of requiredFields) {
-                const inputField = document.getElementById(field);
-                if (!inputField.value.trim()) {
-                    event.preventDefault(); // Prevent form submission
-                    const errorMessage = document.createElement('p');
-                    errorMessage.className = 'error';
-                    errorMessage.textContent = `The ${field} field is required.`;
-                    inputField.insertAdjacentElement('afterend', errorMessage);
-                }
-            }
+            addEpisodeButton.addEventListener('click', () => {
+                episodeCount++;
+                const newEpisode = episodeTemplate.cloneNode(true);
+                const labels = newEpisode.querySelectorAll('label');
+                const inputs = newEpisode.querySelectorAll('input, textarea');
+
+                labels.forEach(label => {
+                    label.htmlFor = label.htmlFor.replace('0', episodeCount);
+                });
+
+                inputs.forEach(input => {
+                    input.id = input.id.replace('0', episodeCount);
+                    input.name = input.name.replace('0', episodeCount);
+                });
+
+                episodesContainer.appendChild(newEpisode);
+            });
         });
 
-        function setSubmitButtonClicked() {
-            document.getElementById("submitButtonClicked").value = "true";
-        }
     </script>
+    <h1>Add New Anime and Episodes</h1>
+    <form id="animeForm" action="/Anime/CreateWithEpisodes" method="post">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="Title" required><br>
+
+        <label for="numberOfEpisodes">Number of Episodes:</label>
+        <input type="number" id="numberOfEpisodes" name="NumberOfEpisodes" required><br>
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="Author" required><br>
+
+        <label for="shortStory">Short Story:</label>
+        <textarea id="shortStory" name="ShortStory" required></textarea><br>
+
+        <label for="tag">Tag:</label>
+        <input type="text" id="tag" name="Tag" required><br>
+
+        <label for="dateOfProductionStart">Date of Production Start:</label>
+        <input type="date" id="dateOfProductionStart" name="DateOfProductionStart" required><br>
+
+        <label for="dateOfProductionFinish">Date of Production Finish:</label>
+        <input type="date" id="dateOfProductionFinish" name="DateOfProductionFinish"><br>
+
+        <label for="statusAnime">Status:</label>
+        <input type="text" id="statusAnime" name="StatusAnime" required><br>
+
+        <h2>Episodes</h2>
+        <div id="episodesContainer">
+            <!-- Episodes will be dynamically added here -->
+        </div>
+
+        <button type="button" id="addEpisodeButton">Add Episode</button><br><br>
+        <button type="submit">Submit Anime and Episodes</button>
+    </form>
+
+    <template id="episodeTemplate">
+        <div class="episode">
+            <h3>Episode</h3>
+            <label for="episodes[0].Title">Title:</label>
+            <input type="text" id="episodes[0].Title" name="Episodes[0].Title" required><br>
+
+            <label for="episodes[0].Number">Number:</label>
+            <input type="number" id="episodes[0].Number" step="0.01" name="Episodes[0].Number" required><br>
+
+            <label for="episodes[0].Description">Description:</label>
+            <textarea id="episodes[0].Description" name="Episodes[0].Description" required></textarea><br>
+
+            <label for="episodes[0].EpisodeLenght">Episode Length:</label>
+            <input type="time" id="episodes[0].EpisodeLenght" name="Episodes[0].EpisodeLenght" required><br>
+
+            <label for="episodes[0].DateTheEpisodWasAdded">Date Added:</label>
+            <input type="date" id="episodes[0].DateTheEpisodWasAdded" name="Episodes[0].DateTheEpisodWasAdded" required><br><br>
+        </div>
+    </template>
 </body>
 </html>

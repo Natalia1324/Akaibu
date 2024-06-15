@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Panel";
     var panelData = ViewBag.PanelData;
+    var loggedUser = ViewContext.HttpContext.Session.GetObject<Akaibu_Project.Entions.Users>("LoggedUser");
 }
 
 <!DOCTYPE html>
@@ -37,10 +38,20 @@
         tr:hover {
             background-color: #f5f5f5;
         }
+
+        .ban-button {
+            background-color: red;
+            color: white;
+        }
+
+        .unban-button {
+            background-color: green;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    
+
     <h2>Welcome to the Admin Panel</h2>
     <p>Raports:</p>
     <table border="1">
@@ -58,10 +69,10 @@
                     <td>@report.ReportText</td>
                     <td>@report.DateTheReportWasAdded</td>
                     <td>
-                    @{
-                        var user = ((IEnumerable<dynamic>)panelData.Users).FirstOrDefault(u => u.Id == report.UsersId);
-                        var userName = (user != null) ? user.Nick : "Brak użytkownika";
-                        @userName
+                        @{
+                            var user = ((IEnumerable<dynamic>)panelData.Users).FirstOrDefault(u => u.Id == report.UsersId);
+                            var userName = (user != null) ? user.Nick : "Brak użytkownika";
+                            @userName
                         }
                     </td>
                 </tr>
@@ -72,34 +83,44 @@
     <br>
     <p>Users:</p>
     <table>
-            <thead>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Nick</th>
+                <th>Login</th>
+                <th>Rank</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in panelData.Users)
+            {
                 <tr>
-                    <th>User ID</th>
-                    <th>Nick</th>
-                    <th>Login</th>
-                    <th>Rank</th>
-                     <th>Actions</th>
-                    <!-- Dodaj więcej kolumn w miarę potrzeb -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in panelData.Users)
-                {
-                    <tr>
-                        <td>@user.Id</td>
-                        <td>@user.Nick</td>
-                        <td>@user.Login</td>
-                        <td>@user.Ranks</td>
+                    <td>@user.Id</td>
+                    <td>@user.Nick</td>
+                    <td>@user.Login</td>
+                    <td>@user.Ranks</td>
                     <td>
-                        <form method="post" action="@Url.Action("BanUser", "Home")">
-                            <input type="hidden" name="userId" value="@user.Id" />
-                            <button type="submit" style="background-color: red; color: white;">Ban</button>
-                        </form>
+                        @if (user.Id != loggedUser.Id)
+                        {
+                            @if (user.Ranks == 69)
+                            {
+                                <form method="post" action="@Url.Action("UnbanUser", "Home", new { userId = user.Id })">
+                                    <button type="submit" class="unban-button">Unban</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" action="@Url.Action("ShowBanReasonForm", "Home", new { userId = user.Id })">
+                                    <button type="submit" class="ban-button">Ban</button>
+                                </form>
+                            }
+                        }
                     </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tr>
+            }
+        </tbody>
+    </table>
     <p>Sumaryczna ilość użytkowników: @panelData.Users.Count</p>
     <br>
 </body>

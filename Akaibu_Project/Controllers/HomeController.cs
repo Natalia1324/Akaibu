@@ -30,79 +30,49 @@ namespace Akaibu_Project.Controllers
             _context = context;
 
         }
-
         private Users getLoggedUser()
         {
             return HttpContext.Session.GetObject<Users>("LoggedUser");
         }
-
         public IActionResult Index()
         {
 
             return View(getLoggedUser());
 
         }
-
         public IActionResult Privacy()
         {
 
             return View(getLoggedUser());
         }
-
         public IActionResult Add_Anime()
         {
             return View();
         }
+        [HttpPost]
+
 
         [HttpPost]
-        public IActionResult Add_Anime(DBAnime model, bool submitButtonClicked)
+        [Route("Anime/CreateWithEpisodes")]
+        public IActionResult CreateWithEpisodes(DBAnime anime, List<Episods> episodes)
         {
-
             if (ModelState.IsValid)
             {
-                // Sprawdź, czy anime o podanym tytule już istnieje
-                var existingAnime = _context.DBAnime.FirstOrDefault(a => a.Title == model.Title);
-
-                if (existingAnime != null)
+                foreach (var episode in episodes)
                 {
-                    // Jeśli istnieje rekord o tej samej nazwie, zaktualizuj go
-                    existingAnime.NumberOfEpisodes = model.NumberOfEpisodes;
-                    existingAnime.Author = model.Author;
-                    existingAnime.ShortStory = model.ShortStory;
-                    existingAnime.Tag = model.Tag;
-                    existingAnime.DateOfProductionStart = model.DateOfProductionStart;
-                    existingAnime.DateOfProductionFinish = model.DateOfProductionFinish;
-                    existingAnime.StatusAnime = model.StatusAnime;
-
-                    _context.Update(existingAnime);
+                    episode.DBAnime = anime;
+                    anime.Episods.Add(episode);
                 }
-                else
-                {
-                    var anime = new DBAnime
-                    {
-                        Title = model.Title,
-                        NumberOfEpisodes = model.NumberOfEpisodes,
-                        Author = model.Author,
-                        ShortStory = model.ShortStory,
-                        Tag = model.Tag,
-                        DateOfProductionStart = model.DateOfProductionStart,
-                        DateOfProductionFinish = model.DateOfProductionFinish,
-                        StatusAnime = model.StatusAnime
-                    };
-                    _context.DBAnime.Add(anime);
-                }
-                // Dodaj anime do bazy danych
 
+                _context.DBAnime.Add(anime);
                 _context.SaveChanges();
-
-                return RedirectToAction("Index"); // Przekieruj gdziekolwiek po pomyślnym dodaniu
+                return RedirectToAction("Index"); // Redirect to the list of animes or another relevant page
             }
 
-            return View(model);
-
+            return View(anime);
         }
 
-        public IActionResult Account()
+    public IActionResult Account()
         {
             var loggedUser = getLoggedUser();
             
@@ -140,21 +110,22 @@ namespace Akaibu_Project.Controllers
 
 
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
         public IActionResult Search(string query, string tag)
         {
             var tagList = tag?.Split(',').Select(t => t.Trim()).ToList();
 
             var results = _context.DBAnime
-                .Where(a => string.IsNullOrEmpty(query) || a.Title.Contains(query) || a.ShortStory.Contains(query))
+                .Where(a => string.IsNullOrEmpty(query)
+                            || a.Title.ToLower().Contains(query.ToLower())
+                            || a.ShortStory.ToLower().Contains(query.ToLower()))
                 .ToList()
-                .Where(a => tagList == null || tagList.All(t => a.Tag.Contains(t)))
+                .Where(a => tagList == null
+                            || tagList.All(t => a.Tag.ToLower().Contains(t.ToLower())))
                 .ToList();
 
             var model = new SearchResults
@@ -176,7 +147,6 @@ namespace Akaibu_Project.Controllers
 
            
         }
-
         public IActionResult AnimeDetails(int id)
         {
             var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
@@ -194,20 +164,12 @@ namespace Akaibu_Project.Controllers
 
             return View(anime);
         }
-
-       
-
-        
-
         public IActionResult Login()
         {
 
             return View(); //zmiana
 
         }
-
-
-
         [HttpPost]
         public IActionResult ChangePassword(string newPassword)
         {
@@ -228,9 +190,48 @@ namespace Akaibu_Project.Controllers
 
            return RedirectToAction("Index");
         }
+        [HttpPost]
+        public IActionResult BanReason(int userId)
+        {
+            var user = _context.Users.Find(userId); ; // Metoda do pobrania użytkownika z bazy danych
+            if (user == null)
+            {
+                return View("Index");
+            }
 
-            [HttpPost]
-        public IActionResult BanUser(int userId)
+            var model = new BanReasonViewModel
+            {
+                UserId = userId
+            };
+
+            return View(model);
+        }
+        // Akcja do obsługi wysłania formularza
+        [HttpPost]
+        public IActionResult ProcessBanReasonForm(BanReasonViewModel model)
+        {
+            if (model != null)
+            {
+                var user = _context.Users.Find(model.UserId); ; // Metoda do pobrania użytkownika z bazy danych
+                if (user == null)
+                {
+                   // return View("Error");
+                }
+
+                BanUser(model.UserId, model.Reason);
+
+                //user.Ranks = 69;
+                
+                //user.Bans = model.Reason; // Dodanie powodu bana
+                //Console.WriteLine("powód bana: " + model.Reason);
+                //_context.Update(user);// Metoda do zapisania zmian w bazie danych
+
+                return RedirectToAction("Index"); // Przekierowanie po zapisaniu
+            }
+            return View("Error");
+        }
+        [HttpPost]
+        public IActionResult BanUser(int userId, string reason)
         {
             var loggedUser = getLoggedUser();
 
@@ -245,6 +246,7 @@ namespace Akaibu_Project.Controllers
                 {
                     // Zmień rangę użytkownika na 69 (lub inną wybraną)
                     userToBan.Ranks = 69;
+                    userToBan.Bans = reason;
 
                     // Zapisz zmiany w bazie danych
                     _context.Update(userToBan);
@@ -261,7 +263,37 @@ namespace Akaibu_Project.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [HttpPost]
+        public IActionResult UnbanUser(int userId)
+        {
+            var loggedUser = getLoggedUser();
 
+            // Sprawdź, czy użytkownik ma uprawnienia admina
+            if (loggedUser != null && loggedUser.Ranks == 1)
+            {
+                // Pobierz użytkownika do zbanowania
+                var userToUnBan = _context.Users.Find(userId);
+
+                // Sprawdź, czy użytkownik istnieje
+                if (userToUnBan != null)
+                {
+                    userToUnBan.Ranks = 0;
+
+                    // Zapisz zmiany w bazie danych
+                    _context.Update(userToUnBan);
+                    _context.SaveChanges();
+                }
+
+                // Przekieruj z powrotem do panelu admina lub gdziekolwiek indziej
+                return RedirectToAction("Privacy");
+            }
+            else
+            {
+                // Jeśli użytkownik nie ma uprawnień admina, możesz przekierować go
+                // gdzie indziej lub wyświetlić komunikat o braku uprawnień
+                return RedirectToAction("Index");
+            }
+        }
         //[HttpPost]
         public IActionResult Panel()
         {
@@ -290,8 +322,6 @@ namespace Akaibu_Project.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
-
         public IActionResult BanPage()
         {
 
@@ -300,6 +330,7 @@ namespace Akaibu_Project.Controllers
             // Przykład sprawdzenia, czy użytkownik ma uprawnienia admina
             if (loggedUser != null && loggedUser.Ranks == 69)
             {
+
                 return View(loggedUser);// loggedUser.Bans
 
             }
@@ -310,7 +341,6 @@ namespace Akaibu_Project.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
         [HttpPost]
         public IActionResult Login(Users newUser)
         {
@@ -324,6 +354,7 @@ namespace Akaibu_Project.Controllers
                 loggedUser.Id = u.Id;
                 loggedUser.Login = u.Login;
                 loggedUser.Ranks = u.Ranks;
+                loggedUser.Bans = u.Bans;
                 HttpContext.Session.SetObject("LoggedUser", loggedUser);
                 return View("Index", loggedUser);
 
@@ -335,7 +366,6 @@ namespace Akaibu_Project.Controllers
                 return View();
             }
         }
-
         [HttpPost]
         [Route("/Home/Logout")]
         public IActionResult Logout()
@@ -343,12 +373,10 @@ namespace Akaibu_Project.Controllers
             HttpContext.Session.Remove("LoggedUser");
             return Ok();
         }
-
         public IActionResult Register()
         {
             return View(getLoggedUser());
         }
-
         [HttpPost]
         public IActionResult Register(Users newUser)
         {
@@ -376,13 +404,10 @@ namespace Akaibu_Project.Controllers
             }
 
         }
-
-
         public IActionResult SendReport()
         {
             return (View());
         }
-
         [HttpPost]
         public IActionResult SendReport(string reportText)
         {
@@ -403,8 +428,6 @@ namespace Akaibu_Project.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
         public IActionResult Comments(int id)
         {
             var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).FirstOrDefault(a => a.Id == id);
@@ -416,7 +439,6 @@ namespace Akaibu_Project.Controllers
 
             return View("Comments", anime);
         }
-
         [HttpPost]
         public IActionResult AddRatingAndComment(int animeId, int newRating, int episodeNumber, string newCommentText)
         {
@@ -464,7 +486,6 @@ namespace Akaibu_Project.Controllers
                 return RedirectToAction("Login");
             }
         }
-
         [HttpPost]
         public IActionResult AddToFinishedList(DBAnime anime)
         {
@@ -479,7 +500,6 @@ namespace Akaibu_Project.Controllers
 
             return View("Index"); 
         }
-
         [HttpPost]
         public IActionResult AddToCurrentlyWatchedList(DBAnime anime)
         {
@@ -496,7 +516,6 @@ namespace Akaibu_Project.Controllers
 
             return View("Index");  
         }
-
         [HttpPost]
         public IActionResult AddToPlannedList(DBAnime anime)
         {
@@ -513,7 +532,6 @@ namespace Akaibu_Project.Controllers
 
             return View("Index");
         }
-
         public IActionResult Lists()
         {
             var loggedUser = getLoggedUser();
@@ -573,7 +591,5 @@ namespace Akaibu_Project.Controllers
 
 
         }
-
-
     }
 }

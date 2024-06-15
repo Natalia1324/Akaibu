@@ -1,8 +1,6 @@
 ﻿@{
     ViewData["Title"] = "BanPage";
-    //var panelData = ViewBag.PanelData;
 }
-
 
 <!DOCTYPE html>
 <html>
@@ -13,10 +11,16 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            text-align: center;
         }
 
         h2 {
             color: RED;
+        }
+
+        p {
+            font-weight: bold;
+            font-size: 20px;
         }
 
         table {
@@ -38,16 +42,28 @@
         tr:hover {
             background-color: #f5f5f5;
         }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+            .center-content img {
+                margin: 20px 0;
+                width: 50%;
+                height: auto;
+            }
     </style>
 </head>
 <body>
-    
-    <h2>Ban for: @Model.Nick! </h2>
-    @if (true)
-    {
-        <p><b>Account Nick: @Model.Nick </b></p>
-        <p><b>Account Reason: @Model.Bans </b></p>
 
-    }
+    <div class="center-content">
+        <h2>Ban for: @Model.Nick!</h2>
+        <img src="~/image/Ban.png" alt="Ban Image" />
+        <p>Account Nick: @Model.Nick</p>
+        <p>Account Reason: @Model.Bans</p>
+    </div>
+
 </body>
 </html>

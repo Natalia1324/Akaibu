@@ -34,9 +34,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Credits</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Add_Episode">Add Episodes</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" id="searchButton">Search</a>
                             </li>
                             @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true)

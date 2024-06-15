@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akaibu_Project.Migrations
 {
     [DbContext(typeof(DBAkaibuContext))]
-    [Migration("20240615134026_migracja")]
-    partial class migracja
+    [Migration("20240615190901_NowaNazwaMigracji")]
+    partial class NowaNazwaMigracji
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,7 +128,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 6, 15, 15, 40, 26, 536, DateTimeKind.Local).AddTicks(2087),
+                            DateOfProductionStart = new DateTime(2024, 6, 15, 21, 9, 1, 517, DateTimeKind.Local).AddTicks(5130),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -139,7 +139,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 6, 15, 15, 40, 26, 538, DateTimeKind.Local).AddTicks(6331),
+                            DateOfProductionStart = new DateTime(2024, 6, 15, 21, 9, 1, 519, DateTimeKind.Local).AddTicks(8958),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
@@ -185,7 +185,7 @@ namespace Akaibu_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("226b670d-aca3-4de5-91c1-aa83f0a049bc"),
+                            Id = new Guid("3e1dd9b5-c72d-43c5-9999-d2b3023058b6"),
                             DBAnimeId = 5,
                             DateTheEpisodWasAdded = new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Light Yagami finds the Death Note and starts to use it.",

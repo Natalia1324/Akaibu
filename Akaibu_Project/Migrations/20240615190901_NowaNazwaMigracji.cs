@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Akaibu_Project.Migrations
 {
-    public partial class migracja : Migration
+    public partial class NowaNazwaMigracji : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -182,8 +182,8 @@ namespace Akaibu_Project.Migrations
                 {
                     { 5, "Madhouse", new DateTime(2007, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 37, "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...", "Finished", "Akcja, Tajemnica, Kryminalne", "Death Note" },
                     { 6, "A.C.G.T.", null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 25, "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...", "Ongoing", "Akcja, Przygodowe, Fantasy", "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su" },
-                    { 7, "Author1", null, new DateTime(2024, 6, 15, 15, 40, 26, 536, DateTimeKind.Local).AddTicks(2087), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
-                    { 8, "Author2", null, new DateTime(2024, 6, 15, 15, 40, 26, 538, DateTimeKind.Local).AddTicks(6331), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
+                    { 7, "Author1", null, new DateTime(2024, 6, 15, 21, 9, 1, 517, DateTimeKind.Local).AddTicks(5130), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
+                    { 8, "Author2", null, new DateTime(2024, 6, 15, 21, 9, 1, 519, DateTimeKind.Local).AddTicks(8958), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
                 });
 
             migrationBuilder.InsertData(
@@ -198,7 +198,7 @@ namespace Akaibu_Project.Migrations
             migrationBuilder.InsertData(
                 table: "Episods",
                 columns: new[] { "Id", "DBAnimeId", "DateTheEpisodWasAdded", "Description", "EpisodeLenght", "Number", "Title" },
-                values: new object[] { new Guid("226b670d-aca3-4de5-91c1-aa83f0a049bc"), 5, new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Light Yagami finds the Death Note and starts to use it.", new TimeSpan(0, 0, 23, 0, 0), 1f, "Rebirth" });
+                values: new object[] { new Guid("3e1dd9b5-c72d-43c5-9999-d2b3023058b6"), 5, new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Light Yagami finds the Death Note and starts to use it.", new TimeSpan(0, 0, 23, 0, 0), 1f, "Rebirth" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_DBAnimeId",

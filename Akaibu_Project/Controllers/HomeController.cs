@@ -661,7 +661,37 @@ namespace Akaibu_Project.Controllers
                 return RedirectToAction("Index");
             }
         }
-        [HttpPost]
+        //[HttpPost]
+        //public IActionResult UnbanUser(int userId)
+        //{
+        //    var loggedUser = getLoggedUser();
+
+        //    // Sprawdź, czy użytkownik ma uprawnienia admina
+        //    if (loggedUser != null && loggedUser.Ranks == 1)
+        //    {
+        //        // Pobierz użytkownika do zbanowania
+        //        var userToUnBan = _context.Users.Find(userId);
+
+        //        // Sprawdź, czy użytkownik istnieje
+        //        if (userToUnBan != null)
+        //        {
+        //            userToUnBan.Ranks = 0;
+
+        //            // Zapisz zmiany w bazie danych
+        //            _context.Update(userToUnBan);
+        //            _context.SaveChanges();
+        //        }
+
+        //        // Przekieruj z powrotem do panelu admina lub gdziekolwiek indziej
+        //        return RedirectToAction("Privacy");
+        //    }
+        //    else
+        //    {
+        //        // Jeśli użytkownik nie ma uprawnień admina, możesz przekierować go
+        //        // gdzie indziej lub wyświetlić komunikat o braku uprawnień
+        //        return RedirectToAction("Index");
+        //    }
+        //}
         public IActionResult UnbanUser(int userId)
         {
             var loggedUser = getLoggedUser();
@@ -669,21 +699,35 @@ namespace Akaibu_Project.Controllers
             // Sprawdź, czy użytkownik ma uprawnienia admina
             if (loggedUser != null && loggedUser.Ranks == 1)
             {
-                // Pobierz użytkownika do zbanowania
-                var userToUnBan = _context.Users.Find(userId);
-
-                // Sprawdź, czy użytkownik istnieje
-                if (userToUnBan != null)
+                try
                 {
-                    userToUnBan.Ranks = 0;
+                    // Pobierz użytkownika do odbanowania
+                    var userToUnBan = _context.Users.Find(userId);
 
-                    // Zapisz zmiany w bazie danych
-                    _context.Update(userToUnBan);
-                    _context.SaveChanges();
+                    // Sprawdź, czy użytkownik istnieje
+                    if (userToUnBan != null)
+                    {
+                        userToUnBan.Ranks = 0;
+
+                        // Zapisz zmiany w bazie danych
+                        _context.Update(userToUnBan);
+                        _context.SaveChanges();
+                    }
+
+                    // Przekieruj z powrotem do panelu admina lub gdziekolwiek indziej
+                    return RedirectToAction("Privacy");
                 }
+                catch (Exception ex)
+                {
+                    // Logowanie błędów (możesz użyć loggera lub zapisać błąd w bazie danych)
+                    // logger.LogError(ex, "Error unbanning user with ID {userId}", userId);
 
-                // Przekieruj z powrotem do panelu admina lub gdziekolwiek indziej
-                return RedirectToAction("Privacy");
+                    // Możesz również dodać informację o błędzie do widoku
+                    ViewBag.ErrorMessage = "Wystąpił błąd podczas odbanowywania użytkownika. Proszę spróbować ponownie później.";
+
+                    // Przekierowanie do odpowiedniego widoku z informacją o błędzie
+                    return View("Error");
+                }
             }
             else
             {
@@ -692,6 +736,8 @@ namespace Akaibu_Project.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+
         //[HttpPost]
         public IActionResult Panel()
         {
@@ -883,52 +929,179 @@ namespace Akaibu_Project.Controllers
                 return RedirectToAction("Login");
             }
         }
+        //[HttpPost]
+        //public IActionResult AddToFinishedList(DBAnime anime)
+        //{
+        //    var logged = getLoggedUser();
+        //    Status status = new Status();
+        //    status.UsersId = logged.Id;
+        //    status.DBAnimeId = anime.Id;
+        //    //status.EpisodsId = null;
+        //    status.StatusValue = "Finished";
+        //    _context.Status.Add(status);
+        //    _context.SaveChanges();
+
+        //    return View("Index"); 
+        //}
         [HttpPost]
         public IActionResult AddToFinishedList(DBAnime anime)
         {
-            var logged = getLoggedUser();
-            Status status = new Status();
-            status.UsersId = logged.Id;
-            status.DBAnimeId = anime.Id;
-            status.EpisodsId = null;
-            status.StatusValue = "Finished";
-            _context.Status.Add(status);
-            _context.SaveChanges();
+            try
+            {
+                var logged = getLoggedUser();
+                Status status = new Status();
+                status.UsersId = logged.Id;
+                status.DBAnimeId = anime.Id;
+                //status.EpisodsId = null;
+                status.StatusValue = "Finished";
+                _context.Status.Add(status);
+                _context.SaveChanges();
 
-            return View("Index"); 
+                return View("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while adding to the finished list.");
+                // Log the exception or handle it as needed
+                return View("Index"); // Assuming "Index" is your error handling view
+            }
         }
+
+
+        [HttpPost]
+        public IActionResult AddToCurrentlyWatchedListEpizod(int animeId, Guid episodeId) // Przekazujesz Id epizodu do akcji
+        {
+            try
+            {
+                var logged = getLoggedUser();
+                if (logged == null)
+                {
+                    ModelState.AddModelError(string.Empty, "You must be logged in to perform this action.");
+                    return View("Index");
+                }
+
+                var anime = _context.DBAnime.Find(animeId);
+                var episode = _context.Episods.Find(episodeId);
+
+                if (anime == null || episode == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Anime or episode not found.");
+                    return View("Index");
+                }
+
+                Status status = new Status
+                {
+                    UsersId = logged.Id,
+                    DBAnimeId = anime.Id,
+                    EpisodsId = episode.Id,
+                    StatusValue = "Watched"
+                };
+
+                _context.Status.Add(status);
+                _context.SaveChanges();
+
+                return View("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while adding to the currently watched list.");
+                // Optionally log the exception
+                return View("Index");
+            }
+            //var logged = getLoggedUser();
+            //Status status = new Status();
+            //status.UsersId = logged.Id;
+            //status.DBAnimeId = anime.Id;
+            //status.EpisodsId = epizod.Id;
+            ////status.Episods.Number = 0;
+            //status.StatusValue = "Watched";
+            //_context.Status.Add(status);
+            //_context.SaveChanges();
+
+            //return View("Index");
+        }
+
+        //[HttpPost]
+        //    public IActionResult AddToCurrentlyWatchedList(DBAnime anime)
+        //    {
+
+        //        var logged = getLoggedUser();
+        //        Status status = new Status();
+        //        status.UsersId = logged.Id;
+        //        status.DBAnimeId = anime.Id;
+        //        status.EpisodsId = null;
+        //        //status.Episods.Number = 0;
+        //        status.StatusValue = "Watched";
+        //        _context.Status.Add(status);
+        //        _context.SaveChanges();
+
+        //        return View("Index");  
+        //    }
+
         [HttpPost]
         public IActionResult AddToCurrentlyWatchedList(DBAnime anime)
         {
+            try
+            {
+                var logged = getLoggedUser();
+                Status status = new Status();
+                status.UsersId = logged.Id;
+                status.DBAnimeId = anime.Id;
+                status.EpisodsId = null; // Zakładam, że EpisodesId może być null
+                status.StatusValue = "Watched";
+                _context.Status.Add(status);
+                _context.SaveChanges();
 
-            var logged = getLoggedUser();
-            Status status = new Status();
-            status.UsersId = logged.Id;
-            status.DBAnimeId = anime.Id;
-            status.EpisodsId = null;
-            //status.Episods.Number = 0;
-            status.StatusValue = "Watched";
-            _context.Status.Add(status);
-            _context.SaveChanges();
-
-            return View("Index");  
+                return View("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while adding to the currently watched list.");
+                // Log the exception or handle it as needed
+                return View("Index"); // Assuming "Index" is your error handling view
+            }
         }
+
+        //[HttpPost]
+        //public IActionResult AddToPlannedList(DBAnime anime)
+        //{
+
+        //var logged = getLoggedUser();
+        //Status status=new Status();
+        //    status.UsersId = logged.Id;
+        //    status.DBAnimeId = anime.Id;
+        //    status.EpisodsId = null;
+        //    //status.Episods.Number = 0;
+        //    status.StatusValue = "Planned";
+        //    _context.Status.Add(status);
+        //    _context.SaveChanges();
+
+        //    return View("Index");
+        //}
         [HttpPost]
         public IActionResult AddToPlannedList(DBAnime anime)
         {
+            try
+            {
+                var logged = getLoggedUser();
+                Status status = new Status();
+                status.UsersId = logged.Id;
+                status.DBAnimeId = anime.Id;
+                status.EpisodsId = null; // Zakładam, że EpisodesId może być null
+                status.StatusValue = "Planned";
+                _context.Status.Add(status);
+                _context.SaveChanges();
 
-        var logged = getLoggedUser();
-        Status status=new Status();
-            status.UsersId = logged.Id;
-            status.DBAnimeId = anime.Id;
-            status.EpisodsId = null;
-            //status.Episods.Number = 0;
-            status.StatusValue = "Planned";
-            _context.Status.Add(status);
-            _context.SaveChanges();
-
-            return View("Index");
+                return View("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while adding to the planned list.");
+                // Log the exception or handle it as needed
+                return View("Index"); // Assuming "Index" is your error handling view
+            }
         }
+
         public IActionResult Lists()
         {
             var loggedUser = getLoggedUser();

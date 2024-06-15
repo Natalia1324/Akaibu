@@ -148,31 +148,69 @@
 
     <h3>Episodes</h3>
     <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Number</th>
-                <th>Description</th>
-                <th>Length (minutes)</th>
-                <th>Release Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var episode in Model.Episods)
-            {
+       @*  @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true)
+        {
+            <thead>
                 <tr>
-                    <td>@episode.Title</td>
-                    <td>@episode.Number</td>
-                    <td>@episode.Description</td>
-                    <td>@episode.EpisodeLenght.TotalMinutes</td>
-                    <td>@episode.DateTheEpisodWasAdded.ToString("dd.MM.yyyy")</td>
+                    <th>Title</th>
+                    <th>Number</th>
+                    <th>Description</th>
+                    <th>Length (minutes)</th>
+                    <th>Release Date</th>
                 </tr>
-            }
-        </tbody>
+            </thead>
+            <tbody>
+                @foreach (var episode in Model.Episods)
+                {
+                    <tr>
+                        <td>@episode.Title</td>
+                        <td>@episode.Number</td>
+                        <td>@episode.Description</td>
+                        <td>@episode.EpisodeLenght.TotalMinutes</td>
+                        <td>@episode.DateTheEpisodWasAdded.ToString("dd.MM.yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        }
+        else
+        { *@
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Number</th>
+                    <th>Description</th>
+                    <th>Length (minutes)</th>
+                    <th>Release Date</th>
+                    <th>Obejrzane</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var episode in Model.Episods)
+                {
+                    <tr>
+                        <td>@episode.Title</td>
+                        <td>@episode.Number</td>
+                        <td>@episode.Description</td>
+                        <td>@episode.EpisodeLenght.TotalMinutes</td>
+                        <td>@episode.DateTheEpisodWasAdded.ToString("dd.MM.yyyy")</td>
+                        <td>
+                        <form method="post" action="@Url.Action("AddToCurrentlyWatchedListEpizod", "Home")">
+                             @* @Html.HiddenFor(model => model.Id) <!-- Ukryte pole przenoszące Id odcinka -->
+                             @Html.HiddenFor(model => episode.Id) <!-- Ukryte pole przenoszące Id odcinka --> *@
+                            @Html.Hidden("animeId", Model.Id) <!-- Ukryte pole przenoszące Id anime -->
+                            @Html.Hidden("episodeId", episode.Id) <!-- Ukryte pole przenoszące Id odcinka -->
+                            <button id="dit1button" style="border-radius: 7px;" type="submit">Dodaj do obecnie oglądanych</button>
+                        </form> 
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        @* } *@
     </table>
     @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true)
     {
         <button id="addEpisodeButton" class="btn btn-secondary">Add another episode</button>
+        <br>
     }
     <div id="addEpisodeForm" style="display:none;">
         <h4>Add New Episode</h4>
@@ -199,15 +237,19 @@
                 <input type="date" id="NewEpisode_DateAdded" name="DateAdded" class="form-control" required />
             </div>
             <button type="submit" class="btn btn-primary">Add Episode</button>
+            <br />
         </form>
     </div>
+   
 
     @if (ViewContext.HttpContext.Session.GetObject<Users>("LoggedUser")?.isLogged == true)
     {
+        <br />
         <form method="post" action="@Url.Action("AddToFinishedList", "Home")">
             @Html.HiddenFor(model => model.Id)
             <button id="dit1button" style="border-radius: 7px;" type="submit">Add to Finished List</button>
         </form>
+        
         <br />
         <form method="post" action="@Url.Action("AddToCurrentlyWatchedList", "Home")">
             @Html.HiddenFor(model => model.Id)
@@ -218,6 +260,7 @@
             @Html.HiddenFor(model => model.Id)
             <button id="dit3button" style="border-radius: 7px;" type="submit">Add to Planned List</button>
         </form>
+        <br />
     }
 </div>
 

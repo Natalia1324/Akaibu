@@ -127,7 +127,7 @@
 
                 <div class="account-form-section">
                     <form asp-controller="Home" asp-action="ChangePassword" method="post" onsubmit="return validatePasswordChange()">
-                        <input type="text" id="new-password" name="newPassword" maxlength="50" required>
+                        <input type="text" id="new-password" name="newPassword" maxlength="20" minlength="8" required>
                         <button type="submit">Change password</button>
                     </form>
                 </div>
@@ -166,6 +166,10 @@
             }
             return true;
         }
+
+       
     </script>
+
+
 </body>
 </html>

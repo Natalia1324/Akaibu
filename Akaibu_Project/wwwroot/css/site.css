@@ -91,4 +91,20 @@ input {
     
 }
 
+/* Animacja błędu */
+.error-message {
+    animation: fadeout 5s forwards;
+    margin-top: 20px;
+    color: red;
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
 

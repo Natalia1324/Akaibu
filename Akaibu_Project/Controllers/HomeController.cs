@@ -53,47 +53,113 @@ namespace Akaibu_Project.Controllers
         [HttpPost]
 
 
+        //[HttpPost]
+        //[Route("Anime/CreateWithEpisodes")]
+        //public IActionResult CreateWithEpisodes(DBAnime anime, List<Episods> episodes)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        foreach (var episode in episodes)
+        //        {
+        //            episode.DBAnime = anime;
+        //            anime.Episods.Add(episode);
+        //        }
+
+        //        _context.DBAnime.Add(anime);
+        //        _context.SaveChanges();
+        //        return RedirectToAction("Index"); // Redirect to the list of animes or another relevant page
+        //    }
+
+        //    return View(anime);
+        //}
+
         [HttpPost]
         [Route("Anime/CreateWithEpisodes")]
         public IActionResult CreateWithEpisodes(DBAnime anime, List<Episods> episodes)
         {
             if (ModelState.IsValid)
             {
-                foreach (var episode in episodes)
+                try
                 {
-                    episode.DBAnime = anime;
-                    anime.Episods.Add(episode);
-                }
+                    foreach (var episode in episodes)
+                    {
+                        episode.DBAnime = anime;
+                        anime.Episods.Add(episode);
+                    }
 
-                _context.DBAnime.Add(anime);
-                _context.SaveChanges();
-                return RedirectToAction("Index"); // Redirect to the list of animes or another relevant page
+                    _context.DBAnime.Add(anime);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index"); // Redirect to the list of animes or another relevant page
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (you can use any logging framework you prefer)
+                    _logger.LogError(ex, "An error occurred while creating anime with episodes.");
+
+                    // Optionally, add a model error to provide feedback to the user
+                    ModelState.AddModelError("", "An error occurred while creating the anime. Please try again later.");
+                }
             }
 
             return View(anime);
         }
+
+
         public IActionResult Add_Episode()
         {
             ViewBag.Animes = _context.DBAnime.ToList();
             return View();
         }
+
+        //[HttpPost]
+        //public IActionResult Add_Episode(AnimeViewModel model)
+        //{
+        //    if (model != null)
+        //    {
+        //        foreach (var episode in model.Episodes)
+        //        {
+        //            episode.Id = Guid.NewGuid();
+        //            _context.Episods.Add(episode);
+        //        }
+        //        _context.SaveChanges();
+        //        return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
+        //    }
+
+        //    ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
+        //    return View(model);
+        //}
+        
+        
         [HttpPost]
         public IActionResult Add_Episode(AnimeViewModel model)
         {
             if (model != null)
             {
-                foreach (var episode in model.Episodes)
+                try
                 {
-                    episode.Id = Guid.NewGuid();
-                    _context.Episods.Add(episode);
+                    foreach (var episode in model.Episodes)
+                    {
+                        episode.Id = Guid.NewGuid();
+                        _context.Episods.Add(episode);
+                    }
+                    _context.SaveChanges();
+                    return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
                 }
-                _context.SaveChanges();
-                return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
+                catch (Exception ex)
+                {
+                    // Log the exception (you can use any logging framework you prefer)
+                    _logger.LogError(ex, "An error occurred while adding episodes.");
+
+                    // Optionally, add a model error to provide feedback to the user
+                    ModelState.AddModelError("", "An error occurred while adding the episodes. Please try again later.");
+                }
             }
-            
+
             ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
             return View(model);
         }
+
+
         //[HttpPost]
         //public async Task<IActionResult> Add_Episode(Episods episode)
         //{
@@ -108,6 +174,7 @@ namespace Akaibu_Project.Controllers
         //    ViewBag.Animes = _context.DBAnime.ToList();
         //    return View(episode);
         //}
+
         public IActionResult Account()
         {
             var loggedUser = getLoggedUser();
@@ -206,15 +273,66 @@ namespace Akaibu_Project.Controllers
             return View(); //zmiana
 
         }
+
+        //[HttpPost]
+        //public IActionResult ChangePassword(string newPassword)
+        //{
+        //    Console.WriteLine("Zmieniam haslo na: " + newPassword );
+        //    var loggedUser = getLoggedUser();
+
+        //    if (loggedUser != null && newPassword != null)
+        //    {
+        //        // Zmień hasło użytkownika.
+        //        loggedUser.Password = newPassword;
+
+        //        // Zapisz zmiany w bazie danych
+        //        _context.Update(loggedUser);
+        //        _context.SaveChanges();
+        //        Logout();
+
+        //    }
+
+        //   return RedirectToAction("Index");
+        //}
         [HttpPost]
         public IActionResult ChangePassword(string newPassword)
         {
-            Console.WriteLine("Zmieniam haslo na: " + newPassword );
-            var loggedUser = getLoggedUser();
-
-            if (loggedUser != null && newPassword != null)
+            try
             {
-                // Zmień hasło użytkownika.
+                //Console.WriteLine("Zmieniam haslo na: " + newPassword);
+                var loggedUser = getLoggedUser();
+
+                if (loggedUser == null)
+                {
+                    TempData["ErrorMessage"] = "User not logged in.";
+                    return RedirectToAction("Index");
+                }
+
+                if (string.IsNullOrEmpty(newPassword))
+                {
+                    TempData["ErrorMessage"] = "Password cannot be empty.";
+                    return RedirectToAction("Index");
+                }
+
+                // Minimalna długość hasła - przykład: 8 znaków
+                const int minLength = 8;
+
+                if (newPassword.Length < minLength)
+                {
+                    TempData["ErrorMessage"] = $"Password must be at least {minLength} characters long.";
+                    return RedirectToAction("Index");
+                }
+
+                // Maksymalna długość hasła - przykład: 20 znaków
+                const int maxLength = 20;
+
+                if (newPassword.Length > maxLength)
+                {
+                    TempData["ErrorMessage"] = $"Password must not exceed {maxLength} characters.";
+                    return RedirectToAction("Index");
+                }
+
+                // Aktualizacja hasła użytkownika
                 loggedUser.Password = newPassword;
 
                 // Zapisz zmiany w bazie danych
@@ -222,10 +340,19 @@ namespace Akaibu_Project.Controllers
                 _context.SaveChanges();
                 Logout();
 
+                return RedirectToAction("Index");
             }
+            catch (Exception ex)
+            {
+                // Obsługa błędów, np. logowanie błędu
+                Console.WriteLine("An error occurred while changing password: " + ex.Message);
 
-           return RedirectToAction("Index");
+                TempData["ErrorMessage"] = "An error occurred while changing password.";
+                return RedirectToAction("Index");
+            }
         }
+
+
         [HttpPost]
         public IActionResult BanReason(int userId)
         {
@@ -242,6 +369,7 @@ namespace Akaibu_Project.Controllers
 
             return View(model);
         }
+
         // Akcja do obsługi wysłania formularza
         [HttpPost]
         public IActionResult ProcessBanReasonForm(BanReasonViewModel model)

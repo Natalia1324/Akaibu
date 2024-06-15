@@ -1,93 +1,113 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Anime and Episodes</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="scripts.js"></script>
-</head>
-<body>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const addEpisodeButton = document.getElementById('addEpisodeButton');
-            const episodesContainer = document.getElementById('episodesContainer');
-            const episodeTemplate = document.getElementById('episodeTemplate').content;
-            let episodeCount = 0;
+﻿@model Akaibu_Project.Models.AnimeViewModel
+@{
+    ViewBag.Title = "Add Anime and Episodes";
+}
 
-            addEpisodeButton.addEventListener('click', () => {
-                episodeCount++;
-                const newEpisode = episodeTemplate.cloneNode(true);
-                const labels = newEpisode.querySelectorAll('label');
-                const inputs = newEpisode.querySelectorAll('input, textarea');
+<h1>Add New Anime and Episodes</h1>
 
-                labels.forEach(label => {
-                    label.htmlFor = label.htmlFor.replace('0', episodeCount);
-                });
 
-                inputs.forEach(input => {
-                    input.id = input.id.replace('0', episodeCount);
-                    input.name = input.name.replace('0', episodeCount);
-                });
+<form asp-action="Add_Anime" method="post">
+    <h2>Anime Details</h2>
+    <label for="Anime_Title">Title:</label>
+    <input type="text" id="Anime_Title" name="Anime.Title" required><br>
 
-                episodesContainer.appendChild(newEpisode);
-            });
-        });
+    <label for="Anime_NumberOfEpisodes">Number of Episodes:</label>
+    <input type="number" id="Anime_NumberOfEpisodes" name="Anime.NumberOfEpisodes" required><br>
 
-    </script>
-    <h1>Add New Anime and Episodes</h1>
-    <form id="animeForm" action="/Anime/CreateWithEpisodes" method="post">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="Title" required><br>
+    <label for="Anime_Author">Author:</label>
+    <input type="text" id="Anime_Author" name="Anime.Author" required><br>
 
-        <label for="numberOfEpisodes">Number of Episodes:</label>
-        <input type="number" id="numberOfEpisodes" name="NumberOfEpisodes" required><br>
+    <label for="Anime_ShortStory">Short Story:</label>
+    <textarea id="Anime_ShortStory" name="Anime.ShortStory" required></textarea><br>
 
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="Author" required><br>
+    <label for="Anime_Tag">Tag:</label>
+    <input type="text" id="Anime_Tag" name="Anime.Tag" required><br>
 
-        <label for="shortStory">Short Story:</label>
-        <textarea id="shortStory" name="ShortStory" required></textarea><br>
+    <label for="Anime_DateOfProductionStart">Date of Production Start:</label>
+    <input type="date" id="Anime_DateOfProductionStart" name="Anime.DateOfProductionStart" required><br>
 
-        <label for="tag">Tag:</label>
-        <input type="text" id="tag" name="Tag" required><br>
+    <label for="Anime_DateOfProductionFinish">Date of Production Finish:</label>
+    <input type="date" id="Anime_DateOfProductionFinish" name="Anime.DateOfProductionFinish"><br>
 
-        <label for="dateOfProductionStart">Date of Production Start:</label>
-        <input type="date" id="dateOfProductionStart" name="DateOfProductionStart" required><br>
+    <label for="Anime_StatusAnime">Status:</label>
+    <input type="text" id="Anime_StatusAnime" name="Anime.StatusAnime" required><br>
 
-        <label for="dateOfProductionFinish">Date of Production Finish:</label>
-        <input type="date" id="dateOfProductionFinish" name="DateOfProductionFinish"><br>
+    <hr>
 
-        <label for="statusAnime">Status:</label>
-        <input type="text" id="statusAnime" name="StatusAnime" required><br>
-
-        <h2>Episodes</h2>
-        <div id="episodesContainer">
-            <!-- Episodes will be dynamically added here -->
-        </div>
-
-        <button type="button" id="addEpisodeButton">Add Episode</button><br><br>
-        <button type="submit">Submit Anime and Episodes</button>
-    </form>
-
-    <template id="episodeTemplate">
+    <h2>Episodes</h2>
+    <div id="episodesContainer">
+        <!-- Episodes will be dynamically added here -->
         <div class="episode">
-            <h3>Episode</h3>
-            <label for="episodes[0].Title">Title:</label>
-            <input type="text" id="episodes[0].Title" name="Episodes[0].Title" required><br>
+            <h3>Episode 1</h3>
+            <div>
+                <label for="Episodes_0_Title">Title:</label>
+                <input type="text" id="Episodes_0_Title" name="Episodes[0].Title" class="title" required />
+            </div>
+            <div>
+                <label for="Episodes_0_Number">Number:</label>
+                <input type="number" id="Episodes_0_Number" name="Episodes[0].Number" class="number" required />
+            </div>
+            <div>
+                <label for="Episodes_0_Description">Description:</label>
+                <textarea id="Episodes_0_Description" name="Episodes[0].Description" class="description" required></textarea>
+            </div>
+            <div>
+                <label for="Episodes_0_EpisodeLength">Episode Length:</label>
+                <input type="time" id="Episodes_0_EpisodeLength" name="Episodes[0].EpisodeLength" class="episodeLength" required />
+            </div>
+            <div>
+                <label for="Episodes_0_DateAdded">Date Added:</label>
+                <input type="date" id="Episodes_0_DateAdded" name="Episodes[0].DateAdded" class="dateAdded" required />
+            </div>
+        </div>
+    </div>
+    <button type="button" id="addEpisodeButton">Add Another Episode</button>
+    <hr>
 
-            <label for="episodes[0].Number">Number:</label>
-            <input type="number" id="episodes[0].Number" step="0.01" name="Episodes[0].Number" required><br>
+    <button type="submit">Submit Anime and Episodes</button>
 
-            <label for="episodes[0].Description">Description:</label>
-            <textarea id="episodes[0].Description" name="Episodes[0].Description" required></textarea><br>
-
-            <label for="episodes[0].EpisodeLenght">Episode Length:</label>
-            <input type="time" id="episodes[0].EpisodeLenght" name="Episodes[0].EpisodeLenght" required><br>
-
-            <label for="episodes[0].DateTheEpisodWasAdded">Date Added:</label>
-            <input type="date" id="episodes[0].DateTheEpisodWasAdded" name="Episodes[0].DateTheEpisodWasAdded" required><br><br>
+    <!-- Template for episode -->
+    <template id="episodeTemplate" style="display:none;">
+        <div class="episode">
+            <h3>Episode X</h3>
+            <div>
+                <label for="Episodes_X_Title">Title:</label>
+                <input type="text" name="Episodes[X].Title" class="title" required />
+            </div>
+            <div>
+                <label for="Episodes_X_Number">Number:</label>
+                <input type="number" step="1" name="Episodes[X].Number" class="number" required />
+            </div>
+            <div>
+                <label for="Episodes_X_Description">Description:</label>
+                <textarea name="Episodes[X].Description" class="description" required></textarea>
+            </div>
+            <div>
+                <label for="Episodes_X_EpisodeLength">Episode Length:</label>
+                <input type="time" name="Episodes[X].EpisodeLength" class="episodeLength" required />
+            </div>
+            <div>
+                <label for="Episodes_X_DateAdded">Date Added:</label>
+                <input type="date" name="Episodes[X].DateAdded" class="dateAdded" required />
+            </div>
         </div>
     </template>
-</body>
-</html>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var episodeIndex = 1;
+
+            $("#addEpisodeButton").click(function () {
+                var template = $("#episodeTemplate").html();
+                var newEpisode = $(template.replace(/X/g, episodeIndex));
+
+                $("#episodesContainer").append(newEpisode);
+
+                episodeIndex++;
+            });
+        });
+    </script>
+}

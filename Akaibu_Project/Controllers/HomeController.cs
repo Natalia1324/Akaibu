@@ -369,20 +369,27 @@ namespace Akaibu_Project.Controllers
         }
         public IActionResult AnimeDetails(int id)
         {
-            var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
-            
-            Console.WriteLine("Ilosc odcinkow: " + anime.Episods.Count);
-            foreach (var episode in anime.Episods)
+            try
             {
-                Console.WriteLine("Odcinek " + episode.Number);
-            }
-            
-            if (anime == null)
-            {
-                return NotFound();
-            }
+                var anime = _context.DBAnime.Include(a => a.Comments).ThenInclude(c => c.Users).Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
 
-            return View(anime);
+                Console.WriteLine("Ilosc odcinkow: " + anime.Episods.Count);
+                foreach (var episode in anime.Episods)
+                {
+                    Console.WriteLine("Odcinek " + episode.Number);
+                }
+
+                if (anime == null)
+                {
+                    return NotFound();
+                }
+
+                return View(anime);
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
         }
         public IActionResult Login()
         {

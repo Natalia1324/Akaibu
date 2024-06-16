@@ -513,49 +513,6 @@ namespace Akaibu_Project.Controllers
             return View("Error");
         }
 
-        //[HttpPost]
-        //public IActionResult BanUser(int userId, string reason)
-        //{
-        //    var loggedUser = getLoggedUser();
-
-        //    // Sprawdź, czy użytkownik ma uprawnienia admina
-        //    if (loggedUser != null && loggedUser.Ranks == 1)
-        //    {
-        //        // Pobierz użytkownika do zbanowania
-        //        var userToBan = _context.Users.Find(userId);
-
-        //        // Sprawdź, czy użytkownik istnieje
-        //        if (userToBan != null)
-        //        {
-        //            // Zmień rangę użytkownika na 69 (lub inną wybraną)
-        //            userToBan.Ranks = 69;
-        //            userToBan.Bans = reason;
-
-        //            // Zapisz zmiany w bazie danych
-        //            _context.Update(userToBan);
-        //            _context.SaveChanges();
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine($"Nie znaleziono użytkownika o ID {userId}"); // Komunikat o błędzie
-        //        }
-
-        //        Console.WriteLine($"Użytkownik o ID {userId} został zbanowany z powodu: {reason}"); // Komunikat o sukcesie
-
-        //        // Przekieruj z powrotem do panelu admina lub gdziekolwiek indziej
-        //        return RedirectToAction("Privacy");
-        //    }
-        //    else
-        //    {
-        //        // Jeśli użytkownik nie ma uprawnień admina, możesz przekierować go
-        //        // gdzie indziej lub wyświetlić komunikat o braku uprawnień
-        //        Console.WriteLine("Brak uprawnień do zbanowania użytkownika"); // Komunikat o braku uprawnień
-
-        //        // Jeśli użytkownik nie ma uprawnień admina, możesz przekierować go
-        //        // gdzie indziej lub wyświetlić komunikat o braku uprawnień
-        //        return RedirectToAction("Index");
-        //    }
-        //}
         [HttpPost]
         public IActionResult BanUser(int userId, string reason)
         {
@@ -1022,7 +979,7 @@ namespace Akaibu_Project.Controllers
 
                     Console.WriteLine($"Komentarz dodany dla anime o ID {animeId}, odcinka numer {episodeNumber} przez użytkownika {loggedUser.Nick}");
 
-                    return RedirectToAction("Comments", new { animeId = animeId });
+                    return RedirectToAction("Index");
                 }
                 else
                 {

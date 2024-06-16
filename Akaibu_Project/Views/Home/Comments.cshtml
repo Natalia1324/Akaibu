@@ -4,6 +4,8 @@
 
 <body>
 @model Akaibu_Project.Entions.DBAnime
+    @using Microsoft.AspNetCore.Http
+
 @{
     ViewData["Title"] = "Comments";
 }
@@ -18,23 +20,11 @@
 <div class="container mt-4">
     <h2>Anime @Model.Title comments section</h2>
 
-    <ul class="list-unstyled">
-            @foreach (var episode in Model.Episods)
+        <ul class="list-unstyled">
+            @foreach (var comment in Model.Comments)
             {
-                <tr>
-                    <td>@episode.Title</td>
-                    <td>@episode.Number</td>
-                    <td>@episode.Description</td>
-                    <td>@episode.EpisodeLenght.TotalMinutes</td>
-                    <td>@episode.DateTheEpisodWasAdded.ToString("dd.MM.yyyy")</td>
-                </tr>
-            }
-
-        @foreach (var comment in Model.Comments)
-        {
                 <li class="mb-3">
                     <strong>@comment.Users.Nick</strong>
-
                     <span class="text-muted">@comment.DateTheCommentWasAdded.ToString("dd MMMM yyyy HH:mm")</span>
                     @{
                         int rating = 0;
@@ -48,9 +38,15 @@
                         }
                     </p>
                     <p>@comment.CommentText</p>
+                    @if (ViewBag.IsLogged == true)
+                    {
+                        <a href="@Url.Action("SendReport", "Home", new { commentId = comment.Id })" class="btn btn-warning">Zgłoś komentarz</a>
+                    }
                 </li>
-        }
-    </ul>
+            }
+        </ul>
+
+
 </div>
 
 <div class="container mt-4">

@@ -12,6 +12,10 @@
     <h2>Napisz raport</h2>
 
     <form asp-controller="Home" asp-action="SendReport" method="post">
+        @if (ViewBag.CommentId != null)
+        {
+            <input type="hidden" name="commentId" value="@ViewBag.CommentId" />
+        }
         <textarea asp-for="ReportText" rows="4" cols="50" maxlength="500" required></textarea>
 
         <br>

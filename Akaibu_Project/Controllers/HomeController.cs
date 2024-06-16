@@ -775,33 +775,15 @@ namespace Akaibu_Project.Controllers
                 return View();
             }
         }
-
-        public IActionResult SendReport()
+        public IActionResult SendReport(Guid? commentId)
         {
-            return (View());
+            ViewBag.CommentId = commentId;
+            return View();
         }
-        //[HttpPost]
-        //public IActionResult SendReport(string reportText)
-        //{
-        //    // Tutaj możesz dodać obiekt raportu do kolekcji lub bazy danych
-        //    // Przykład: Raports.dodajRaport(raport);
 
-        //    // Możesz wykonać inne operacje po dodaniu raportu
-
-        //    // Przekierowanie na inną stronę lub powrót do strony głównej
-        //    var raport = new Reports
-        //    {
-        //        ReportText = reportText,
-        //        DateTheReportWasAdded = DateTime.Now,
-        //        UsersId = getLoggedUser().Id,
-        //    };
-        //    _context.Reports.Add(raport);
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
 
         [HttpPost]
-        public IActionResult SendReport(string reportText)
+        public IActionResult SendReport(string reportText, Guid? commentId)
         {
             try
             {
@@ -814,13 +796,28 @@ namespace Akaibu_Project.Controllers
                     return RedirectToAction("Index");
                 }
 
-                var report = new Reports
-                {
-                    ReportText = reportText,
-                    DateTheReportWasAdded = DateTime.Now,
-                    UsersId = loggedUser.Id,
-                };
+                var report = new Reports();
 
+                if (commentId == null)
+                {
+                    report = new Reports
+                    {
+                        ReportText = reportText,
+                        DateTheReportWasAdded = DateTime.Now,
+                        UsersId = loggedUser.Id,
+                        //CommentsId = commentId // Assign the optional comment ID
+                    };
+                }
+                else
+                {
+                    report = new Reports
+                    {
+                        ReportText = reportText,
+                        DateTheReportWasAdded = DateTime.Now,
+                        UsersId = loggedUser.Id,
+                        CommentsId = commentId // Assign the optional comment ID
+                    };
+                }
                 _context.Reports.Add(report);
                 _context.SaveChanges();
 
@@ -839,6 +836,45 @@ namespace Akaibu_Project.Controllers
                 return RedirectToAction("Index");
             }
         }
+        //[HttpPost]
+        //public IActionResult SendReport(string reportText)
+        //{
+        //    try
+        //    {
+        //        var loggedUser = getLoggedUser();
+
+        //        if (loggedUser == null)
+        //        {
+        //            Console.WriteLine("Nie można wysłać raportu: użytkownik nie jest zalogowany.");
+        //            TempData["ErrorMessage"] = "Musisz być zalogowany, aby wysłać raport.";
+        //            return RedirectToAction("Index");
+        //        }
+
+        //        var report = new Reports
+        //        {
+        //            ReportText = reportText,
+        //            DateTheReportWasAdded = DateTime.Now,
+        //            UsersId = loggedUser.Id,
+        //        };
+
+        //        _context.Reports.Add(report);
+        //        _context.SaveChanges();
+
+        //        Console.WriteLine("Raport został pomyślnie dodany.");
+
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Logowanie błędów do konsoli
+        //        Console.WriteLine("Wystąpił błąd podczas dodawania raportu: " + ex.Message);
+
+        //        // Dodanie komunikatu o błędzie do TempData
+        //        TempData["ErrorMessage"] = "Wystąpił błąd podczas wysyłania raportu. Proszę spróbować ponownie później.";
+
+        //        return RedirectToAction("Index");
+        //    }
+        //}
 
         public IActionResult Comments(int id)
         {
@@ -848,7 +884,10 @@ namespace Akaibu_Project.Controllers
             {
                 return NotFound();
             }
+            var loggedUser = HttpContext.Session.GetString("LoggedUser");
+            var isLogged = loggedUser != null;
 
+            ViewBag.IsLogged = isLogged;
             return View("Comments", anime);
         }
         //[HttpPost]

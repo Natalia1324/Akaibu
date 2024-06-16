@@ -633,7 +633,9 @@ namespace Akaibu_Project.Controllers
                     .Select(report => new
                     {
                         Report = report,
-                        Comment = _context.Comments.FirstOrDefault(c => c.Id == report.CommentsId)
+                        Comment = _context.Comments.FirstOrDefault(c => c.Id == report.CommentsId),
+                        User = _context.Users.FirstOrDefault(u => u.Id == _context.Comments.FirstOrDefault(c => c.Id == report.CommentsId).UsersId)
+
                     })
                     .ToList()
                     .Select(rc => new
@@ -643,7 +645,7 @@ namespace Akaibu_Project.Controllers
                         rc.Report.DateTheReportWasAdded,
                         rc.Report.UsersId,
                         rc.Report.CommentsId,
-                        UsersIDComment = rc.Comment?.UsersId,
+                        UserNick = rc.User?.Nick,
                         CommentText = rc.Comment?.CommentText
                     })
                     .ToList();

@@ -30,7 +30,7 @@
 
 
 <div>
-    <h1>Chooose a list:</h1>
+    <h1>Choose a list:</h1>
     <button class="list-button" onclick="displayList('Finished')">Show Finished List</button>
     <button class="list-button" onclick="displayList('Watched')">Show Watched List</button>
     <button class="list-button" onclick="displayList('Planned')">Show Planned List</button>
@@ -40,58 +40,70 @@
 
     <script>
         function displayList(listType) {
-        var listContainer = document.getElementById('listContainer');
-        var list = [];
+            var listContainer = document.getElementById('listContainer');
+            var list = [];
 
-
-        if (listType === 'Finished') {
-            list = @Html.Raw(Json.Serialize(Model.lists.Finished.Select(item => new { item.LastEpizod, item.StatusValue, AnimeAuthor = item.AnimeTitle, AnimeTitle = item.AnimeAuthor })));
-        } else if (listType === 'Watched') {
-            list = @Html.Raw(Json.Serialize(Model.lists.Watched.Select(item => new { item.LastEpizod, item.StatusValue, AnimeAuthor = item.AnimeTitle, AnimeTitle = item.AnimeAuthor })));
-        } else if (listType === 'Planned') {
-            list = @Html.Raw(Json.Serialize(Model.lists.Planned.Select(item => new { item.LastEpizod, item.StatusValue, AnimeAuthor = item.AnimeTitle, AnimeTitle = item.AnimeAuthor })));
-        }
-
-
-        listContainer.innerHTML = '';
-
-
-        if (list.length === 0) {
-            listContainer.innerHTML += 'List is empty';
-        } else {
-
-            var table = document.createElement('table');
-            table.style.borderCollapse = 'collapse';
-            table.style.width = '100%';
-
-
-            var headerRow = table.insertRow(0);
-
-
-            var propertiesToDisplay = ['lastEpizod', 'statusValue', 'animeAuthor', 'animeTitle'];
-
-            for (var j = 0; j < propertiesToDisplay.length; j++) {
-                var headerCell = headerRow.insertCell(j);
-                headerCell.innerHTML = propertiesToDisplay[j];
-                headerCell.style.border = '1px solid #ddd';
-                headerCell.style.padding = '8px';
+            if (listType === 'Finished') {
+                list = @Html.Raw(Json.Serialize(Model.lists.Finished.Select(item => new { LastEpizod = item.LastEpizod, StatusValue = item.StatusValue, AnimeAuthor = item.AnimeAuthor, AnimeTitle = item.AnimeTitle })));
+            } else if (listType === 'Watched') {
+                list = @Html.Raw(Json.Serialize(Model.lists.Watched.Select(item => new { LastEpizod = item.LastEpizod, StatusValue = item.StatusValue, AnimeAuthor = item.AnimeAuthor, AnimeTitle = item.AnimeTitle })));
+            } else if (listType === 'Planned') {
+                list = @Html.Raw(Json.Serialize(Model.lists.Planned.Select(item => new { LastEpizod = item.LastEpizod, StatusValue = item.StatusValue, AnimeAuthor = item.AnimeAuthor, AnimeTitle = item.AnimeTitle })));
             }
 
+            listContainer.innerHTML = '';
 
-            for (var i = 0; i < list.length; i++) {
-                var row = table.insertRow(i + 1);
+            if (list.length === 0) {
+                listContainer.innerHTML += 'List is empty';
+            } else {
+                var table = document.createElement('table');
+                table.style.borderCollapse = 'collapse';
+                table.style.width = '100%';
+
+                var headerRow = table.insertRow(0);
+
+                // Zmodyfikowane nazwy nagłówków
+                var propertiesToDisplay = ['Current episode', 'Status', 'Anime author', 'Anime title'];
+                
                 for (var j = 0; j < propertiesToDisplay.length; j++) {
-                    var cell = row.insertCell(j);
-                    cell.innerHTML = list[i][propertiesToDisplay[j]];
-                    cell.style.border = '1px solid #ddd';
-                    cell.style.padding = '8px';
+                    var headerCell = headerRow.insertCell(j);
+                    headerCell.innerHTML = '<strong>' + propertiesToDisplay[j] + '</strong>';
+                    headerCell.style.border = '1px solid #ddd';
+                    headerCell.style.padding = '8px';
                 }
-            }
 
-            listContainer.appendChild(table);
+                for (var i = 0; i < list.length; i++) {
+                    var row = table.insertRow(i + 1);
+                    for (var j = 0; j < propertiesToDisplay.length; j++) {
+                        var cell = row.insertCell(j);
+                        // Dostosowanie właściwości w zależności od nazw nagłówków
+                        switch (propertiesToDisplay[j]) {
+                            case 'Current episode':
+                                cell.innerHTML = list[i]['lastEpizod'];
+                                break;
+                            case 'Status':
+                                cell.innerHTML = list[i]['statusValue'];
+                                break;
+                            case 'Anime author':
+                                cell.innerHTML = list[i]['animeAuthor'];
+                                break;
+                            case 'Anime title':
+                                cell.innerHTML = list[i]['animeTitle'];
+                                break;
+                            default:
+                                cell.innerHTML = ''; // Dodatkowe zabezpieczenie
+                                break;
+                        }
+                        cell.style.border = '1px solid #ddd';
+                        cell.style.padding = '8px';
+                    }
+                }
+
+                listContainer.appendChild(table);
+            }
         }
-    }
     </script>
+
 
 </body>
 </html>

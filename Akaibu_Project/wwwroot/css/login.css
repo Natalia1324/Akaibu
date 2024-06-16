@@ -1,50 +1,90 @@
-﻿/* register.css */
-
-.register-container {
-    display: flex;
-    height: 100%;
+﻿body {
+   
+    margin: 0;
+    overflow: hidden;
 }
 
-.left-section {
-    width: 49%;
-    flex: 1;
-    margin-right: 300px;
-    background-color: #393033;
-    color: #E9987D;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.right-section {
-    width: 49%;
-    flex: 1;
-    background-color: #554141;
+button {
+    border-radius: 7px;
+    background-color: #E9987D;
     color: #fff;
-    padding: 133px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-h1,
-h2 {
+    button:hover {
+        background-color: #c87458;
+        transform: scale(1.05);
+    }
+
+    button:active {
+        transform: scale(0.95);
+        background-color: #f0bba9;
+    }
+
+input {
+    border-radius: 7px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #a6c9cb;
     margin-bottom: 10px;
 }
 
-    h1#hello-text {
-        margin-top: 79%;
-        margin-right: -300px;
-    }
-
-p#glad-text {
-    margin-right: -300px;
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    
 }
 
-/* Dodatkowe style specyficzne dla strony rejestracji */
-.register-container .new-element {
-    color: #FF0000;
+.left-section {
+    flex: 1;
+    margin: 10px;
+    color: #e9987d;
+    padding: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.right-section {
+    flex: 1;
+    margin: 10px;
+    background-color: #554141;
+    color: #fff;
+    padding: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 20px;
+}
+
+
+.validation-summary-errors ul {
+    margin: 0;
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Animacja błędu */
+.error-message {
+    animation: fadeout 5s forwards;
+    margin-top: 20px;
+    color: red;
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }

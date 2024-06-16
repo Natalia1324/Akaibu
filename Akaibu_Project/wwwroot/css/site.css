@@ -108,3 +108,83 @@ input {
     }
 }
 
+/* Flexbox for layout */
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
+}
+
+.navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Make images responsive */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive text alignment */
+.text-center {
+    text-align: center;
+}
+
+/* Responsive footer */
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Additional media queries for different breakpoints */
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        font-size: 0.875rem;
+    }
+
+    .footer {
+        line-height: 40px;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+
+    .btn-primary {
+        font-size: 1rem;
+    }
+
+    .footer {
+        line-height: 50px;
+    }
+}
+
+@media (min-width: 769px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    .btn-primary {
+        font-size: 1.125rem;
+    }
+
+    .footer {
+        line-height: 60px;
+    }
+}

@@ -9,46 +9,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Panel</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .ban-button {
-            background-color: red;
-            color: white;
-        }
-
-        .unban-button {
-            background-color: green;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="~/css/paneladmin.css">
 </head>
 <body>
 
@@ -57,18 +18,18 @@
     <table border="1">
         <thead>
             <tr>
-                <th>Report Text</th>
-                <th>Date Added</th>
-                <th>From User</th>
-                <th>Targeted User</th>
-                <th>Comment Text</th>
+                <th class="custom-header">Report Text</th>
+                <th class="custom-header">Date Added</th>
+                <th class="custom-header">From User</th>
+                <th class="custom-header">Targeted User</th>
+                <th class="custom-header">Comment Text</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var report in panelData.Reports)
             {
                 <tr>
-                    <td>@report.ReportText</td>
+                    <td class="scrollable">@report.ReportText</td>
                     <td>@report.DateTheReportWasAdded</td>
                     <td>
                         @{
@@ -78,7 +39,7 @@
                         }
                     </td>
                     <td>@report.UserNick</td>
-                    <td>@report.CommentText</td>
+                    <td class="scrollable">@report.CommentText</td>
                 </tr>
             }
         </tbody>
@@ -89,11 +50,11 @@
     <table>
         <thead>
             <tr>
-                <th>User ID</th>
-                <th>Nick</th>
-                <th>Login</th>
-                <th>Rank</th>
-                <th>Actions</th>
+                <th class="custom-header">User ID</th>
+                <th class="custom-header">Nick</th>
+                <th class="custom-header">Login</th>
+                <th class="custom-header">Rank</th>
+                <th class="custom-header">Actions</th>
             </tr>
         </thead>
         <tbody>

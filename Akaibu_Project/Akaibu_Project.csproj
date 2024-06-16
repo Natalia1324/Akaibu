@@ -46,6 +46,8 @@
     <Compile Remove="Migrations\20240615190404_NowaNazwaMigracji.Designer.cs" />
     <Compile Remove="Migrations\20240615190901_NowaNazwaMigracji.cs" />
     <Compile Remove="Migrations\20240615190901_NowaNazwaMigracji.Designer.cs" />
+    <Compile Remove="Migrations\20240616120628_NowaNazwaMigracji.cs" />
+    <Compile Remove="Migrations\20240616120628_NowaNazwaMigracji.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

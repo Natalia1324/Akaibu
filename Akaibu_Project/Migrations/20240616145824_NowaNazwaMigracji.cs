@@ -182,8 +182,8 @@ namespace Akaibu_Project.Migrations
                 {
                     { 5, "Madhouse", new DateTime(2007, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), 37, "Yagami Light, nastoletni licealista będący prymusem w każdym przedmiocie szkolnym...", "Finished", "Akcja, Tajemnica, Kryminalne", "Death Note" },
                     { 6, "A.C.G.T.", null, new DateTime(2023, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 25, "Akcja rozgrywa się w niedalekiej przyszłości, gdzie gry korzystające ze staromodnych ekranów...", "Ongoing", "Akcja, Przygodowe, Fantasy", "Shangri-La Frontier: Kusogee Hunter, Kamige ni Idoman to Su" },
-                    { 7, "Author1", null, new DateTime(2024, 6, 16, 14, 6, 28, 332, DateTimeKind.Local).AddTicks(1224), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
-                    { 8, "Author2", null, new DateTime(2024, 6, 16, 14, 6, 28, 334, DateTimeKind.Local).AddTicks(5026), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
+                    { 7, "Author1", null, new DateTime(2024, 6, 16, 16, 58, 23, 765, DateTimeKind.Local).AddTicks(30), 12, "Short story 1", "Status1", "Tag1", "Anime1" },
+                    { 8, "Author2", null, new DateTime(2024, 6, 16, 16, 58, 23, 766, DateTimeKind.Local).AddTicks(7448), 24, "Short story 2", "Status2", "Tag2", "Anime2" }
                 });
 
             migrationBuilder.InsertData(
@@ -198,7 +198,7 @@ namespace Akaibu_Project.Migrations
             migrationBuilder.InsertData(
                 table: "Episods",
                 columns: new[] { "Id", "DBAnimeId", "DateTheEpisodWasAdded", "Description", "EpisodeLenght", "Number", "Title" },
-                values: new object[] { new Guid("fd93bd1c-09f0-4ba1-aced-3f4136b068cc"), 5, new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Light Yagami finds the Death Note and starts to use it.", new TimeSpan(0, 0, 23, 0, 0), 1f, "Rebirth" });
+                values: new object[] { new Guid("fb68ddde-9b11-451f-9728-5534e3889674"), 5, new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Light Yagami finds the Death Note and starts to use it.", new TimeSpan(0, 0, 23, 0, 0), 1f, "Rebirth" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_DBAnimeId",

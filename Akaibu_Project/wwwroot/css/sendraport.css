@@ -1,2 +1,20 @@
-﻿body {
+﻿
+button {
+    border-radius: 7px;
+    background-color: #E9987D;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
+    button:hover {
+        background-color: #c87458;
+        transform: scale(1.05);
+    }
+
+    button:active {
+        transform: scale(0.95);
+        background-color: #f0bba9;
+    }

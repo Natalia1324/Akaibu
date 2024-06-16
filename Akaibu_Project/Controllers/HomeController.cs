@@ -51,64 +51,6 @@ namespace Akaibu_Project.Controllers
             ViewBag.Animes = _context.DBAnime.ToList();
             return View();
         }
-        //[HttpPost]
-        //public IActionResult Add_Anime(AnimeViewModel model)
-        //{
-        //    if (model != null)
-        //    {
-        //        // Check if the anime already exists
-        //        var result = _context.DBAnime.FirstOrDefault(a => a.Title == model.Anime.Title);
-
-        //        // If anime does not exist, add it
-        //        if (result == null)
-        //        {
-        //            _context.DBAnime.Add(model.Anime);
-        //            _context.SaveChanges(); // SaveChanges here to get the anime Id
-
-        //            // Assign the Id from the newly added anime to episodes
-        //            foreach (var episode in model.Episodes)
-        //            {
-        //                episode.Id = Guid.NewGuid();
-        //                episode.DBAnimeId = model.Anime.Id; // Use the Id of the newly added anime
-        //                _context.Episods.Add(episode);
-        //            }
-        //        }
-        //        else // If anime exists, update it
-        //        {
-        //            _context.Update(model.Anime);
-
-        //            foreach (var episode in model.Episodes)
-        //            {
-        //                var existingEpisode = _context.Episods.FirstOrDefault(e => e.Id == episode.Id);
-
-        //                if (existingEpisode != null)
-        //                {
-        //                    // Update existing episode properties
-        //                    existingEpisode.DBAnimeId = result.Id; // Use the Id of the existing anime
-        //                    existingEpisode.Title = episode.Title;
-        //                    existingEpisode.Number = episode.Number;
-        //                    existingEpisode.Description = episode.Description;
-        //                    existingEpisode.EpisodeLenght = episode.EpisodeLenght;
-        //                    existingEpisode.DateTheEpisodWasAdded = episode.DateTheEpisodWasAdded;
-
-        //                    _context.Episods.Update(existingEpisode);
-        //                }
-        //                else
-        //                {
-        //                    // Add new episode
-        //                    episode.Id = Guid.NewGuid();
-        //                    episode.DBAnimeId = result.Id; // Use the Id of the existing anime
-        //                    _context.Episods.Add(episode);
-        //                }
-        //            }
-        //        }
-
-        //        _context.SaveChanges();
-        //        return RedirectToAction("Index"); // Redirect after successful save
-        //    }
-
-        //    return View();
-        //}
         [HttpPost]
         public IActionResult Add_Anime(AnimeViewModel model)
         {
@@ -190,31 +132,6 @@ namespace Akaibu_Project.Controllers
             return View(model);
         }
 
-
-        //[HttpPost]
-        //[Route("Anime/AddEpisode")]
-        //public IActionResult AddEpisode(int id, string title, int number, string description, int episodeLength, DateTime dateAdded)
-        //{
-        //    var anime = _context.DBAnime.Include(a => a.Episods).FirstOrDefault(a => a.Id == id);
-        //    if (anime != null)
-        //    {
-        //        var newEpisode = new Episods
-        //        {
-        //            Id = Guid.NewGuid(),
-        //            DBAnimeId = anime.Id,
-        //            Title = title,
-        //            Number = number,
-        //            Description = description,
-        //            EpisodeLenght = TimeSpan.FromMinutes(episodeLength),
-        //            DateTheEpisodWasAdded = dateAdded
-        //        };
-        //        _context.Episods.Add(newEpisode);
-        //        _context.SaveChanges();
-        //    }
-
-        //    return RedirectToAction("AnimeDetails", new { id = anime.Id });
-        //}
-
         [HttpPost]
         [Route("Anime/AddEpisode")]
         public IActionResult AddEpisode(int id, string title, int number, string description, int episodeLength, DateTime dateAdded)
@@ -262,59 +179,6 @@ namespace Akaibu_Project.Controllers
 
             return RedirectToAction("AnimeDetails", new { id = id });
         }
-
-
-        //[HttpPost]
-        //[Route("Anime/CreateWithEpisodes")]
-        //public IActionResult CreateWithEpisodes(AnimeViewModel model)
-        //{
-        //    if (model != null)
-        //    {
-        //        var result = _context.DBAnime.FirstOrDefault(a => a.Title == model.Anime.Title);
-        //        if (result == null)
-        //        {
-        //            _context.DBAnime.Add(model.Anime);
-        //            foreach (var episode in model.Episodes)
-        //            {
-        //                episode.Id = Guid.NewGuid();
-        //                _context.Episods.Add(episode);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            _context.Update(model.Anime);
-        //            foreach (var episode in model.Episodes)
-        //            {
-        //                var existingEpisode = _context.Episods.FirstOrDefault(e => e.Id == episode.Id);
-
-        //                if (existingEpisode != null)
-        //                {
-        //                    // Jeśli istnieje już odcinek o podanym Id, aktualizuj jego właściwości
-        //                    existingEpisode.DBAnimeId = episode.DBAnimeId;
-        //                    existingEpisode.Title = episode.Title;
-        //                    existingEpisode.Number = episode.Number;
-        //                    existingEpisode.Description = episode.Description;
-        //                    existingEpisode.EpisodeLenght = episode.EpisodeLenght;
-        //                    existingEpisode.DateTheEpisodWasAdded = episode.DateTheEpisodWasAdded;
-
-        //                    _context.Episods.Update(existingEpisode);
-        //                }
-        //                else
-        //                {
-        //                    // Jeśli odcinek nie istnieje, ustaw nowe Id i dodaj do kontekstu
-        //                    episode.Id = Guid.NewGuid();
-        //                    _context.Episods.Add(episode);
-        //                }
-        //            }
-        //        }
-
-        //        _context.SaveChanges();
-        //        return RedirectToAction("Index"); // lub inna akcja po pomyślnym dodaniu
-        //    }
-
-        //    ViewBag.Animes = new SelectList(_context.DBAnime, "Id", "Title");
-        //    return View(model);
-        //}
         [HttpPost]
         [Route("Anime/CreateWithEpisodes")]
         public IActionResult CreateWithEpisodes(AnimeViewModel model)
@@ -1240,38 +1104,36 @@ namespace Akaibu_Project.Controllers
                     return NotFound("Anime not found"); // Zwróć NotFound, jeśli anime nie zostało znalezione
                 }
 
-                        // Sprawdź, czy istnieje już Status dla tego użytkownika i tego anime
-                        var existingStatus = _context.Status
-                            .FirstOrDefault(s => s.UsersId == loggedUser.Id && s.DBAnimeId == anime.Id);
+                // Sprawdź, czy istnieje już Status dla tego użytkownika i tego anime
+                var existingStatus = _context.Status
+                    .FirstOrDefault(s => s.UsersId == loggedUser.Id && s.DBAnimeId == anime.Id);
 
-                        if (existingStatus != null)
-                        {
-                            // Jeśli istnieje, zaktualizuj StatusValue
-                            existingStatus.StatusValue = "Finished";
-                            _context.SaveChanges();
-
-                            // Dodaj komunikat o sukcesie do TempData (opcjonalnie)
-                            TempData["SuccessMessage"] = "Status anime został zaktualizowany na zakończony.";
-                            Console.WriteLine("Sukces: AddToFinishedList (aktualizacja)");
-
-                            return RedirectToAction("Index"); // Przekierowanie na stronę główną lub inną
-                        }
-
-                // Utwórz nowy obiekt Status
-                var status = new Status
+                if (existingStatus != null)
                 {
-                    UsersId = loggedUser.Id,
-                    DBAnimeId = anime.Id,
-                    StatusValue = "Finished"
-                };
+                    // Jeśli istnieje, zaktualizuj StatusValue
+                    existingStatus.StatusValue = "Finished";
+                }
+                else
+                {
+                    // Utwórz nowy obiekt Status
+                    var status = new Status
+                    {
+                        UsersId = loggedUser.Id,
+                        DBAnimeId = anime.Id,
+                        StatusValue = "Finished"
+                    };
 
-                _context.Status.Add(status);
+                    _context.Status.Add(status);
+                }
+
                 _context.SaveChanges();
 
                 // Dodaj komunikat o sukcesie do TempData (opcjonalnie)
-                TempData["SuccessMessage"] = "Anime zostało dodane do listy zakończonych.";
-                // Logowanie błędów (możesz użyć loggera lub wypisać do konsoli)
-                Console.WriteLine(" Sukces: AddToFinishedList");
+                TempData["SuccessMessage"] = existingStatus != null
+                    ? "Status anime został zaktualizowany na zakończony."
+                    : "Anime zostało dodane do listy zakończonych.";
+
+                Console.WriteLine("Sukces: AddToFinishedList");
 
                 return RedirectToAction("Index"); // Przekierowanie na stronę główną lub inną
             }
@@ -1287,6 +1149,7 @@ namespace Akaibu_Project.Controllers
                 return View("Index");
             }
         }
+
 
 
 

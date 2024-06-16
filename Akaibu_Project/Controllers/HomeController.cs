@@ -1240,6 +1240,23 @@ namespace Akaibu_Project.Controllers
                     return NotFound("Anime not found"); // Zwróć NotFound, jeśli anime nie zostało znalezione
                 }
 
+                        // Sprawdź, czy istnieje już Status dla tego użytkownika i tego anime
+                        var existingStatus = _context.Status
+                            .FirstOrDefault(s => s.UsersId == loggedUser.Id && s.DBAnimeId == anime.Id);
+
+                        if (existingStatus != null)
+                        {
+                            // Jeśli istnieje, zaktualizuj StatusValue
+                            existingStatus.StatusValue = "Finished";
+                            _context.SaveChanges();
+
+                            // Dodaj komunikat o sukcesie do TempData (opcjonalnie)
+                            TempData["SuccessMessage"] = "Status anime został zaktualizowany na zakończony.";
+                            Console.WriteLine("Sukces: AddToFinishedList (aktualizacja)");
+
+                            return RedirectToAction("Index"); // Przekierowanie na stronę główną lub inną
+                        }
+
                 // Utwórz nowy obiekt Status
                 var status = new Status
                 {
@@ -1294,6 +1311,22 @@ namespace Akaibu_Project.Controllers
                     return View("Index");
                 }
 
+                        // Sprawdź, czy istnieje już Status dla tego użytkownika, tego anime i tego epizodu
+                        var existingStatus = _context.Status
+                            .FirstOrDefault(s => s.UsersId == logged.Id && s.DBAnimeId == animeId && s.EpisodsId == episodeId);
+
+                        if (existingStatus != null)
+                        {
+                            // Jeśli istnieje, zaktualizuj StatusValue
+                            existingStatus.StatusValue = "Watched";
+                            _context.SaveChanges();
+
+                            Console.WriteLine($"Epizod o ID {episodeId} został zaktualizowany jako oglądany przez użytkownika.");
+
+                            return View("Index");
+                        }
+
+                // Jeśli nie istnieje, utwórz nowy obiekt Status
                 Status status = new Status
                 {
                     UsersId = logged.Id,
@@ -1393,6 +1426,22 @@ namespace Akaibu_Project.Controllers
                     return View("Index");
                 }
 
+                        // Sprawdź, czy istnieje już Status dla tego użytkownika i tego anime
+                        var existingStatus = _context.Status
+                            .FirstOrDefault(s => s.UsersId == loggedUser.Id && s.DBAnimeId == anime.Id);
+
+                        if (existingStatus != null)
+                        {
+                            // Jeśli istnieje, zaktualizuj StatusValue
+                            existingStatus.StatusValue = "Watched";
+                            _context.SaveChanges();
+
+                            Console.WriteLine($"Anime o ID {anime.Id} zostało zaktualizowane jako oglądane przez użytkownika {loggedUser.Nick}");
+
+                            return RedirectToAction("Index"); // Przekierowanie na stronę główną lub inną
+                        }
+
+                // Jeśli nie istnieje, utwórz nowy obiekt Status
                 var status = new Status
                 {
                     UsersId = loggedUser.Id,
@@ -1482,6 +1531,21 @@ namespace Akaibu_Project.Controllers
                     return View("Index");
                 }
 
+                        // Sprawdź, czy istnieje już Status dla tego użytkownika i tego anime
+                        var existingStatus = _context.Status
+                            .FirstOrDefault(s => s.UsersId == loggedUser.Id && s.DBAnimeId == anime.Id);
+
+                        if (existingStatus != null)
+                        {
+                            // Jeśli istnieje, zaktualizuj StatusValue na "Planned"
+                            existingStatus.StatusValue = "Planned";
+                            _context.SaveChanges();
+
+                            Console.WriteLine($"Anime o ID {anime.Id} zostało zaktualizowane jako planowane do obejrzenia przez użytkownika {loggedUser.Nick}");
+
+                            return RedirectToAction("Index"); // Przekierowanie na stronę główną lub inną
+                        }
+
                 var status = new Status
                 {
                     UsersId = loggedUser.Id,
@@ -1566,8 +1630,6 @@ namespace Akaibu_Project.Controllers
             loggedUser.lists = model;
             
                 return View("Lists", loggedUser);
-
-
         }
     }
 }

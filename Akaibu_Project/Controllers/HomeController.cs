@@ -391,26 +391,6 @@ namespace Akaibu_Project.Controllers
 
         }
 
-        //[HttpPost]
-        //public IActionResult ChangePassword(string newPassword)
-        //{
-        //    Console.WriteLine("Zmieniam haslo na: " + newPassword );
-        //    var loggedUser = getLoggedUser();
-
-        //    if (loggedUser != null && newPassword != null)
-        //    {
-        //        // Zmień hasło użytkownika.
-        //        loggedUser.Password = newPassword;
-
-        //        // Zapisz zmiany w bazie danych
-        //        _context.Update(loggedUser);
-        //        _context.SaveChanges();
-        //        Logout();
-
-        //    }
-
-        //   return RedirectToAction("Index");
-        //}
         [HttpPost]
         public IActionResult ChangePassword(string newPassword)
         {
@@ -567,37 +547,6 @@ namespace Akaibu_Project.Controllers
         }
 
 
-        //[HttpPost]
-        //public IActionResult UnbanUser(int userId)
-        //{
-        //    var loggedUser = getLoggedUser();
-
-        //    // Sprawdź, czy użytkownik ma uprawnienia admina
-        //    if (loggedUser != null && loggedUser.Ranks == 1)
-        //    {
-        //        // Pobierz użytkownika do zbanowania
-        //        var userToUnBan = _context.Users.Find(userId);
-
-        //        // Sprawdź, czy użytkownik istnieje
-        //        if (userToUnBan != null)
-        //        {
-        //            userToUnBan.Ranks = 0;
-
-        //            // Zapisz zmiany w bazie danych
-        //            _context.Update(userToUnBan);
-        //            _context.SaveChanges();
-        //        }
-
-        //        // Przekieruj z powrotem do panelu admina lub gdziekolwiek indziej
-        //        return RedirectToAction("Privacy");
-        //    }
-        //    else
-        //    {
-        //        // Jeśli użytkownik nie ma uprawnień admina, możesz przekierować go
-        //        // gdzie indziej lub wyświetlić komunikat o braku uprawnień
-        //        return RedirectToAction("Index");
-        //    }
-        //}
         public IActionResult UnbanUser(int userId)
         {
             var loggedUser = getLoggedUser();

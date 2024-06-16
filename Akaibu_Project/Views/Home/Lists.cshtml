@@ -30,7 +30,7 @@
 
 
 <div>
-    <h1>Chooose a list:</h1>
+    <h1>Choose a list:</h1>
     <button class="list-button" onclick="displayList('Finished')">Show Finished List</button>
     <button class="list-button" onclick="displayList('Watched')">Show Watched List</button>
     <button class="list-button" onclick="displayList('Planned')">Show Planned List</button>
@@ -64,10 +64,10 @@
 
                 // Zmodyfikowane nazwy nagłówków
                 var propertiesToDisplay = ['Current episode', 'Status', 'Anime author', 'Anime title'];
-
+                
                 for (var j = 0; j < propertiesToDisplay.length; j++) {
                     var headerCell = headerRow.insertCell(j);
-                    headerCell.innerHTML = propertiesToDisplay[j];
+                    headerCell.innerHTML = '<strong>' + propertiesToDisplay[j] + '</strong>';
                     headerCell.style.border = '1px solid #ddd';
                     headerCell.style.padding = '8px';
                 }

@@ -1,0 +1,98 @@
+﻿.btn-custom-1 {
+    background-color: #BA7F79;
+    color: #000;
+    border-radius: 7px;
+}
+
+.btn-custom-2 {
+    background-color: #E19D80;
+    color: #000;
+    border-radius: 7px;
+}
+
+.btn-custom-3 {
+    background-color: #D4A6A3;
+    color: #000;
+    border-radius: 7px;
+}
+
+.btn-primary {
+    background-color: #D4A6A3;
+    color: #000;
+    border-radius: 7px;
+}
+
+.btn-secondary {
+    background-color: #D4A6A3;
+    color: #000;
+    border-radius: 7px;
+}
+
+.btn-custom-watch {
+    background-color: #BA7F79;
+    color: #000;
+    border-radius: 7px;
+}
+
+
+
+    .btn-custom-1:hover,
+    .btn-custom-2:hover,
+    .btn-custom-3:hover,
+    .btn-custom-4:hover,
+    .btn-custom-watch:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover {
+        background-color: #BA7F79;
+        transform: scale(1.05);
+    }
+
+    .btn-custom-1:active,
+    .btn-custom-2:active,
+    .btn-custom-3:active,
+    .btn-custom-4:active,
+    .btn-custom-watch:active,
+    .btn-primary:active,
+    .btn-secondary:active {
+        background-color: #E9987D;
+        transform: scale(0.95);
+    }
+
+
+
+
+/* Styl dla tabeli odcinków */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #E9987D; /* Kolor tekstu */
+    border-collapse: collapse;
+}
+
+    /* Kolor napisów w nagłówkach tabeli */
+    .table th {
+        color: #E9987D; /* Kolor tekstu */
+    }
+
+h4 {
+    color: #BA7F79;
+}
+
+h3 {
+    color: #BA7F79;
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #BA7F79; /* Kolor linii */
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #BA7F79;
+}
+
+.table tbody + tbody {
+    border-top: 2px solid #BA7F79;
+}

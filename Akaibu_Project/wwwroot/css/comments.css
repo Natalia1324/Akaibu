@@ -1,0 +1,21 @@
+﻿#commbutton {
+    background-color: #E9987D;
+    color: #fff;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    /*flex:1;*/
+}
+
+    .rating i {
+        cursor: pointer;
+        font-size: 1.2em;
+        transition: color 0.3s;
+        margin-right: 5px;
+    }
+
+        .rating i:hover {
+            color: #FFD700; /* Change color on hover */
+        }

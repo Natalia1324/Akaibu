@@ -1,118 +1,120 @@
-﻿<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/comments.css">
 </head>
-
 <body>
-@model Akaibu_Project.Entions.DBAnime
+    @model Akaibu_Project.Entions.DBAnime
     @using Microsoft.AspNetCore.Http
-
-@{
-    ViewData["Title"] = "Comments";
-}
-
-    <style>
-        #commbutton {
-            background-color: #E9987D;
-            color: #fff;
-        }
-    </style>
-
-<div class="container mt-4">
-    <h2>Anime @Model.Title comments section</h2>
-
-        <ul class="list-unstyled">
-            @foreach (var comment in Model.Comments)
-            {
-                <li class="mb-3">
-                    <strong>@comment.Users.Nick</strong>
-                    <span class="text-muted">@comment.DateTheCommentWasAdded.ToString("dd MMMM yyyy HH:mm")</span>
-                    @{
-                        int rating = 0;
-                        int.TryParse(comment.MyRating, out rating);
-                    }
-                    <p>
-                        Rating:
-                        @for (int i = 0; i < rating; i++)
-                        {
-                            <i class="fas fa-star"></i>
+    <div class="container mt-4">
+        <div class="container mt-4">
+            <h2>Anime @Model.Title comments section</h2>
+        </div>
+        <div class="container mt-4">
+            <ul class="list-unstyled">
+                @foreach (var comment in Model.Comments)
+                {
+                    <li class="mb-3">
+                        <strong>@comment.Users.Nick</strong>
+                        <span class="text-muted">@comment.DateTheCommentWasAdded.ToString("dd MMMM yyyy HH:mm")</span>
+                        @{
+                            int rating = 0;
+                            int.TryParse(comment.MyRating, out rating);
                         }
-                    </p>
-                    <p>@comment.CommentText</p>
-                    @if (ViewBag.IsLogged == true)
-                    {
-                        <a href="@Url.Action("SendReport", "Home", new { commentId = comment.Id })" class="btn btn-warning">Zgłoś komentarz</a>
-                    }
-                </li>
+                    
+                        <p>
+                            Rating:
+                            @for (int i = 0; i < rating; i++)
+                            {
+                                <i class="fas fa-star"></i>
+                            }
+                        </p>
+                    
+                        <p>@comment.CommentText</p>
+                        @if (ViewBag.IsLogged == true)
+                        {
+                            <a href="@Url.Action("SendReport", "Home", new { commentId = comment.Id })" class="btn btn-warning">Zgłoś komentarz</a>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="container mt-4">
+            <h3>Add Rating and Comment</h3>
+        </div>
+            <div id="ratingAndCommentSection">
+                <form id="ratingForm" asp-action="AddRatingAndComment" method="post">
+                    <input type="hidden" name="animeId" value="@Model.Id" />
+
+                    <div class="form-group">
+                        <label for="newRating">Rating:</label>
+                        <div class="rating">
+                            <i class="far fa-star" onclick="setRating(1)"></i>
+                            <i class="far fa-star" onclick="setRating(2)"></i>
+                            <i class="far fa-star" onclick="setRating(3)"></i>
+                            <i class="far fa-star" onclick="setRating(4)"></i>
+                            <i class="far fa-star" onclick="setRating(5)"></i>
+                            <input type="hidden" name="newRating" id="newRating" required />
+                        </div>
+                    </div>
+
+                    <div id="commentForm" style="display:none;">
+                        <div class="form-group">
+                            <label for="episodeNumber">Episode Number:</label>
+                            <input type="number" class="form-control" name="episodeNumber" id="episodeNumber" min="1" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="newCommentText">Comment:</label>
+                            <textarea class="form-control" name="newCommentText" required></textarea>
+                        </div>
+                        <button id="commbutton" type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+
+
+
+    <script>
+        var currentRating = 0;
+
+        function setRating(rating) {
+            currentRating = rating;
+            updateStars();
+            toggleCommentForm();
+        }
+
+        function updateStars() {
+            for (var i = 1; i <= 5; i++) {
+                var star = document.querySelector(".rating i:nth-child(" + i + ")");
+                if (i <= currentRating) {
+                    star.classList.remove("far");
+                    star.classList.add("fas");
+                } else {
+                    star.classList.remove("fas");
+                    star.classList.add("far");
+                }
             }
-        </ul>
 
+            document.getElementById("newRating").value = currentRating;
+        }
 
-</div>
-
-<div class="container mt-4">
-    <h3>Add Rating and Comment</h3>
-    <form id="ratingForm" asp-action="AddRatingAndComment" method="post">
-        <input type="hidden" name="animeId" value="@Model.Id" />
-
-        <div class="form-group">
-            <label style="position: static; float: left; text-align: left; color: #E9987D" for="newRating">Rating:</label>
-            <div class="rating">
-                <i class="far fa-star" onclick="setRating(1)"></i>
-                <i class="far fa-star" onclick="setRating(2)"></i>
-                <i class="far fa-star" onclick="setRating(3)"></i>
-                <i class="far fa-star" onclick="setRating(4)"></i>
-                <i class="far fa-star" onclick="setRating(5)"></i>
-                <input type="hidden" name="newRating" id="newRating" required />
-            </div>
-        </div>
-
-        <div id="commentForm" style="display:none;">
-            <div class="form-group">
-                <label for="episodeNumber">Episode Number:</label>
-                <input type="number" class="form-control" name="episodeNumber" id="episodeNumber" min="1" required />
-            </div>
-            <div class="form-group">
-                <label for="newCommentText">Comment:</label>
-                <textarea class="form-control" name="newCommentText" required></textarea>
-            </div>
-            <button id="commbutton" type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-</div>
-
-<script>
-    var currentRating = 0;
-
-    function setRating(rating) {
-        currentRating = rating;
-        updateStars();
-        toggleCommentForm();
-    }
-
-    function updateStars() {
-        for (var i = 1; i <= 5; i++) {
-            var star = document.querySelector(".rating i:nth-child(" + i + ")");
-            if (i <= currentRating) {
-                star.classList.remove("far");
-                star.classList.add("fas");
+        function toggleCommentForm() {
+            var commentForm = document.getElementById("commentForm");
+            if (currentRating > 0) {
+                commentForm.style.display = "block";
             } else {
-                star.classList.remove("fas");
-                star.classList.add("far");
+                commentForm.style.display = "none";
             }
         }
+    </script>
 
-        document.getElementById("newRating").value = currentRating;
-    }
 
-    function toggleCommentForm() {
-        var ratingInput = document.getElementById("newRating");
-        var commentForm = document.getElementById("commentForm");
-
-        if (ratingInput.value !== "") {
-            commentForm.style.display = "block";
-        } else {
-            commentForm.style.display = "none";
-        }
-    }
-</script>
 </body>
+</html>

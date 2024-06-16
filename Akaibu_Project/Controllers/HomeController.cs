@@ -628,7 +628,25 @@ namespace Akaibu_Project.Controllers
             if (loggedUser != null && loggedUser.Ranks == 1)
             {
                 // Przykładowe dane dla raportów
-                var reportsData = _context.Reports.ToList();
+                // Join Reports and Comments tables to get the required data
+                var reportsData = _context.Reports
+                    .Select(report => new
+                    {
+                        Report = report,
+                        Comment = _context.Comments.FirstOrDefault(c => c.Id == report.CommentsId)
+                    })
+                    .ToList()
+                    .Select(rc => new
+                    {
+                        rc.Report.Id,
+                        rc.Report.ReportText,
+                        rc.Report.DateTheReportWasAdded,
+                        rc.Report.UsersId,
+                        rc.Report.CommentsId,
+                        UsersIDComment = rc.Comment?.UsersId,
+                        CommentText = rc.Comment?.CommentText
+                    })
+                    .ToList();
 
                 // Przykładowe dane dla użytkowników
                 var usersData = _context.Users.ToList();

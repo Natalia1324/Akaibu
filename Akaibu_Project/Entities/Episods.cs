@@ -19,6 +19,6 @@ namespace Akaibu_Project.Entions
         public List<Reports> Reports { get; set; } = new List<Reports>();
         public List<Comments> Comments { get; set; } = new List<Comments>();
 
-        public Status? Status { get; set; } // Nawiazanie do Status
+        public List<Status> Status { get; set; } = new List<Status>();// Nawiazanie do Status
     }
 }

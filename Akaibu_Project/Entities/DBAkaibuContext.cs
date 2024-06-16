@@ -142,8 +142,8 @@ namespace Akaibu_Project.Entities
 
 
                 eb.HasOne(s => s.Episods)
-                .WithOne(e => e.Status)
-                .HasForeignKey<Status>(s => s.EpisodsId)
+                .WithMany(e => e.Status)
+                .HasForeignKey(s => s.EpisodsId)
                 .OnDelete(DeleteBehavior.Restrict);
                 //.IsRequired(false); // Użycie DeleteBehavior.Restrict zamiast Cascade
             });

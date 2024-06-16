@@ -126,7 +126,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 7,
                             Author = "Author1",
-                            DateOfProductionStart = new DateTime(2024, 6, 15, 21, 9, 1, 517, DateTimeKind.Local).AddTicks(5130),
+                            DateOfProductionStart = new DateTime(2024, 6, 16, 14, 6, 28, 332, DateTimeKind.Local).AddTicks(1224),
                             NumberOfEpisodes = 12,
                             ShortStory = "Short story 1",
                             StatusAnime = "Status1",
@@ -137,7 +137,7 @@ namespace Akaibu_Project.Migrations
                         {
                             Id = 8,
                             Author = "Author2",
-                            DateOfProductionStart = new DateTime(2024, 6, 15, 21, 9, 1, 519, DateTimeKind.Local).AddTicks(8958),
+                            DateOfProductionStart = new DateTime(2024, 6, 16, 14, 6, 28, 334, DateTimeKind.Local).AddTicks(5026),
                             NumberOfEpisodes = 24,
                             ShortStory = "Short story 2",
                             StatusAnime = "Status2",
@@ -183,7 +183,7 @@ namespace Akaibu_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3e1dd9b5-c72d-43c5-9999-d2b3023058b6"),
+                            Id = new Guid("fd93bd1c-09f0-4ba1-aced-3f4136b068cc"),
                             DBAnimeId = 5,
                             DateTheEpisodWasAdded = new DateTime(2006, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Light Yagami finds the Death Note and starts to use it.",
@@ -251,9 +251,7 @@ namespace Akaibu_Project.Migrations
 
                     b.HasKey("DBAnimeId", "UsersId");
 
-                    b.HasIndex("EpisodsId")
-                        .IsUnique()
-                        .HasFilter("[EpisodsId] IS NOT NULL");
+                    b.HasIndex("EpisodsId");
 
                     b.HasIndex("UsersId");
 
@@ -375,8 +373,8 @@ namespace Akaibu_Project.Migrations
                         .IsRequired();
 
                     b.HasOne("Akaibu_Project.Entions.Episods", "Episods")
-                        .WithOne("Status")
-                        .HasForeignKey("Akaibu_Project.Entions.Status", "EpisodsId")
+                        .WithMany("Status")
+                        .HasForeignKey("EpisodsId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Akaibu_Project.Entions.Users", "Users")

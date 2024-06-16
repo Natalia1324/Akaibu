@@ -1018,9 +1018,14 @@ namespace Akaibu_Project.Controllers
                 {
                     // Jeśli istnieje, zaktualizuj StatusValue
                     existingStatus.StatusValue = "Finished";
+                    existingStatus.EpisodsId = null;
+                    _context.Update(existingStatus);
+                    _context.SaveChanges();
+                    Console.WriteLine($" Został zaktualizowany jako Finished przez użytkownika.");
+
+                    return View("Index");
                 }
-                else
-                {
+                
                     // Utwórz nowy obiekt Status
                     var status = new Status
                     {
@@ -1028,9 +1033,8 @@ namespace Akaibu_Project.Controllers
                         DBAnimeId = anime.Id,
                         StatusValue = "Finished"
                     };
-
                     _context.Status.Add(status);
-                }
+                
 
                 _context.SaveChanges();
 
@@ -1088,9 +1092,11 @@ namespace Akaibu_Project.Controllers
                         {
                             // Jeśli istnieje, zaktualizuj StatusValue
                             existingStatus.StatusValue = "Watched";
+                            existingStatus.EpisodsId = episode.Id;
+                            _context.Update(existingStatus);
                             _context.SaveChanges();
 
-                            Console.WriteLine($"Epizod o ID {episodeId} został zaktualizowany jako oglądany przez użytkownika.");
+                    Console.WriteLine($"Epizod o ID {episodeId} został zaktualizowany jako oglądany przez użytkownika.");
 
                             return View("Index");
                         }
@@ -1107,7 +1113,7 @@ namespace Akaibu_Project.Controllers
                 _context.Status.Add(status);
                 _context.SaveChanges();
 
-                Console.WriteLine($"Epizod o ID {episodeId} został dodany do listy aktualnie oglądanych przez użytkownika");
+                Console.WriteLine($"Epizod o ID {episode.Title} został dodany do listy aktualnie oglądanych przez użytkownika");
 
                 return View("Index");
             }
@@ -1203,9 +1209,11 @@ namespace Akaibu_Project.Controllers
                         {
                             // Jeśli istnieje, zaktualizuj StatusValue
                             existingStatus.StatusValue = "Watched";
+                            existingStatus.EpisodsId = null;
+                            _context.Update(existingStatus);
                             _context.SaveChanges();
 
-                            Console.WriteLine($"Anime o ID {anime.Id} zostało zaktualizowane jako oglądane przez użytkownika {loggedUser.Nick}");
+                    Console.WriteLine($"Anime o ID {anime.Title} zostało zaktualizowane jako oglądane przez użytkownika {loggedUser.Nick}");
 
                             return RedirectToAction("Index"); // Przekierowanie na stronę główną lub inną
                         }
@@ -1282,8 +1290,8 @@ namespace Akaibu_Project.Controllers
         [HttpPost]
         public IActionResult AddToPlannedList(DBAnime anime)
         {
-            try
-            {
+            //try
+            //{
                 var loggedUser = getLoggedUser();
 
                 if (loggedUser == null)
@@ -1308,6 +1316,7 @@ namespace Akaibu_Project.Controllers
                         {
                             // Jeśli istnieje, zaktualizuj StatusValue na "Planned"
                             existingStatus.StatusValue = "Planned";
+                            existingStatus.EpisodsId = null;
                             _context.SaveChanges();
 
                             Console.WriteLine($"Anime o ID {anime.Id} zostało zaktualizowane jako planowane do obejrzenia przez użytkownika {loggedUser.Nick}");
@@ -1328,18 +1337,18 @@ namespace Akaibu_Project.Controllers
                 Console.WriteLine($"Anime o ID {anime.Id} zostało dodane do listy planowanych do obejrzenia przez użytkownika {loggedUser.Nick}");
 
                 return RedirectToAction("Index"); // Przekierowanie na stronę główną lub inną
-            }
-            catch (Exception ex)
-            {
-                // Logowanie błędów (opcjonalnie)
-                Console.WriteLine("Wystąpił błąd podczas dodawania do listy planowanych do obejrzenia: " + ex.Message);
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Logowanie błędów (opcjonalnie)
+            //    Console.WriteLine("Wystąpił błąd podczas dodawania do listy planowanych do obejrzenia: " + ex.Message);
 
-                // Dodanie komunikatu o błędzie do ModelState
-                ModelState.AddModelError(string.Empty, "An error occurred while adding to the planned list.");
+            //    // Dodanie komunikatu o błędzie do ModelState
+            //    ModelState.AddModelError(string.Empty, "An error occurred while adding to the planned list.");
 
-                // Przekierowanie na stronę z błędem
-                return View("Index");
-            }
+            //    // Przekierowanie na stronę z błędem
+            //    return View("Index");
+            //}
         }
 
 
